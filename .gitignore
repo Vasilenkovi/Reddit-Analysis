@@ -1,3 +1,4 @@
 *.pyc
 /outputs
 /venv
+/__pycache__
