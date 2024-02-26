@@ -4,12 +4,26 @@ from mysql.connector import Connect
 import time
 
 class ORM_class(ABC):
+    """Abstract base class for ORM classes.\n
+       db_config used throughout methods accesses following keys:
+            db_config.user - database user with dml priveleges to provided database;\n
+            db_config.password - password for provided user;\n
+            db_config.database - database with necessary tables;\n
+            db_config.host - address for database connection;\n
+            db_config.port - port for database connection;\n
+            db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recmomended;\n"""
     
     def __init__(self):
         pass
 
     @abstractmethod
     def write_to_MySQL(self, db_config: dict) -> None:
+        """Write object to database."""
+        pass
+
+    @abstractmethod
+    def test_MySQL(self, db_config: dict) -> bool:
+        """Test for object in database by unoque indecies."""
         pass
 
 class ORM_submission(ORM_class):
@@ -32,24 +46,47 @@ class ORM_submission(ORM_class):
         self.parsed_timestamp = int(time.time())
 
     def write_to_MySQL(self, db_config: dict) -> None:
+        
+        if not self.test_MySQL(db_config):
+            cnx = Connect(**db_config)
+            cur = cnx.cursor()
+            cur.reset()
+
+            query = """INSERT INTO reddit_parsing.submission(url, full_name, title, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
+            VALUES ('{url}', '{full_name}', '{title}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
+                url = self.url, full_name = self.full_name, title = self.title, text_body = self.text_body, author = self.author,
+                upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
+            )
+
+            cur.execute(query)
+            cnx.commit()
+            cnx.close()
+
+    def test_MySQL(self, db_config: dict) -> bool:
 
         cnx = Connect(**db_config)
         cur = cnx.cursor()
         cur.reset()
 
-        query = """INSERT INTO reddit_parsing.submission(url, full_name, title, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
-        VALUES ('{url}', '{full_name}', '{title}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
-            url = self.url, full_name = self.full_name, title = self.title, text_body = self.text_body, author = self.author,
-            upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
-        )
-
+        query = """SELECT count(full_name) FROM reddit_parsing.submission 
+        WHERE full_name = '{testing_name}'""".format(testing_name = self.full_name)
+        
         cur.execute(query)
-        cnx.commit()
+        result_full_name = cur.fetchall()
+
+        query = """SELECT count(url) FROM reddit_parsing.submission 
+        WHERE url = '{testing_url}'""".format(url = self.url)
+        
+        cur.execute(query)
+        result_url = cur.fetchall()
+
         cnx.close()
+
+        return (len(result_full_name) > 0) and (len(result_url) > 0)
 
 class ORM_comment(ORM_class):
 
-    def __init__(self, parent_submission_name: str, full_name: str, title: str, text_body: str, author: str, upvotes: int, downvotes: int, timestamp: int):
+    def __init__(self, parent_submission_name: str, full_name: str, text_body: str, author: str, upvotes: int, downvotes: int, timestamp: int):
 
         super().__init__()
 
@@ -58,7 +95,6 @@ class ORM_comment(ORM_class):
 
         self.parent_submission_name = parent_submission_name
         self.full_name = full_name
-        self.title = title
         self.text_body = text_body
         self.author = author
         self.upvotes = upvotes
@@ -72,12 +108,27 @@ class ORM_comment(ORM_class):
         cur = cnx.cursor()
         cur.reset()
 
-        query = """INSERT INTO reddit_parsing.submission_comment(full_name, submission_name, title, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
-        VALUES ('{full_name}', '{parent_submission_name}', '{title}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
-            full_name = self.full_name, parent_submission_name = self.parent_submission_name, title = self.title, text_body = self.text_body,
-            author = self.author, upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
+        query = """INSERT INTO reddit_parsing.submission_comment(full_name, submission_name, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
+        VALUES ('{full_name}', '{parent_submission_name}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
+            full_name = self.full_name, parent_submission_name = self.parent_submission_name, text_body = self.text_body, author = self.author,
+            upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
         )
 
         cur.execute(query)
         cnx.commit()
         cnx.close()
+
+    def test_MySQL(self, db_config: dict) -> bool:
+
+        cnx = Connect(**db_config)
+        cur = cnx.cursor()
+        cur.reset()
+
+        query = """SELECT count(full_name) FROM reddit_parsing.comment 
+        WHERE full_name = '{testing_name}'""".format(testing_name = self.full_name)
+        
+        cur.execute(query)
+        result = cur.fetchall()
+        cnx.close()
+
+        return len(result) > 0
