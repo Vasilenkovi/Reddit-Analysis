@@ -11,7 +11,7 @@ class ORM_class(ABC):
             db_config.database - database with necessary tables;\n
             db_config.host - address for database connection;\n
             db_config.port - port for database connection;\n
-            db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recmomended;\n"""
+            db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n"""
     
     def __init__(self):
         pass
@@ -23,7 +23,7 @@ class ORM_class(ABC):
 
     @abstractmethod
     def test_MySQL(self, db_config: dict) -> bool:
-        """Test for object in database by unoque indecies."""
+        """Test for object in database by unique indices."""
         pass
 
 class ORM_submission(ORM_class):
@@ -105,7 +105,7 @@ class ORM_comment(ORM_class):
     def write_to_MySQL(self, db_config: dict) -> None:
 
         if not self.test_MySQL(db_config):
-            
+
             cnx = Connect(**db_config)
             cur = cnx.cursor()
             cur.reset()

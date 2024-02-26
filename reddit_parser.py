@@ -6,7 +6,7 @@ import praw.reddit
 from collections.abc import Generator
 
 class Extended_Reddit_RO(Reddit):
-    """Class that encapsulates logic of structural retrival of public objects through Reddit API"""
+    """Class that encapsulates logic of structural retrieval of public objects through Reddit API"""
 
     def __init__(self, client_id: str, client_secret: str, user_agent: str, username: str | None = None, password: str | None = None):
         """Parameters:
@@ -38,7 +38,7 @@ class Extended_Reddit_RO(Reddit):
             query - string to match in search;\n
             sort - sorting methods (includes "relevance", "hot", "top", "new");\n
             time_filter - method of limiting the search timeframe (includes "all", "day", "hour", "month", "week", or "year");\n
-            limit - the maximum number of submissions to retrieve. Reddit API has been known to return not more than a 1000 submissions;\n
+            limit - the maximum number of submissions to retrieve. Reddit API has been known to return not more than 1000 submissions;\n
             comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         Returns: A generator of tuples: Submission and generator of Submission's comments.
@@ -51,10 +51,10 @@ class Extended_Reddit_RO(Reddit):
         """Description: Parses specified submission and its comments. Takes considerable time to execute (approximately 1 second + time to replace "more comments").\n
         Parameters: \n
             submission - url or Submission object for compatibility. Both execution paths require 1 network call (approximately 1 second);\n
-            comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n
+            comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
-        Returns: Tuple of Submission and generator of Submission's comments
-        """
+        Returns: Tuple of Submission and generator of Submission's comments"""
+        
         submission_url = submission #assume url was provided
 
         if isinstance(submission, str):
@@ -119,15 +119,15 @@ def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfi
         subreddit_config.sort - sorting methods (includes "relevance", "hot", "top", "new");\n
         subreddit_config.time_filter - method of limiting the search timeframe (includes "all", "day", "hour", "month", "week", or "year");\n
         subreddit_config.limit - the maximum number of submissions to retrieve. Reddit API has been known to return not more than a 1000 submissions;\n
-        subreddit_config.comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n
+        subreddit_config.comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
         subreddit_config.comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         \n
-        db_config.user - database user with dml priveleges to provided database;\n
+        db_config.user - database user with dml privileges to provided database;\n
         db_config.password - password for provided user;\n
         db_config.database - database with necessary tables;\n
         db_config.host - address for database connection;\n
         db_config.port - port for database connection;\n
-        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recmomended;\n
+        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n
     Returns: None"""
     
     reddit = Extended_Reddit_RO(
@@ -168,7 +168,7 @@ def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictCon
         db_config.database - database with necessary tables;\n
         db_config.host - address for database connection;\n
         db_config.port - port for database connection;\n
-        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recmomended;\n
+        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n
     Returns: None"""
     
     reddit = Extended_Reddit_RO(
