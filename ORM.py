@@ -104,19 +104,21 @@ class ORM_comment(ORM_class):
 
     def write_to_MySQL(self, db_config: dict) -> None:
 
-        cnx = Connect(**db_config)
-        cur = cnx.cursor()
-        cur.reset()
+        if not self.test_MySQL(db_config):
+            
+            cnx = Connect(**db_config)
+            cur = cnx.cursor()
+            cur.reset()
 
-        query = """INSERT INTO reddit_parsing.submission_comment(full_name, submission_name, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
-        VALUES ('{full_name}', '{parent_submission_name}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
-            full_name = self.full_name, parent_submission_name = self.parent_submission_name, text_body = self.text_body, author = self.author,
-            upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
-        )
+            query = """INSERT INTO reddit_parsing.submission_comment(full_name, submission_name, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
+            VALUES ('{full_name}', '{parent_submission_name}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
+                full_name = self.full_name, parent_submission_name = self.parent_submission_name, text_body = self.text_body, author = self.author,
+                upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
+            )
 
-        cur.execute(query)
-        cnx.commit()
-        cnx.close()
+            cur.execute(query)
+            cnx.commit()
+            cnx.close()
 
     def test_MySQL(self, db_config: dict) -> bool:
 
