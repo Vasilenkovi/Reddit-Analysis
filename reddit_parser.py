@@ -56,20 +56,17 @@ def main(cfg : DictConfig) -> None:
         password = cfg.user.password,
     )
 
-    #if (cfg.mock.get("subreddit_query")):
-#
-    #    reddit.parse_subreddit(
-    #        subreddit_display_name = cfg.mock.subreddit_query.subreddit_display_name,
-    #        query = cfg.mock.subreddit_query.query
-    #    )
-    #
-    #if (cfg.mock.get("submission_query")):
-#
-    #    reddit.parse_submission(cfg.mock.submission_query.url)
+    if (cfg.mock.get("subreddit_query")):
 
-    sub = ORM_submission("", "a", "", "", "", 0, 0, 123456)
-    sub.write_to_MySQL(cfg.db)
+        reddit.parse_subreddit(
+            subreddit_display_name = cfg.mock.subreddit_query.subreddit_display_name,
+            query = cfg.mock.subreddit_query.query
+        )
+    
+    if (cfg.mock.get("submission_query")):
 
-    com = ORM_comment("a", "", "", "", "", )
+        reddit.parse_submission(cfg.mock.submission_query.url)
+
+
 if __name__ == "__main__":
     main()
