@@ -53,12 +53,19 @@ class ORM_submission(ORM_class):
             cur.reset()
 
             query = """INSERT INTO reddit_parsing.submission(url, full_name, title, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
-            VALUES ('{url}', '{full_name}', '{title}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
-                url = self.url, full_name = self.full_name, title = self.title, text_body = self.text_body, author = self.author,
-                upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
-            )
+            VALUES (%(url)s, %(full_name)s, %(title)s, %(text_body)s, %(author)s, %(upvotes)s, %(downvotes)s, FROM_UNIXTIME(%(timestamp)s), FROM_UNIXTIME(%(parsed_timestamp)s))"""
 
-            cur.execute(query)
+            cur.execute(query, params = {
+                'url': self.url,
+                'full_name': self.full_name, 
+                'title': self.title, 
+                'text_body': self.text_body, 
+                'author': self.author,
+                'upvotes': self.upvotes,
+                'downvotes': self.downvotes,
+                'timestamp': self.timestamp, 
+                'parsed_timestamp': self.parsed_timestamp
+            })
             cnx.commit()
             cnx.close()
 
@@ -68,16 +75,17 @@ class ORM_submission(ORM_class):
         cur = cnx.cursor()
         cur.reset()
 
-        query = """SELECT count(full_name) FROM reddit_parsing.submission 
-        WHERE full_name = '{testing_name}'""".format(testing_name = self.full_name)
+        query = """SELECT full_name FROM reddit_parsing.submission 
+        WHERE full_name = %(testing_name)s"""
         
-        cur.execute(query)
+        cur.execute(query, {'testing_name': self.full_name})
         result_full_name = cur.fetchall()
+        cur.reset()
 
-        query = """SELECT count(url) FROM reddit_parsing.submission 
-        WHERE url = '{testing_url}'""".format(url = self.url)
+        query = """SELECT url FROM reddit_parsing.submission 
+        WHERE url = %(testing_url)s"""
         
-        cur.execute(query)
+        cur.execute(query, {'testing_url': self.url})
         result_url = cur.fetchall()
 
         cnx.close()
@@ -111,12 +119,18 @@ class ORM_comment(ORM_class):
             cur.reset()
 
             query = """INSERT INTO reddit_parsing.submission_comment(full_name, submission_name, text_body, author, upvotes, downvotes, created_timestamp, parsed_timestamp) 
-            VALUES ('{full_name}', '{parent_submission_name}', '{text_body}', '{author}', {upvote}, {downvotes}, FROM_UNIXTIME({timestamp}), FROM_UNIXTIME({parsed_timestamp}))""".format(
-                full_name = self.full_name, parent_submission_name = self.parent_submission_name, text_body = self.text_body, author = self.author,
-                upvote = self.upvotes, downvotes = self.downvotes, timestamp = self.timestamp, parsed_timestamp = self.parsed_timestamp
-            )
+            VALUES (%(full_name)s, %(parent_submission_name)s, %(text_body)s, %(author)s, %(upvotes)s, %(downvotes)s, FROM_UNIXTIME(%(timestamp)s), FROM_UNIXTIME(%(parsed_timestamp)s))"""
 
-            cur.execute(query)
+            cur.execute(query, params = {
+                'full_name': self.full_name, 
+                'parent_submission_name': self.parent_submission_name,
+                'text_body': self.text_body, 
+                'author': self.author,
+                'upvotes': self.upvotes,
+                'downvotes': self.downvotes,
+                'timestamp': self.timestamp, 
+                'parsed_timestamp': self.parsed_timestamp
+            })
             cnx.commit()
             cnx.close()
 
@@ -126,10 +140,10 @@ class ORM_comment(ORM_class):
         cur = cnx.cursor()
         cur.reset()
 
-        query = """SELECT count(full_name) FROM reddit_parsing.comment 
-        WHERE full_name = '{testing_name}'""".format(testing_name = self.full_name)
+        query = """SELECT full_name FROM reddit_parsing.submission_comment 
+        WHERE full_name = %(testing_name)s"""
         
-        cur.execute(query)
+        cur.execute(query, {'testing_name': self.full_name})
         result = cur.fetchall()
         cnx.close()
 
