@@ -1,4 +1,4 @@
 ﻿submission_query:
     url: https://www.reddit.com/r/WhitePeopleTwitter/comments/1b05zen/its_a_love_story
-    limit: null
+    limit: 1
     threshold: 1

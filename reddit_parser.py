@@ -97,15 +97,6 @@ class Extended_Reddit_RO(Reddit):
 
         return submission_instance, comment_generator()
     
-@hydra.main(version_base = None, config_path = "conf", config_name = "conf.yaml")
-def main(cfg : DictConfig) -> None:
-    """Main for testing and debugging"""
-
-    if (cfg.mock.get("subreddit_query")):
-        parse_subreddit_to_db(cfg)
-    
-    if (cfg.mock.get("submission_query")):
-        parse_submission_to_db(cfg)
 
 def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfig, db_config: DictConfig) -> None:
     """Description: Parses subreddit and writes results to database based on dictionaries.\n
@@ -159,9 +150,9 @@ def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictCon
         reddit_config.client_secret - client secret of registered Reddit app;\n
         reddit_config.user_agent - unique user agent;\n
         \n
-        submission_config.submission - url or submission object. Incurs network call either way;\n
-        submission_config.comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n,
-        submission_config.comment_replace_threshold - comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
+        submission_config.url - url of submission. Incurs network call either way;\n
+        submission_config.limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n,
+        submission_config.threshold - comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         \n
         db_config.user - database user with dml priveleges to provided database;\n
         db_config.password - password for provided user;\n
@@ -178,15 +169,25 @@ def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictCon
     )
 
     submission, com_gen = reddit.parse_submission(
-        submission = submission_config.submission,
-        comment_replace_limit = submission_config.comment_replace_limit,
-        comment_replace_threshold = submission_config.comment_replace_threshold
+        submission = submission_config.url,
+        comment_replace_limit = submission_config.limit,
+        comment_replace_threshold = submission_config.threshold
     )
     
     submission.write_to_MySQL(db_config)
 
     for com in com_gen:
         com.write_to_MySQL(db_config)
+
+@hydra.main(version_base = None, config_path = "conf", config_name = "conf.yaml")
+def main(cfg : DictConfig) -> None:
+    """Main for testing and debugging"""
+
+    if (cfg.mock.get("subreddit_query")):
+        parse_subreddit_to_db(cfg.client, cfg.mock.subreddit_query, cfg.db)
+    
+    if (cfg.mock.get("submission_query")):
+        parse_submission_to_db(cfg.client, cfg.mock.submission_query, cfg.db)
 
 if __name__ == "__main__":
     main()
