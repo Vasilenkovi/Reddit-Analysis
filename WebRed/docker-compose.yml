@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    # Берем Dockerfile из каталога app
+    build: .
+    # Запускаем тестовый сервер
+    command: python manage.py runserver 51.250.112.4:8000
+    # куда будут помещены данные из каталога app
+    volumes:
+      - ./app/:/usr/src/WebRed/
+    # Открываем порт 8000 внутри и снаружи
+    ports:
+      - 8000:8000
+    # Файл содержащий переменные для контейнера
+    env_file:
+      - ./.env.dev
