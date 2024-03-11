@@ -1,0 +1,6 @@
+﻿subreddit_users_query:
+    subreddit_display_name: programmingcirclejerk
+    discipline: hot
+    limit: 1000
+    comment_replace_limit: 0
+    comment_replace_threshold: 1
