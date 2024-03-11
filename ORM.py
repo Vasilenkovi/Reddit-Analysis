@@ -90,7 +90,7 @@ class ORM_submission(ORM_class):
 
         cnx.close()
 
-        return (len(result_full_name) > 0) and (len(result_url) > 0)
+        return (len(result_full_name) > 0) or (len(result_url) > 0)
 
 class ORM_comment(ORM_class):
 
@@ -144,7 +144,123 @@ class ORM_comment(ORM_class):
         WHERE full_name = %(testing_name)s"""
         
         cur.execute(query, {'testing_name': self.full_name})
+        result_unique = cur.fetchall()
+        cur.reset()
+
+        query = """SELECT full_name FROM reddit_parsing.submission 
+        WHERE full_name = %(testing_submission_full_name)s"""
+
+        cur.execute(query, {'testing_submission_full_name': self.parent_submission_name})
+        result_foreign = cur.fetchall()
+        
+        cnx.close()
+
+        return (len(result_unique) > 0) or (len(result_foreign) < 1)
+    
+class ORM_subreddit(ORM_class):
+
+    def __init__(self, full_name: str, display_name: str, url: str):
+
+        super().__init__()
+
+        assert len(full_name) < 768, "full_name must be less than 768 bytes to fit MySQL unique constraint. Since Reddit enforces limit on full_name length, I will be surprised to find you here."
+        assert display_name, "display_name cant be None"
+        assert url, "url cant be None"
+
+        self.full_name = full_name
+        self.display_name = display_name
+        self.url = url
+        self.parsed_timestamp = int(time.time())
+
+    def write_to_MySQL(self, db_config: dict) -> None:
+
+        if not self.test_MySQL(db_config):
+
+            cnx = Connect(**db_config)
+            cur = cnx.cursor()
+            cur.reset()
+
+            query = """INSERT INTO reddit_parsing.subreddit(full_name, display_name, url, parsed_timestamp) 
+            VALUES (%(full_name)s, %(display_name)s, %(url)s, FROM_UNIXTIME(%(parsed_timestamp)s))"""
+
+            cur.execute(query, params = {
+                'full_name': self.full_name, 
+                'display_name': self.display_name,
+                'url': self.url,
+                'parsed_timestamp': self.parsed_timestamp
+            })
+            cnx.commit()
+            cnx.close()
+
+    def test_MySQL(self, db_config: dict) -> bool:
+
+        cnx = Connect(**db_config)
+        cur = cnx.cursor()
+        cur.reset()
+
+        query = """SELECT full_name FROM reddit_parsing.subreddit 
+        WHERE full_name = %(testing_name)s"""
+        
+        cur.execute(query, {'testing_name': self.full_name})
         result = cur.fetchall()
         cnx.close()
 
         return len(result) > 0
+
+class ORM_subreddit_active_users(ORM_class):
+
+    def __init__(self, subreddit_full_name: str, user_full_name: str):
+
+        super().__init__()
+
+        assert len(subreddit_full_name) < 256, "full_name must be less than 256 bytes to fit MySQL unique constraint. Since Reddit enforces limit on full_name length, I will be surprised to find you here."
+        assert len(user_full_name) < 256, "full_name must be less than 256 bytes to fit MySQL unique constraint. Since Reddit enforces limit on full_name length, I will be surprised to find you here."
+
+        self.subreddit_full_name = subreddit_full_name
+        self.user_full_name = user_full_name
+        self.parsed_timestamp = int(time.time())
+
+    def write_to_MySQL(self, db_config: dict) -> None:
+
+        if not self.test_MySQL(db_config):
+
+            cnx = Connect(**db_config)
+            cur = cnx.cursor()
+            cur.reset()
+
+            query = """INSERT INTO reddit_parsing.subreddit_active_users(subreddit_full_name, user_full_name, parsed_timestamp) 
+            VALUES (%(subreddit_full_name)s, %(user_full_name)s, FROM_UNIXTIME(%(parsed_timestamp)s))"""
+
+            cur.execute(query, params = {
+                'subreddit_full_name': self.subreddit_full_name, 
+                'user_full_name': self.user_full_name,
+                'parsed_timestamp': self.parsed_timestamp
+            })
+            cnx.commit()
+            cnx.close()
+
+    def test_MySQL(self, db_config: dict) -> bool:
+
+        cnx = Connect(**db_config)
+        cur = cnx.cursor()
+        cur.reset()
+
+        query = """SELECT subreddit_full_name, user_full_name FROM reddit_parsing.subreddit_active_users 
+        WHERE subreddit_full_name = %(testing_subreddit_full_name)s AND user_full_name = %(testing_user_full_name)s"""
+        
+        cur.execute(query, {
+            'testing_subreddit_full_name': self.subreddit_full_name,
+            'testing_user_full_name': self.user_full_name
+            })
+        result_unique = cur.fetchall()
+        cur.reset()
+
+        query = """SELECT full_name FROM reddit_parsing.subreddit 
+        WHERE full_name = %(testing_subreddit_full_name)s"""
+
+        cur.execute(query, {'testing_subreddit_full_name': self.subreddit_full_name})
+        result_foreign = cur.fetchall()
+        
+        cnx.close()
+
+        return (len(result_unique) > 0) or (len(result_foreign) < 1)
