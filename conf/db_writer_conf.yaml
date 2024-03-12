@@ -1,0 +1,3 @@
+﻿defaults:
+    - backend_socket: backend_1
+    - db: MySQL_local_reddit
