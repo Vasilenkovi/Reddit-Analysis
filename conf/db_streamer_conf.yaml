@@ -1,0 +1,3 @@
+﻿defaults:
+    - frontend_socket: frontend_1
+    - backend_socket: backend_1
