@@ -1,4 +1,8 @@
 ﻿subreddit_query:
-    subreddit_display_name: MildlyGit
-    query: commit
-    
+    subreddit_display_name: C_AT
+    query: thread
+    sort: top
+    time_filter: all
+    limit: 100
+    comment_replace_limit: 0
+    comment_replace_threshold: 1

@@ -4,6 +4,8 @@ import hydra
 from praw import Reddit
 import praw.reddit
 from collections.abc import Generator
+import jsonpickle
+import zmq
 
 class Extended_Reddit_RO(Reddit):
     """Class that encapsulates logic of structural retrieval of public objects through Reddit API"""
@@ -60,7 +62,7 @@ class Extended_Reddit_RO(Reddit):
         if isinstance(submission, str):
             submission = self.submission(url = submission) #Network call
         elif isinstance(submission, praw.reddit.Submission):
-            submission_url = submission.url #Network call
+            submission_url = "reddit.com" + submission.permalink #Network call
         else:
             raise ValueError("submission must be str (assumed url) or praw.reddit.Submission")
         
@@ -108,7 +110,8 @@ class Extended_Reddit_RO(Reddit):
         Returns: Tuple of Subreddit and generator of Subreddit's active users grouped by submissions"""
 
         subreddit = self.subreddit(subreddit_display_name)
-        sub_orm = ORM_subreddit(subreddit.fullname, subreddit_display_name, subreddit.url)
+        full_url = "reddit.com" + subreddit.url
+        sub_orm = ORM_subreddit(subreddit.fullname, subreddit_display_name, full_url)
 
         submission_generator = None
         match sort_discipline:
@@ -140,8 +143,18 @@ class Extended_Reddit_RO(Reddit):
 
         return sub_orm, author_generator()
  
+def __open_frontend_socket(frontend_socket: DictConfig):
+    """Helper function to open socket connection to db_streamer"""
 
-def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfig, db_config: DictConfig) -> None:
+    socket_adress = "tcp://{host}:{port}".format(host = frontend_socket.host, port = frontend_socket.port)
+
+    ctx = zmq.Context(1)
+    soc = ctx.socket(zmq.PUSH)
+    soc.connect(socket_adress)
+
+    return ctx, soc
+
+def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfig, frontend_socket_config: DictConfig) -> None:
     """Description: Parses subreddit and writes results to database based on dictionaries.\n
     Keys accessed:\n
         reddit_config.client_id - client id of registered Reddit app;\n
@@ -156,12 +169,9 @@ def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfi
         subreddit_config.comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
         subreddit_config.comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         \n
-        db_config.user - database user with dml privileges to provided database;\n
-        db_config.password - password for provided user;\n
-        db_config.database - database with necessary tables;\n
-        db_config.host - address for database connection;\n
-        db_config.port - port for database connection;\n
-        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n
+        frontend_socket_config.host - host to send db_write requests to;\n
+        frontend_socket_config.port - port to send db_write requests to;\n
+        \n
     Returns: None"""
     
     reddit = Extended_Reddit_RO(
@@ -180,13 +190,21 @@ def parse_subreddit_to_db(reddit_config: DictConfig, subreddit_config: DictConfi
             comment_replace_threshold = subreddit_config.comment_replace_threshold
     )
 
+    ctx, soc = __open_frontend_socket(frontend_socket_config)
+
     for submission, com_gen in sub_gen:
-        submission.write_to_MySQL(db_config)
+
+        sub_str = jsonpickle.encode(submission)
+        soc.send_string(sub_str, flags = zmq.NOBLOCK)
 
         for com in com_gen:
-            com.write_to_MySQL(db_config)
+            com_str = jsonpickle.encode(com)
+            soc.send_string(com_str, flags = zmq.NOBLOCK)
 
-def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictConfig, db_config: DictConfig) -> None:
+    soc.close()
+    ctx.term()
+
+def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictConfig, frontend_socket_config: DictConfig) -> None:
     """Description: Parses submission and writes results to database based on dictionaries.\n
     Keys accessed:\n
         reddit_config.client_id - client id of registered Reddit app;\n
@@ -197,12 +215,9 @@ def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictCon
         submission_config.limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n,
         submission_config.threshold - comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         \n
-        db_config.user - database user with dml priveleges to provided database;\n
-        db_config.password - password for provided user;\n
-        db_config.database - database with necessary tables;\n
-        db_config.host - address for database connection;\n
-        db_config.port - port for database connection;\n
-        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n
+        frontend_socket_config.host - host to send db_write requests to;\n
+        frontend_socket_config.port - port to send db_write requests to;\n
+        \n
     Returns: None"""
     
     reddit = Extended_Reddit_RO(
@@ -217,12 +232,19 @@ def parse_submission_to_db(reddit_config: DictConfig, submission_config: DictCon
         comment_replace_threshold = submission_config.threshold
     )
     
-    submission.write_to_MySQL(db_config)
+    ctx, soc = __open_frontend_socket(frontend_socket_config)
+    
+    sub_str = jsonpickle.encode(submission)
+    soc.send_string(sub_str, flags = zmq.NOBLOCK)
 
     for com in com_gen:
-        com.write_to_MySQL(db_config)
+        com_str = jsonpickle.encode(com)
+        soc.send_string(com_str, flags = zmq.NOBLOCK)
 
-def parse_subreddit_users_to_db(reddit_config: DictConfig, subreddit_users_config: DictConfig, db_config: DictConfig) -> None:
+    soc.close()
+    ctx.term()
+
+def parse_subreddit_users_to_db(reddit_config: DictConfig, subreddit_users_config: DictConfig, frontend_socket_config: DictConfig) -> None:
     """Description: Parses subreddit for active users and writes results to database based on dictionaries.\n
     Keys accessed:\n
         reddit_config.client_id - client id of registered Reddit app;\n
@@ -235,12 +257,9 @@ def parse_subreddit_users_to_db(reddit_config: DictConfig, subreddit_users_confi
         subreddit_users_config.comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
         subreddit_users_config.comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         \n
-        db_config.user - database user with dml privileges to provided database;\n
-        db_config.password - password for provided user;\n
-        db_config.database - database with necessary tables;\n
-        db_config.host - address for database connection;\n
-        db_config.port - port for database connection;\n
-        db_config.use_pure - boolean to use pure python connection instead of c implementation. True value recommended;\n
+        frontend_socket_config.host - host to send db_write requests to;\n
+        frontend_socket_config.port - port to send db_write requests to;\n
+        \n
     Returns: None"""
 
     reddit = Extended_Reddit_RO(
@@ -249,7 +268,7 @@ def parse_subreddit_users_to_db(reddit_config: DictConfig, subreddit_users_confi
         user_agent = reddit_config.user_agent
     )
 
-    sub, submission_users = reddit.parse_subreddit_users(
+    red, submission_users = reddit.parse_subreddit_users(
         subreddit_display_name = subreddit_users_config.subreddit_display_name,
         sort_discipline = subreddit_users_config.discipline,
         limit = subreddit_users_config.limit,
@@ -257,25 +276,31 @@ def parse_subreddit_users_to_db(reddit_config: DictConfig, subreddit_users_confi
         comment_replace_threshold = subreddit_users_config.comment_replace_threshold
     )
 
-    sub.write_to_MySQL(db_config)
+    ctx, soc = __open_frontend_socket(frontend_socket_config)
+    
+    red_str = jsonpickle.encode(red)
+    soc.send_string(red_str, flags = zmq.NOBLOCK)
 
     for users in submission_users:
         for user in users:
-            user.write_to_MySQL(db_config)
+            user_str = jsonpickle.encode(user)
+            soc.send_string(user_str, flags = zmq.NOBLOCK)
 
+    soc.close()
+    ctx.term()
 
 @hydra.main(version_base = None, config_path = "conf", config_name = "conf.yaml")
 def main(cfg : DictConfig) -> None:
     """Main for testing and debugging"""
 
     if (cfg.mock.get("subreddit_query")):
-        parse_subreddit_to_db(cfg.client, cfg.mock.subreddit_query, cfg.db)
+        parse_subreddit_to_db(cfg.client, cfg.mock.subreddit_query, cfg.frontend_socket)
     
     if (cfg.mock.get("submission_query")):
-        parse_submission_to_db(cfg.client, cfg.mock.submission_query, cfg.db)
+        parse_submission_to_db(cfg.client, cfg.mock.submission_query, cfg.frontend_socket)
 
     if (cfg.mock.get("subreddit_users_query")):
-        parse_subreddit_users_to_db(cfg.client, cfg.mock.subreddit_users_query, cfg.db)
+        parse_subreddit_users_to_db(cfg.client, cfg.mock.subreddit_users_query, cfg.frontend_socket)
 
 if __name__ == "__main__":
     main()

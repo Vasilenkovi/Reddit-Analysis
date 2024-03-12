@@ -1,5 +1,6 @@
 ﻿defaults:
-    - mock: subreddit_users
+    - mock: submission
     - client: reddit_script_config
     - user: no_user
     - db: MySQL_local_reddit
+    - frontend_socket: frontend_1
