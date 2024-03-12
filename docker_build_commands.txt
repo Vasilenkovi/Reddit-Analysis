@@ -1,0 +1,2 @@
+docker build -t db_streamer:latest -f dockerfiles/db_streamer.Dockerfile .
+docker build -t db_writer:latest -f dockerfiles/db_writer.Dockerfile .
