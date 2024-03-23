@@ -30,13 +30,14 @@ ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
-
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DjangoRed.wsgi.application'
+ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 
 # Database
@@ -127,3 +129,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CHANNELS_LAYERS = {
+  'default': {
+    'BACKEND': 'channels.layers.InMemoryChannelLayer'
+  }
+}
