@@ -13,7 +13,8 @@ import os
 from pathlib import Path
 from os import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = environ.get('SECRET_KEY')
+# SECRET_KEY = environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-ecwm#*8s14myek8xi+%yc1tk$v2@=&l18=cg8(a+rk7rrz+k@f'
 
 # DEBUG = int(environ.get('DEBUG', default=0))
 
@@ -30,20 +31,22 @@ SECRET_KEY = environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
 
+ALLOWED_HOSTS = []
 
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
-    'channels',
+    # 'daphne',
+    # 'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'HomeApp'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DjangoRed.wsgi.application'
-ASGI_APPLICATION = 'DjangoRed.asgi.application'
+# ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 
 # Database
@@ -132,8 +135,8 @@ STATICFILES_DIRS = [STATIC_DIR]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CHANNELS_LAYERS = {
-  'default': {
-    'BACKEND': 'channels.layers.InMemoryChannelLayer'
-  }
-}
+# CHANNELS_LAYERS = {
+#   'default': {
+#     'BACKEND': 'channels.layers.InMemoryChannelLayer'
+#   }
+# }
