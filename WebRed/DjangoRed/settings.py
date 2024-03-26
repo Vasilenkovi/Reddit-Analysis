@@ -9,15 +9,15 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from os import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get('SECRET_KEY')
 
-DEBUG = int(environ.get('DEBUG', default=0))
+# DEBUG = int(environ.get('DEBUG', default=0))
 
-ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
+# ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 
@@ -29,8 +29,8 @@ ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 #SECRET_KEY = 'django-insecure-4bfml7%ip4g#@3^5mfrq486wsraeww*9=mq$qnt^ig2irb*^u$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-#ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
+DEBUG = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
 
 
 # Application definition
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'DjangoRed.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,6 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
