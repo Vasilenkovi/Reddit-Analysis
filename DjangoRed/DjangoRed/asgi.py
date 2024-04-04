@@ -22,5 +22,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoRed.settings')
 django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
-    'http': get_asgi_application()
+    'http': get_asgi_application(),
+    'websocket': AuthMiddlewareStack((
+        URLRouter(
+            VisualizationApp.routing.websocket_urlpatterns
+        )
+    ))
 })
