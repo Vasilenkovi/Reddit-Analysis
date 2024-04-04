@@ -9,3 +9,7 @@ class ClusterConsumer(WebsocketConsumer):
              'message': "Connected"
             }
         ))
+    def receive(self, text_data=None, bytes_data=None):
+        print(text_data)
+    def disconnect(self, close_code):
+        print(close_code)
