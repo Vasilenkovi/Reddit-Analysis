@@ -38,8 +38,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'daphne',
-    # 'channels',
+    'daphne',
+    #'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,7 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DjangoRed.wsgi.application'
-# ASGI_APPLICATION = 'DjangoRed.asgi.application'
+ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 
 # Database

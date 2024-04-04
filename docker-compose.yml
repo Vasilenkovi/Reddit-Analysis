@@ -3,12 +3,12 @@ version: '3.8'
 services:
   web:
     # Берем Dockerfile из каталога app
-    build: ./WebRed
+    build: ./DjangoRed
     # Запускаем тестовый сервер
     command: gunicorn DjangoRed.wsgi:application --bind 0.0.0.0:8000
     # куда будут помещены данные из каталога app
     volumes:
-      - ./WebRed/:/usr/src/WebRed/
+      - ./DjangoRed/:/usr/src/DjangoRed/
     # Открываем порт 8000 внутри и снаружи
     ports:
       - 8000:8000
