@@ -6,7 +6,7 @@ class ClusterConsumer(WebsocketConsumer):
         self.accept()
         self.send(text_data=json.dumps({
                 'type':'connection_established',
-             'message': "Connected!"
+             'message': "Connected!!"
             }
         ))
     def receive(self, text_data=None, bytes_data=None):
