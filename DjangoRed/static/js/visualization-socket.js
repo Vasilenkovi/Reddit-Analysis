@@ -13,9 +13,9 @@ function createString() {
     var message = ""
     var i = 0
     for (var pair of formData.entries()) {    
-        if (i == 5) continue;
+        if (i == 6) continue;
         message += pair[1];
-        if (i != 4)
+        if (i != 5)
             message += " ";
         i += 1;
     }
