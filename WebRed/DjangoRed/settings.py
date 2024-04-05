@@ -88,6 +88,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+
+NATIVE_SQL_DATABASES = {
+    'job_id': { 
+        'database': 'reddit_job_id',
+        'user': 'job_id_client',
+        'password': '~X+qPJX<w:FKu$O',
+        'host': 'localhost',
+        'port': '3306'
     }
 }
 
