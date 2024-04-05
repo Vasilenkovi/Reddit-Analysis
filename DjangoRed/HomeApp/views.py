@@ -6,7 +6,6 @@ from IdApp.task_id_manager import Job_types, get_task_id
 
 def home_view(request):
     if request.session.get("test_ids"):
-        print(request.session["test_ids"])
         return render(request, "home.html", context={'test_ids': request.session["test_ids"]})
     else:
         return render(request, "home.html", context={'test_ids': None})
