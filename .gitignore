@@ -1,3 +1,4 @@
 WebRed/Reddit-Analysis
 /venv
 *.pyc
+WebRed/DjangoRed/__pycache__

@@ -8,11 +8,16 @@
     <title>Unity WebGL Player | RedditGraphs3D</title>
     <link rel="shortcut icon" href="{% static 'unity/TemplateData/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'unity/TemplateData/style.css' %}">
+    <script src="{% static 'js/visualization-socket.js' %}"></script> 
   </head>
   <body>
     <div style="border: solid 1px black; width:200px; height: 30px; margin: auto; text-align: center;" onclick="gameInstance.SendMessage('NotificationPanel', 'CreateNotificaton', 'JS WORKS')">Notify</div>
-
-    <div id="unity-container" class="unity-desktop">
+    <form method="post" id="vis-app-form">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <p><input type="button" value="kek" onclick="createString()"></p>
+    </form>
+    <div id="unity-containers" class="unity-desktop" style="margin-top: 100px;">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
@@ -27,6 +32,7 @@
         <div id="unity-build-title">RedditGraphs3D</div>
       </div>
     </div>
+
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -127,5 +133,8 @@
       document.body.appendChild(script);
 
     </script>
+  <script>
+    
+  </script>
   </body>
 </html>
