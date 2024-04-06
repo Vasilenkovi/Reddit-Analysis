@@ -1,13 +1,19 @@
 from django import forms
 from django.contrib.auth.models import User
 
+ID_CHOICES =( 
+    ("1", "A12421"), 
+    ("2", "B213wer1"), 
+    ("3", "Hue"),
+)
+
 CLASTERIZATION_CHOICES =( 
     ("1", "Aglomerative"), 
     ("2", "Divisionary"), 
     ("3", "OPTICS"),
 )
 
-LANGUAGES = (
+LANGUAGES_CHOICES = (
     ("1", "English"),
     ("2", "Russian")
 )
@@ -22,10 +28,11 @@ MEASURES_OF_DISTANCE = (
 )
 
 class VisualizationForm(forms.Form):
-    dataset_id = forms.CharField(max_length=12)
+    
+    dataset_id = forms.MultipleChoiceField(choices=ID_CHOICES)
     clasterization_method = forms.MultipleChoiceField(choices=CLASTERIZATION_CHOICES)
     clasters_count = forms.IntegerField()
-    language = forms.MultipleChoiceField(choices=LANGUAGES)
+    language = forms.MultipleChoiceField(choices=LANGUAGES_CHOICES)
     downsising_method = forms.MultipleChoiceField(choices=DOWNSIZING_METHODS)
     measure_of_distance = forms.MultipleChoiceField(choices=MEASURES_OF_DISTANCE)
 

@@ -10,6 +10,22 @@ function createString() {
     const form = document.getElementById(formId)
     const formData = new FormData(form);
 
+    var messageDict = {}
+    var i = 0
+    for (var pair of formData.entries()) {    
+        if (i == 6) continue;
+        messageDict[pair[0]] = pair[1];
+        i += 1;
+    }
+    
+    clusSocket.send(JSON.stringify(messageDict))
+}
+
+function createStringNoJSON() {
+    const formId = "vis-app-form"
+    const form = document.getElementById(formId)
+    const formData = new FormData(form);
+
     var message = ""
     var i = 0
     for (var pair of formData.entries()) {    
