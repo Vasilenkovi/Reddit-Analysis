@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% block content %}
+
+    <form action="{% url 'ParserApp:start' %}" method="post">
+        {% csrf_token %} 
+        {% load widget_tweaks %}
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}"></label><br>
+            {% render_field interface_form.target class+="parser-form-meta" %} 
+        </div>
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}">Parsing type</label><br>
+            {% render_field interface_form.submission_source class+="parser-form-submission parser-form-submission-multi" %} 
+        </div>
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}">Url of submission</label><br>
+            {% render_field interface_form.submission_url clas+="parser-form-submission-single" %}
+        </div>
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}">Subreddit name</label><br>
+            {% render_field interface_form.subreddit_name class+="parser-form-submission-multi" %}
+            <label for="{{ interface_form.target.id_for_label }}">In-subreddit query</label><br>
+            {% render_field interface_form.subreddit_query class+="parser-form-submission-multi" %} 
+            <label for="{{ interface_form.target.id_for_label }}">Sort type</label><br>
+            {% render_field interface_form.subreddit_sort class+="parser-form-submission-multi parser-form-users" %} 
+            <label for="{{ interface_form.target.id_for_label }}">Sort recency</label><br>
+            {% render_field interface_form.time_filter class+="parser-form-submission-multi parser-form-users" %}
+            <label for="{{ interface_form.target.id_for_label }}">Maximum search items</label><br>
+            {% render_field interface_form.search_limit class+="parser-form-submission-multi parser-form-users" %}
+        </div> 
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}">Subreddits to parse</label><br>
+            {% render_field interface_form.multi_subreddit_name class+="parser-form-users" %} 
+        </div>
+
+        <div>
+            <label for="{{ interface_form.target.id_for_label }}"></label><br>
+            {% render_field interface_form.comment_replace_limit class+="parser-form-users parser-form-submission parser-form-submission-multi" %} 
+            <label for="{{ interface_form.target.id_for_label }}"></label><br>
+            {% render_field interface_form.comment_replace_threshold class+="parser-form-users parser-form-submission parser-form-submission-multi" %} 
+        </div> 
+
+    </form>
+
+    {% endblock %}
+</body>
+
+</html>
