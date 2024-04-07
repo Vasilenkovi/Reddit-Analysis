@@ -1,5 +1,0 @@
-Django
-gunicorn
-channels
-channels-redis
-daphne
