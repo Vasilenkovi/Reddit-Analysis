@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from os import environ
+from omegaconf import OmegaConf
 BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = environ.get('SECRET_KEY')
 SECRET_KEY = 'django-insecure-ecwm#*8s14myek8xi+%yc1tk$v2@=&l18=cg8(a+rk7rrz+k@f'
@@ -46,10 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'HomeApp',
-    'VisualizationApp',
-    'IdApp',
-
+    'VisualizationApp'
 ]
 
 MIDDLEWARE = [
@@ -95,13 +95,9 @@ DATABASES = {
 }
 
 NATIVE_SQL_DATABASES = {
-    'job_id': { 
-        'database': 'reddit_job_id',
-        'user': 'job_id_client',
-        'password': '~X+qPJX<w:FKu$O',
-        'host': 'localhost',
-        'port': '3306'
-    }
+    'job_id': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_jobid.yaml"),
+
+    'parser': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser.yaml")
 }
 
 
@@ -153,3 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     'BACKEND': 'channels.layers.InMemoryChannelLayer'
 #   }
 # }
+
+# Parser config
+REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config.yaml")

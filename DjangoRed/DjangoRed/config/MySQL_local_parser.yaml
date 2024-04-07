@@ -1,0 +1,5 @@
+﻿user: reddit_client
+password: Reddit_Yarik_1984!
+database: reddit_parsing
+host: '127.0.0.1'
+port: 3306
