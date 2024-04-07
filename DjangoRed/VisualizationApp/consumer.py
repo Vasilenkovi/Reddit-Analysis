@@ -21,7 +21,6 @@ class ClusterConsumer(WebsocketConsumer):
         lang = langs[received_message["language"]]
         reduct_method = methods[received_message["downsising_method"]]
         distance = dists[received_message["measure_of_distance"]]
-        print(received_message)
         res = clusterize(dataset_id=dataset_id, method=method,lang=lang,reduct_method=reduct_method, distance=distance, cluster_count=cluster_count)
         labels = res[0]
         points = res[1]
