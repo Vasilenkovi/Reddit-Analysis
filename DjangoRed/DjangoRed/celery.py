@@ -1,4 +1,8 @@
+import os
 from celery import Celery
 
-app = Celery('web_app_project')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoRed.settings')
+
+app = Celery('DjangoRed')
+app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()

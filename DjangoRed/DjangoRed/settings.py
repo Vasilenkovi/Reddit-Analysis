@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'HomeApp',
-    'VisualizationApp'
+    'VisualizationApp',
+    'ParserApp'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Parser config
 REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config.yaml")
+
+#CELERY
+CELERY_IMPORTS = ("ParserApp.tasks")

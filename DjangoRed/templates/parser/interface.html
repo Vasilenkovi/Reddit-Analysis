@@ -2,60 +2,120 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    {% block scripts %}
+        <script src="{% static 'js/parser/form_script.js' %}"></script> 
+        <link rel="stylesheet" href="{% static 'css/parser/style.css' %}">
+    {% endblock %}
 </head>
 
 <body>
     {% block content %}
 
-    <form action="{% url 'ParserApp:start' %}" method="post">
-        {% csrf_token %} 
-        {% load widget_tweaks %}
+    <div class="parser-form-meta">
+        <select id="parser-form-select">
+            <option value="submission_comments">submission comments</option>
+            <option value="subreddit_comments">subreddit comments</option>
+            <option value="subreddit_users">subreddit users</option>
+        </select>
+    </div>
+    
+    {% load widget_tweaks %}
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}"></label><br>
-            {% render_field interface_form.target class+="parser-form-meta" %} 
-        </div>
+    <div class="parser-form-comments-submission parser-form-option">
+        <form action="{% url 'ParserApp:report' %}" method="post">
+            {% csrf_token %} 
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}">Parsing type</label><br>
-            {% render_field interface_form.submission_source class+="parser-form-submission parser-form-submission-multi" %} 
-        </div>
+            <label for="{{ submission_parsing_form.target.id_for_label }}">Url of submission</label><br>
+            {% render_field submission_parsing_form.submission_url id="ephemeral-submission-input" %}
+            
+            <div>
+                <div id="ephemeral-submission-div">
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}">Url of submission</label><br>
-            {% render_field interface_form.submission_url clas+="parser-form-submission-single" %}
-        </div>
+                </div>
+                <input type="button" value="Add more" class="form-add-more" data-ephemeral="ephemeral-submission">
+            </div>
+            
+            <label for="{{ submission_parsing_form.target.id_for_label }}">How deep to parse threads</label><br>
+            {% render_field submission_parsing_form.comment_replace_limit %}<br>
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}">Subreddit name</label><br>
-            {% render_field interface_form.subreddit_name class+="parser-form-submission-multi" %}
-            <label for="{{ interface_form.target.id_for_label }}">In-subreddit query</label><br>
-            {% render_field interface_form.subreddit_query class+="parser-form-submission-multi" %} 
-            <label for="{{ interface_form.target.id_for_label }}">Sort type</label><br>
-            {% render_field interface_form.subreddit_sort class+="parser-form-submission-multi parser-form-users" %} 
-            <label for="{{ interface_form.target.id_for_label }}">Sort recency</label><br>
-            {% render_field interface_form.time_filter class+="parser-form-submission-multi parser-form-users" %}
-            <label for="{{ interface_form.target.id_for_label }}">Maximum search items</label><br>
-            {% render_field interface_form.search_limit class+="parser-form-submission-multi parser-form-users" %}
-        </div> 
+            <label for="{{ submission_parsing_form.target.id_for_label }}"></label>Minimum depth of thread to parse deeper<br>
+            {% render_field submission_parsing_form.comment_replace_threshold %} <br>
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}">Subreddits to parse</label><br>
-            {% render_field interface_form.multi_subreddit_name class+="parser-form-users" %} 
-        </div>
+            {{submission_parsing_form.form_type}}<br>
 
-        <div>
-            <label for="{{ interface_form.target.id_for_label }}"></label><br>
-            {% render_field interface_form.comment_replace_limit class+="parser-form-users parser-form-submission parser-form-submission-multi" %} 
-            <label for="{{ interface_form.target.id_for_label }}"></label><br>
-            {% render_field interface_form.comment_replace_threshold class+="parser-form-users parser-form-submission parser-form-submission-multi" %} 
-        </div> 
+            <input type="submit" class="parser-form-submit" value="send" data-ephemeral="ephemeral-submission">
+        </form>
+    </div>
 
-    </form>
+    <div class="parser-form-comments-subreddit parser-form-option">
+        <form action="{% url 'ParserApp:report' %}" method="post">
+            {% csrf_token %} 
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">Subreddit name</label><br>
+            {% render_field subreddit_parsing_form.subreddit_name %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">In-subreddit query</label><br>
+            {% render_field subreddit_parsing_form.subreddit_query %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">Sort recency</label><br>
+            {% render_field subreddit_parsing_form.time_filter %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">Sort type</label><br>
+            {% render_field subreddit_parsing_form.subreddit_sort %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">Maximum search items</label><br>
+            {% render_field subreddit_parsing_form.search_limit %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}">How deep to parse threads</label><br>
+            {% render_field subreddit_parsing_form.comment_replace_limit %}<br>
+
+            <label for="{{ subreddit_parsing_form.target.id_for_label }}"></label>Minimum depth of thread to parse deeper<br>
+            {% render_field subreddit_parsing_form.comment_replace_threshold %} <br>
+            
+            {{subreddit_parsing_form.form_type}}<br>
+
+            <input type="submit" class="parser-form-submit-single" value="send">
+        </form>
+    </div>
+
+    <div class="parser-form-users parser-form-option">
+        <form action="{% url 'ParserApp:report' %}" method="post">
+            {% csrf_token %} 
+
+            <label for="{{ subreddit_users_parsing_form.multi_subreddit_name.id_for_label }}">Source subreddits</label><br>
+            {% render_field subreddit_users_parsing_form.multi_subreddit_name id="ephemeral-users-input" %}
+            
+            <div>
+                <div id="ephemeral-users-div">
+
+                </div>
+                <input type="button" value="Add more" class="form-add-more" data-ephemeral="ephemeral-users">
+            </div>
+            
+            <label for="{{ subreddit_users_parsing_form.target.id_for_label }}">Maximum search items</label><br>
+            {% render_field subreddit_users_parsing_form.subreddit_sort_exclusive %}<br>
+            
+            <label for="{{ subreddit_users_parsing_form.target.id_for_label }}">Maximum search items</label><br>
+            {% render_field subreddit_users_parsing_form.search_limit %}<br>
+            
+            <label for="{{ subreddit_users_parsing_form.target.id_for_label }}">How deep to parse threads</label><br>
+            {% render_field subreddit_users_parsing_form.comment_replace_limit %}<br>
+
+            <label for="{{ subreddit_users_parsing_form.target.id_for_label }}"></label>Minimum depth of thread to parse deeper<br>
+            {% render_field subreddit_users_parsing_form.comment_replace_threshold %} <br>
+            
+            {{subreddit_users_parsing_form.form_type}}<br>
+            
+            <input type="submit" class="parser-form-submit" value="send" data-ephemeral="ephemeral-users">
+        </form>
+    </div>
+
 
     {% endblock %}
 </body>

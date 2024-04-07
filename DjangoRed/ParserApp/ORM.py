@@ -21,7 +21,7 @@ class ORM_class(ABC):
         """Write object to database."""
         pass
 
-    def __execute(db_config: dict, query: str, params: dict):
+    def _execute(self, db_config: dict, query: str, params: dict):
 
         try:
             cnx = Connect(**db_config)
@@ -78,7 +78,7 @@ class ORM_submission(ORM_class):
             'job_id': self.job_id
         }
 
-        super().__execute(query, params)
+        super()._execute(db_config, query, params)
 
 
 class ORM_comment(ORM_class):
@@ -117,7 +117,7 @@ class ORM_comment(ORM_class):
             'job_id': self.job_id
         }
             
-        super().__execute(query, params)
+        super()._execute(db_config, query, params)
     
 class ORM_subreddit(ORM_class):
 
@@ -148,11 +148,11 @@ class ORM_subreddit(ORM_class):
             'job_id': self.job_id
         }
             
-        super().__execute(query, params)
+        super()._execute(db_config, query, params)
 
 class ORM_subreddit_active_users(ORM_class):
 
-    def __init__(self, subreddit_full_name: str, user_full_name: str):
+    def __init__(self, subreddit_full_name: str, user_full_name: str, job_id: str):
 
         super().__init__()
 
@@ -162,16 +162,18 @@ class ORM_subreddit_active_users(ORM_class):
         self.subreddit_full_name = subreddit_full_name
         self.user_full_name = user_full_name
         self.parsed_timestamp = int(time.time())
+        self.job_id = job_id
 
     def write_to_MySQL(self, db_config: dict) -> None:
 
-        query = """INSERT INTO reddit_parsing.subreddit_active_users(subreddit_full_name, user_full_name, parsed_timestamp) 
-        VALUES (%(subreddit_full_name)s, %(user_full_name)s, FROM_UNIXTIME(%(parsed_timestamp)s))"""
+        query = """INSERT INTO reddit_parsing.subreddit_active_users(subreddit_full_name, user_full_name, parsed_timestamp, job_id) 
+        VALUES (%(subreddit_full_name)s, %(user_full_name)s, FROM_UNIXTIME(%(parsed_timestamp)s), %(job_id)s)"""
 
         params = {
             'subreddit_full_name': self.subreddit_full_name, 
             'user_full_name': self.user_full_name,
-            'parsed_timestamp': self.parsed_timestamp
+            'parsed_timestamp': self.parsed_timestamp,
+            'job_id': self.job_id
         }
             
-        super().__execute(query, params)
+        super()._execute(db_config, query, params)

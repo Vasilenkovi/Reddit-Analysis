@@ -1,0 +1,15 @@
+.parser-form-option {
+    display: none;
+}
+
+.parser-form-comments-submission {
+    display: block;
+}
+
+.parser-form-comments-subreddit {
+    display: none;
+}
+
+.parser-form-users {
+    display: none;
+}

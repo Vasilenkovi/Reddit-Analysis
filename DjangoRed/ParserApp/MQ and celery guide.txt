@@ -1,0 +1,3 @@
+1. Run RabbitMQ:3-managment docker image, forward 15672:15672⁠ 5672:5672⁠
+2. Run celery worker (as demon in production) CMD: "celery -A DjangoRed worker --loglevel=INFO -P gevent"
+3. Prepare database

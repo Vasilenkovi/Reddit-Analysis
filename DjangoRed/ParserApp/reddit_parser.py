@@ -1,4 +1,4 @@
-from ORM import ORM_submission, ORM_comment, ORM_subreddit, ORM_subreddit_active_users
+from .ORM import ORM_submission, ORM_comment, ORM_subreddit, ORM_subreddit_active_users
 from praw import Reddit
 import praw.reddit
 from collections.abc import Generator
@@ -115,12 +115,23 @@ class Extended_Reddit_RO(Reddit):
                                   created_timestamp, job_id)
 
         return submission_instance, comment_generator()
+
+    def parse_submission_list(self, job_id: str, submissions: list[str], comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[tuple[ORM_submission, Generator[ORM_comment, None, None]], None, None]:
+        """Description: Parses specified submissions and their comments. Takes considerable time to execute (approximately 1 second + time to replace "more comments").\n
+        Parameters: \n
+            submissions - list of urls. Each item is processed in approximately 1 second;\n
+            comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
+            comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
+        Returns: Tuple of Submission and generator of Submission's comments"""
+
+        for sub in submissions:
+           yield self.parse_submission(job_id, sub, comment_replace_limit, comment_replace_threshold)
     
     def parse_subreddit_users(self, job_id: str, subreddit_display_name: str, sort_discipline: str = "hot", limit: int = 1000, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> tuple[ORM_subreddit, Generator[list[ORM_subreddit_active_users], None, None]]:
         """Description: Parses active users of specified subreddit. Users are selected among posters and commentors. Active users are defined by sort_discipline. Submissions from deleted accounts are dropped. Method uses 1 network call for every 100 submissions (~1 sec for 100 submissions) + network call for every comment replacement.\n
         Parameters: \n
             subreddit_display_name - visible, case insensitive name of subreddit to search from;\n
-            sort_discipline - how active users are defined. Options: "hot", "new", "top". Coerces hot otherwise;\n
+            sort_discipline - how active users are defined. Options: "hot", "new", "top". Coerces hot otherwise. Top is limited by month;\n
             limit - the maximum number of submissions to retrieve. Reddit API has been known to return not more than 1000 submissions;\n
             comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incurs a network call (around 1 second of wait time);\n
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n

@@ -10,8 +10,10 @@
 
 <body>
     {% block content %}
-
+    
+    <h3><a href="{% url 'HomeApp:home' %}">Home</a></h3>
     <h1>Ok</h1>
+    <p>Generated job_id: {{job_id}}</p>
 
     {% endblock %}
 </body>
