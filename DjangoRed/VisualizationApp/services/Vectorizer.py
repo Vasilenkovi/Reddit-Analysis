@@ -35,14 +35,10 @@ class LSA:
         matrix_scaled = svd.fit_transform(matrix)
         return matrix_scaled
 
-    def LSA_T_SNE(matrix, k=2):
-        sc = StandardScaler()
-        X_scaled = sc.fit_transform(matrix)
-        pca = PCA()
-        X_pca = pca.fit_transform(X_scaled)
-        tsne = TSNE(n_components=k)
-        X_tsne = tsne.fit_transform(X_pca)
-        return X_tsne
+    def LSA_T_SNE(matrix, k=3):
+        X_embedded = TSNE(n_components=k, learning_rate='auto',
+        init = 'random', perplexity = 3).fit_transform(matrix)
+        return X_embedded
 
     def calculate_distance(vector1, vector2):
         len1 = 0
@@ -109,11 +105,7 @@ class Vectorizer:
         k = 3
         self._collect_corpus(language, dataset_id)
         self._vectorize()
-        #print(self.vectorized)
         self._reduce_dimens(reduce_method)
-        #print(self.truncated["SVD"])
-        #self.doc_to_doc = LSA.get_doc_to_doc_table(matrix=self.truncated[reduce_method], method=distance_type)
-        #print(self.doc_to_doc)
         #self.save_to_db()
     def save_to_db(self):
         pass

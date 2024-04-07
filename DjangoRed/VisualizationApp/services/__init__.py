@@ -11,6 +11,9 @@ def clusterize(**kwargs):
         adm = AgloDivMethod(vc.truncated[kwargs["reduct_method"]])
         adm.cluster(kwargs["method"],kwargs["distance"], kwargs["cluster_count"])
         return (adm.result, vc.truncated[kwargs["reduct_method"]])
+    if(kwargs["method"]=="OPTICS"):
+        opt = Optics(vc.truncated[kwargs["reduct_method"]])
+        return (opt.cluster(), vc.truncated[kwargs["reduct_method"]])
 
 
 
