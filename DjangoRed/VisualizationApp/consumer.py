@@ -31,5 +31,9 @@ class ClusterConsumer(WebsocketConsumer):
                 'label': str(labels[i])
             }
             ))
+        self.send(text_data=json.dumps({
+                'type': 'end',
+            }
+            ))
     def disconnect(self, close_code):
         print(close_code)
