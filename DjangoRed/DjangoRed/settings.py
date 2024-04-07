@@ -98,7 +98,9 @@ DATABASES = {
 NATIVE_SQL_DATABASES = {
     'job_id': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_jobid.yaml"),
 
-    'parser': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser.yaml")
+    'parser': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser.yaml"),
+
+    'clustering_read': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering.yaml")
 }
 
 
