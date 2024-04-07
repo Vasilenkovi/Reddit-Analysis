@@ -27,7 +27,7 @@ class ClusterConsumer(WebsocketConsumer):
         for i in range(len(labels)):
             self.send(text_data=json.dumps({
                 'type': 'point message',
-                'point': "{} {} {}".format(points[i][0], points[i][1], points[i][2]),
+                'point': "[{}, {}, {}]".format(points[i][0], points[i][1], points[i][2]),
                 'label': str(labels[i])
             }
             ))
