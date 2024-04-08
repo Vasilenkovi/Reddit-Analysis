@@ -47,16 +47,16 @@ class Extended_Reddit_RO(Reddit):
         else:
             match sort:
                 case "hot":
-                    for submission in self.hot(limit = limit):
+                    for submission in self.subreddit(subreddit_display_name).hot(limit = limit):
                         yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
                 case "new":
-                    for submission in self.new(limit = limit):
+                    for submission in self.subreddit(subreddit_display_name).new(limit = limit):
                         yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
                 case "top":
-                    for submission in self.top(time_filter = time_filter, limit = limit):
+                    for submission in self.subreddit(subreddit_display_name).top(time_filter = time_filter, limit = limit):
                         yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
                 case _:
-                    for submission in self.top(time_filter = "all", limit = limit):
+                    for submission in self.subreddit(subreddit_display_name).top(time_filter = "all", limit = limit):
                         yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
 
 

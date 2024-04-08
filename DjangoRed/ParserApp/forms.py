@@ -24,7 +24,7 @@ class Submission_parsing_form(Common_parsing_form):
 
 class Subreddit_parsing_form(Common_parsing_form):
     subreddit_name = forms.CharField(label = "Subreddit to parse from", required = True)
-    subreddit_query = forms.CharField(label = "Query inside subreddit")
+    subreddit_query = forms.CharField(label = "Query inside subreddit", required = False)
     subreddit_sort = forms.ChoiceField(choices = SORT_CHOICES, widget = forms.Select, label = "Sort option", initial = 0)
     time_filter = forms.ChoiceField(choices = TIME_FILTER_CHOICES, widget = forms.Select, label = "time filter option", initial = 0)
     
