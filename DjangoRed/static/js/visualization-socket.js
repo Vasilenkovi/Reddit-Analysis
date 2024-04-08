@@ -1,8 +1,36 @@
 let url = `ws://${window.location.host}/ws/socket-server-clustering/`
 const clusSocket = new WebSocket(url)
+var isRecieving = false;
+var startedRecievingData = false;
 clusSocket.onmessage = function(e) {
     let data = JSON.parse(e.data)
-    console.log('Data:', data)
+    let jsonString = JSON.stringify(data)
+    console.log('Data:', jsonString)
+    
+    if (data.type == "point message")
+    {
+        console.log(jsonString);
+        if (!startedRecievingData) 
+        {
+            gameInstance.SendMessage('FrontendConnector', 'StartRecievingData');
+            startedRecievingData = true;
+        }
+        gameInstance.SendMessage('FrontendConnector', 'RecieveDotData', jsonString);
+    }
+
+    if (data.type == "end")
+    {
+        if (startedRecievingData)
+        {
+            gameInstance.SendMessage('FrontendConnector', 'StopRecievingData', jsonString);
+            startedRecievingData = false;
+            isRecieving = false;
+        }
+        else 
+        {
+            console.log("ending connection without beginning it");
+        }
+    }
 }
 
 function createString() {
@@ -12,12 +40,12 @@ function createString() {
 
     var messageDict = {}
     var i = 0
-    for (var pair of formData.entries()) {    
+    for (var pair of formData.entries()) {
         if (i == 6) continue;
         messageDict[pair[0]] = pair[1];
         i += 1;
     }
-    
+    isRecieving = true;
     clusSocket.send(JSON.stringify(messageDict))
 }
 

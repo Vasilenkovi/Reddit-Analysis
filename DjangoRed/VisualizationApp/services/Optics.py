@@ -7,6 +7,6 @@ class Optics:
         X = np.array(self.doc_to_doc_matrix)
         clustering = OPTICS().fit(X)
         self.save_to_db()
-        return clustering
+        return clustering.labels_
     def save_to_db(self):
         pass

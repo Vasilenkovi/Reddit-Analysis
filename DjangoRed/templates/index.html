@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="{% static 'unity/TemplateData/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'unity/TemplateData/style.css' %}">
     <script src="{% static 'js/visualization-socket.js' %}"></script> 
+    
   </head>
   <body>
     <div style="border: solid 1px black; width:200px; height: 30px; margin: auto; text-align: center;" onclick="gameInstance.SendMessage('NotificationPanel', 'CreateNotificaton', 'JS WORKS')">Notify</div>
@@ -17,7 +18,8 @@
       {% csrf_token %}
       <p><input type="button" value="kek" onclick="createString()"></p>
     </form>
-    <div id="unity-containers" class="unity-desktop" style="margin-top: 100px;">
+
+    <div id="unity-container" class="unity-desktop" style="margin-top: 500px;">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
@@ -32,7 +34,6 @@
         <div id="unity-build-title">RedditGraphs3D</div>
       </div>
     </div>
-
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -110,8 +111,6 @@
 
       loadingBar.style.display = "block";
 
-      var gameInstance;
-
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -122,9 +121,7 @@
                 fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
-
                 gameInstance = unityInstance;
-              
               }).catch((message) => {
                 alert(message);
               });
@@ -133,8 +130,5 @@
       document.body.appendChild(script);
 
     </script>
-  <script>
-    
-  </script>
   </body>
 </html>

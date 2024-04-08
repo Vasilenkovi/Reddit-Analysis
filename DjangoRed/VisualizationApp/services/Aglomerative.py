@@ -6,14 +6,12 @@ class AgloDivMethod:
         result = None
     def cluster(self, divisionary, metric, cluster_count):
         X = self.doc_to_doc_matrix
-        print(X)
         if(divisionary=="Div"):
-            clustering = AgglomerativeClustering(linkage='complete', metric=metric,n_clusters=cluster_count).fit(X)
-            clustering
+            metric = "euclidean"
+            clustering = AgglomerativeClustering(metric=metric, linkage='complete', n_clusters=cluster_count).fit(X)
         else:
-            metric="euclidean"
-            clustering = AgglomerativeClustering(metric=metric,n_clusters=cluster_count).fit(X)
-            clustering
+            metric = "euclidean"
+            clustering = AgglomerativeClustering(metric=metric, n_clusters=cluster_count).fit(X)
         self.save_to_db()
         self.result = clustering.labels_
     def save_to_db(self):
