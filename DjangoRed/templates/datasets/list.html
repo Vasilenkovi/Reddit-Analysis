@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% block scripts %}
+        <script src="{% static 'js/parser/form_script.js' %}"></script> 
+        <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+
+    {% load widget_tweaks %}
+
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-nowrap overflow-auto">
+            {% for set in comment_sets %}
+                <div class="card m-2 card-class">
+                    <img src="{% static 'img/comment.png' %}" class="card-img-top" alt="comments">
+                    <div class="card-body">
+                        <p class="card-text">{{set.0}}</p>
+                        <p class="card-text">{{set.1}}</p>
+                        <p class="card-text">{{set.2}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-nowrap overflow-auto">
+            {% for set in user_sets %}
+                <div class="card m-2 card-class">
+                    <img src="{% static 'img/user.png' %}" class="card-img-top" alt="users">
+                    <div class="card-body">
+                        <p class="card-text">{{set.0}}</p>
+                        <p class="card-text">{{set.1}}</p>
+                        <p class="card-text">{{set.2}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container-fluid overflow-auto">
+        <div class="row">
+            {% for set in favorite_sets %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+.card-class {
+    width: 20%;
+    min-width: 20% !important;
+    aspect-ratio: 1/1;
+}

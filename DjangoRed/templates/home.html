@@ -13,6 +13,7 @@
     <!-- <h>Game</h> -->
     <a href="{% url 'VisualizationApp:visualization-app' %}">Game</a><br>
     <h3><a href="{% url 'ParserApp:start' %}">Parser</a></h3>
+    <h3><a href="{% url 'DatasetViewApp:list' %}">Datasets</a></h3>
 
     <form action="/test_id" method="POST">
         {% csrf_token %}

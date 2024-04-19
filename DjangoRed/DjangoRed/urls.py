@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('HomeApp.urls', namespace="HomeApp")),
     path('', include('VisualizationApp.urls', namespace="VisualizationApp")),
-    path('parser/', include('ParserApp.urls', namespace="ParserApp"))
+    path('parser/', include('ParserApp.urls', namespace="ParserApp")),
+    path('datasets/', include('DatasetViewApp.urls', namespace="DatasetViewApp")),
 ]
