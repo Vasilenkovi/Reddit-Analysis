@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS `submission`;
 CREATE TABLE `submission` (
   `id` int NOT NULL AUTO_INCREMENT,
   `url` varchar(768) NOT NULL COMMENT 'full url of the submission (varchar is used for unique constraint)',
-  `full_name` varchar(768) NOT NULL COMMENT 'reddit-qualified full name (varchar is used for unique constraint)',
+  `full_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name (varchar is used for unique constraint)',
   `title` text COMMENT 'author-provided title',
   `text_body` text COMMENT 'possibly empty string of text',
   `author` text COMMENT 'reddit-qualified author of the submission',
@@ -36,11 +36,10 @@ CREATE TABLE `submission` (
   `created_timestamp` datetime NOT NULL COMMENT 'submission creation timestamp',
   `parsed_timestamp` datetime NOT NULL COMMENT 'timestamp when submission was parsed. For compliance with Reddit api licence',
   `flair` text COMMENT 'community defined flair, if available',
-  `job_id` text NOT NULL COMMENT 'job id related to web app',
+  `job_id` varchar(64) NOT NULL COMMENT 'job id related to web app',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `url` (`url`),
-  UNIQUE KEY `full_name` (`full_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `in_job_unique_name` (`full_name`,`job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,20 +51,20 @@ DROP TABLE IF EXISTS `submission_comment`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `submission_comment` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(768) NOT NULL COMMENT 'reddit-qualified full name',
-  `submission_name` varchar(768) NOT NULL COMMENT 'reddit-qualified full name',
+  `full_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name',
+  `submission_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name',
   `text_body` text COMMENT 'possibly empty string of text',
   `author` text COMMENT 'reddit-qualified author of the submission',
   `upvotes` int NOT NULL COMMENT 'possitive votes',
   `downvotes` int DEFAULT NULL COMMENT 'negative votes',
   `created_timestamp` datetime NOT NULL COMMENT 'submission creation timestamp',
   `parsed_timestamp` datetime NOT NULL COMMENT 'timestamp when comment was parsed. For compliance with Reddit api licence',
-  `job_id` text NOT NULL COMMENT 'job id related to web app',
+  `job_id` varchar(64) NOT NULL COMMENT 'job id related to web app',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `full_name` (`full_name`),
-  KEY `FK_parent_submission_idx` (`submission_name`),
-  CONSTRAINT `FK_parent_submission` FOREIGN KEY (`submission_name`) REFERENCES `submission` (`full_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3494 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `comment_uk` (`job_id`,`full_name`),
+  KEY `parent_submission_fk` (`submission_name`,`job_id`) /*!80000 INVISIBLE */,
+  CONSTRAINT `parent_submission_fk` FOREIGN KEY (`submission_name`, `job_id`) REFERENCES `submission` (`full_name`, `job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,14 +76,14 @@ DROP TABLE IF EXISTS `subreddit`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subreddit` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(768) NOT NULL COMMENT 'reddit-qualified full name of subreddit',
+  `full_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name of subreddit',
   `display_name` text NOT NULL COMMENT 'user-visible name',
   `url` text NOT NULL COMMENT 'url of subreddit',
   `parsed_timestamp` datetime NOT NULL COMMENT 'timestamp when comment was parsed. For compliance with Reddit api licence',
-  `job_id` text NOT NULL COMMENT 'job id related to web app',
+  `job_id` varchar(64) NOT NULL COMMENT 'job id related to web app',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `full_name` (`full_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `in_job_unique_name` (`full_name`,`job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,14 +95,15 @@ DROP TABLE IF EXISTS `subreddit_active_users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subreddit_active_users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `subreddit_full_name` varchar(256) NOT NULL COMMENT 'reddit-qualified full name of subreddit',
-  `user_full_name` varchar(256) NOT NULL COMMENT 'reddit-qualified full name',
+  `subreddit_full_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name of subreddit',
+  `user_full_name` varchar(64) NOT NULL COMMENT 'reddit-qualified full name',
   `parsed_timestamp` datetime NOT NULL COMMENT 'timestamp when comment was parsed. For compliance with Reddit api licence',
-  `job_id` text NOT NULL COMMENT 'job id related to web app',
+  `job_id` varchar(64) NOT NULL COMMENT 'job id related to web app',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `subreddit_full_name` (`subreddit_full_name`,`user_full_name`),
-  CONSTRAINT `subreddit_active_users_ibfk_1` FOREIGN KEY (`subreddit_full_name`) REFERENCES `subreddit` (`full_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=642 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `in_job_unique_sub_user` (`subreddit_full_name`,`user_full_name`,`job_id`),
+  KEY `subreddit_active_users_ibfk_1` (`subreddit_full_name`,`job_id`),
+  CONSTRAINT `subreddit_active_users_ibfk_1` FOREIGN KEY (`subreddit_full_name`, `job_id`) REFERENCES `subreddit` (`full_name`, `job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,4 +173,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-06  0:29:09
+-- Dump completed on 2024-04-22 23:53:04
