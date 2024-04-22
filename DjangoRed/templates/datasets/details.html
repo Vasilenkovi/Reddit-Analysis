@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% block scripts %}
+        <script src="{% static 'js/parser/form_script.js' %}"></script> 
+        <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+
+    {% load widget_tweaks %}
+    
+    <form action="/" method="post">
+        {% csrf_token %}
+
+        {% for dataset_id in dataset_ids %}
+            <input type="text" value="{{dataset_id}}" disabled>
+        {% endfor %}
+    </form>
+
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-nowrap overflow-auto">
+            <table class="table table-striped">
+                <thead>
+                    {% for h in headers %}
+                    <th>
+                        {{h}}
+                    </th>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>
+                                    {{cell}}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% endblock %}
+</body>
+
+</html>

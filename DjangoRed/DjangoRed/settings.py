@@ -102,6 +102,8 @@ NATIVE_SQL_DATABASES = {
 
     'parser': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser.yaml"),
 
+    'dataset_reader': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser_reader.yaml"),
+
     'clustering_read': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering.yaml")
 }
 
@@ -160,3 +162,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
+
+# Session
+
+SESSION_DATASET_IDS = "dataset_ids"

@@ -1,6 +1,5 @@
 from typing import Any
 from django import forms
-from django.urls import reverse
 
 SORT_CHOICES = [("relevance", "relevance"), ("hot", "hot"), ("top", "top"), ("new", "new")]
 TIME_FILTER_CHOICES = [("all", "all"), ("day", "day"), ("hour", "hour"), ("month", "month"), ("week", "week"), ("year", "year")]
