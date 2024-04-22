@@ -8,13 +8,29 @@
     {% endblock %}
 
     {% block styles %}
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
     {% endblock %}
 </head>
 <body>
     {% block header %}
+        <ul class="nav nav-tabs nav-justified">
+            <li class="nav-item">
+                <a href="{% url 'VisualizationApp:visualization-app' %}">Game</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'ParserApp:start' %}">Parser</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'DatasetViewApp:list' %}">Datasets</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'HomeApp:home' %}">Home</a>
+            </li>
+        </ul>
+    </nav>
+    <hr>
     {% endblock %}
 
     {% block content %}
