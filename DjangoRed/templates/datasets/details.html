@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {% block scripts %}
-        <script src="{% static 'js/parser/form_script.js' %}"></script> 
+        <script src="{% static 'js/datasets/dataset_details.js' %}"></script> 
         <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
     {% endblock %}
 </head>
@@ -19,38 +19,53 @@
 
     {% load widget_tweaks %}
     
-    <form action="/" method="post">
+    <form action="{% url 'DatasetViewApp:details' %}" method="post">
         {% csrf_token %}
 
-        {% for dataset_id in dataset_ids %}
-            <input type="text" value="{{dataset_id}}" disabled>
-        {% endfor %}
+        <div id="dataset-holder">
+            {% for dataset_id in dataset_ids %}
+                <div>
+                    <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
+                    <label for="{{dataset_id}}">{{dataset_id}}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <input type="text" name="name-for-added-datasets" id="add-dataset-source">
+        <button type="button" id="add-dataset">Add dataset</button>
+        <input type="submit" value="Recalculate datasets">
     </form>
 
-    <div class="container-fluid">
-        <div class="d-flex flex-row flex-nowrap overflow-auto">
-            <table class="table table-striped">
-                <thead>
-                    {% for h in headers %}
-                    <th>
-                        {{h}}
-                    </th>
-                    {% endfor %}
-                </thead>
-                <tbody>
-                    {% for row in data %}
-                        <tr>
-                            {% for cell in row %}
-                                <td>
-                                    {{cell}}
-                                </td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    {% if not error %}
+        <div class="container-fluid">
+            <div class="d-flex flex-row flex-nowrap overflow-auto">
+                <table class="table table-striped">
+                    <thead>
+                        {% for h in headers %}
+                        <th>
+                            {{h}}
+                        </th>
+                        {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>
+                                        {{cell}}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="container-fluid text-danger m-2">
+            {{error}}
+        </div>
+    {% endif %}
 
     {% endblock %}
 </body>

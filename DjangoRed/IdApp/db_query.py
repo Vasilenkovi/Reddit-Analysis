@@ -1,7 +1,7 @@
 from DjangoRed.settings import NATIVE_SQL_DATABASES
 from mysql.connector import Connect
 
-def select_in_shortcut(database_dict: dict, f_query: str, params: dict, in_params: list):
+def select_in_shortcut(database_dict: dict, f_query: str, params: dict, in_params: list) -> list[tuple]:
     """Shortcut for variable length IN queries in injection-safe manner. \n
         parameters: \n
         \t database_dict - dict with db connection info. \n

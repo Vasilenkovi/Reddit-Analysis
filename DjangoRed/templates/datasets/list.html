@@ -47,20 +47,32 @@
         </div>
     </form>
 
-    <div class="container-fluid">
-        <div class="d-flex flex-row flex-nowrap overflow-auto">
-            {% for set in user_sets %}
-                <div class="card m-2 card-class">
-                    <img src="{% static 'img/user.png' %}" class="card-img-top" alt="users">
-                    <div class="card-body">
-                        <p class="card-text">{{set.0}}</p>
-                        <p class="card-text">{{set.1}}</p>
-                        <p class="card-text">{{set.2}}</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    <div><input type="submit" formaction="/graph" value="graph"></div>
+                    <div><input type="submit" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                </div>
+                <div class="col-10">
+                    <div class="d-flex flex-row flex-nowrap overflow-auto">
+                        {% for set in user_sets %}
+                            <div class="card m-2 card-class">
+                                <img src="{% static 'img/user.png' %}" class="card-img-top" alt="users">
+                                <div class="card-body">
+                                    <p class="card-text">{{set.0}}</p>
+                                    <p class="card-text">{{set.1}}</p>
+                                    <p class="card-text">{{set.2}}</p>
+                                </div>
+                                <input type="checkbox" id="{{set.0}}" name="{{set.0}}">
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-    </div>
+    </form>
 
     <div class="container-fluid overflow-auto">
         <div class="row">

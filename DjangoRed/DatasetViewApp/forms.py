@@ -4,7 +4,7 @@ from django.http import HttpRequest
 class Dataset_operation_form(forms.Form):
     def __init__(self, request: HttpRequest) -> None:
         super().__init__()
-        self.fields["ids"] = [k for k in request.POST.keys() if k not in ("csrfmiddlewaretoken", "view", "statistic", "cluster")]
+        self.fields["ids"] = [k for k in request.POST.keys() if k not in ("csrfmiddlewaretoken", "view", "statistic", "cluster", "name-for-added-datasets")]
 
     def clean(self) -> bool:
         if not self.fields["ids"]:

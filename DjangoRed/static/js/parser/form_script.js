@@ -1,10 +1,8 @@
-window.addEventListener("DOMContentLoaded", main)
-
 function generic_add_more(e) {
     const form_reference = e.target.dataset.ephemeral
 
     const ephemeral_div = document.getElementById(form_reference + "-div")
-
+    
     const new_input = document.createElement("input")
     new_input.classList.add(form_reference + "-multiple")
     new_input.classList.add("ephemeral-multiple")
@@ -70,7 +68,7 @@ function generic_submit_transform(e) {
     common_input.value = sub_strings_array.join(";")
 }
 
-function main () {
+function main() {
     const target_select = document.getElementById("parser-form-select")
     target_select.addEventListener("change", parsing_target)
 
@@ -84,3 +82,5 @@ function main () {
         button.addEventListener("click", generic_submit_transform)
     }
 }
+
+window.addEventListener("DOMContentLoaded", main)

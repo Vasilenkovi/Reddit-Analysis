@@ -14,3 +14,14 @@ def select_comment_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
                     WHERE sc.job_id {in_expr};"""
     
     return (select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids), headers)
+
+def select_user_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
+
+    headers = ["dataset id", "user full name", "subreddit full name", "parsed timestamp", "displayed subreddit name", "subreddi url"]
+
+    f_query = """SELECT su.job_id, su.user_full_name, su.subreddit_full_name, su.parsed_timestamp, s.display_name, s.url
+                    FROM reddit_parsing.subreddit_active_users AS su 
+                    JOIN reddit_parsing.subreddit AS s ON (su.job_id = s.job_id) AND (su.subreddit_full_name = s.full_name)
+                    WHERE su.job_id {in_expr};"""
+    
+    return (select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids), headers)
