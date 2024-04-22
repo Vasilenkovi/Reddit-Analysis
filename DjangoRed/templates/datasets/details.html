@@ -34,6 +34,10 @@
         <input type="text" name="name-for-added-datasets" id="add-dataset-source">
         <button type="button" id="add-dataset">Add dataset</button>
         <input type="submit" value="Recalculate datasets">
+
+        {% if downloadable %}
+            <input formaction="{% url 'DatasetViewApp:download' %}" type="submit" value="Download CSV">
+        {% endif %}
     </form>
 
     {% if not error %}
