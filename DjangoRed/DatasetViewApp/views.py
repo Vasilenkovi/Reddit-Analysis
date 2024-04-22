@@ -8,8 +8,6 @@ from .forms import Dataset_operation_form
 from .db_queries import select_comment_dataset_from_ids, select_user_dataset_from_ids
 from io import StringIO
 import csv
-from DjangoRed.settings import NATIVE_SQL_DATABASES
-from json import dumps
 
 # Create your views here.
 def datasets_list_view(request):
@@ -20,7 +18,6 @@ def datasets_list_view(request):
         "favorite_sets": []
     })
 
-@require_POST
 def datasets_view(request):
     context = {
         "dataset_ids": [],
@@ -30,8 +27,14 @@ def datasets_view(request):
         "downloadable": None
     }
 
+    if request.method == "GET":
+        return render(request, "datasets/details.html", context = context)
+
     form = Dataset_operation_form(request)
     dataset_ids = form.get_ids_as_list()
+
+    if not dataset_ids:
+        return render(request, "datasets/details.html", context = context)
 
     if not form.is_valid():
         context["error"] = "Unsupported dataset combination"
@@ -90,7 +93,7 @@ def download_csv(request):
         csv.writer(f).writerows(data)
 
         clean_ids = list(map(lambda x: x[5:], dataset_ids)) # strip away common prefix and underscore
-        file_name = dataset_type + "_({ids})".format(ids = "_".join(clean_ids)) + ".csv"
+        file_name = "{type}_({ids}).csv".format(ids = "_".join(clean_ids), type = dataset_type)
 
         file_to_send = ContentFile(f.getvalue(), file_name)
         response = HttpResponse(file_to_send)
