@@ -8,13 +8,42 @@
     <title>Unity WebGL Player | RedditGraphs3D</title>
     <link rel="shortcut icon" href="{% static 'unity/TemplateData/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'unity/TemplateData/style.css' %}">
-    <script src="{% static 'js/visualization-socket.js' %}"></script> 
-    
+    <script src="{% static 'js/visualization_app/visualization-socket.js' %}"></script> 
+    <script src="{% static 'js/visualization_app/dataset_check.js' %}"></script> 
   </head>
   <body>
     <div style="border: solid 1px black; width:200px; height: 30px; margin: auto; text-align: center;" onclick="gameInstance.SendMessage('NotificationPanel', 'CreateNotificaton', 'JS WORKS')">Notify</div>
+    
+    {% load widget_tweaks %}
+
     <form method="post" id="vis-app-form">
-      {{ form.as_p }}
+
+      <div id="dataset-holder">
+          {% for dataset_id in dataset_ids %}
+              <div>
+                  <input class="dataset_id" type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
+                  <label for="{{dataset_id}}">{{dataset_id}}</label>
+              </div>
+          {% endfor %}
+      </div>
+      <input type="text" name="name-for-added-datasets" id="add-dataset-source" contentEditable="true">
+      <button type="button" id="add-dataset">Add dataset</button>
+
+      <label for="{{ visualization_form.clasterization_method.id_for_label }}">Clasterization method</label><br>
+      {% render_field visualization_form.clasterization_method id="clasterization-input" class="clasterization_params" %}
+      
+      <label for="{{ visualization_form.clasters_count.id_for_label }}">Clasters count</label><br>
+      {% render_field visualization_form.clasters_count id="clasters-count-input" class="clasterization_params" %}
+      
+      <label for="{{ visualization_form.language.id_for_label }}">Language</label><br>
+      {% render_field visualization_form.language id="language-input" class="clasterization_params" %}
+      
+      <label for="{{ visualization_form.downsising_method.id_for_label }}">Downsizing method</label><br>
+      {% render_field visualization_form.downsising_method id="downsising-input" class="clasterization_params" %}
+
+      <label for="{{ visualization_form.measure_of_distance.id_for_label }}">Measure of distance</label><br>
+      {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params" %}
+
       {% csrf_token %}
       <p><input type="button" value="kek" onclick="createString()"></p>
     </form>

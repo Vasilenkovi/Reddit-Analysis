@@ -18,6 +18,9 @@ class Dataset_operation_form(forms.Form):
 
         self.fields["common_job"] = common_prefix
         return True
+
+    def get_common_job_id(self) -> str:
+        return self.fields["common_job"]
     
     def is_valid(self) -> bool:
         return self.clean()

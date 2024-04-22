@@ -29,9 +29,8 @@ MEASURES_OF_DISTANCE = (
 
 class VisualizationForm(forms.Form):
     
-    dataset_id = forms.MultipleChoiceField(choices=ID_CHOICES)
     clasterization_method = forms.MultipleChoiceField(choices=CLASTERIZATION_CHOICES)
-    clasters_count = forms.IntegerField()
+    clasters_count = forms.IntegerField(min_value=1, max_value=10)
     language = forms.MultipleChoiceField(choices=LANGUAGES_CHOICES)
     downsising_method = forms.MultipleChoiceField(choices=DOWNSIZING_METHODS)
     measure_of_distance = forms.MultipleChoiceField(choices=MEASURES_OF_DISTANCE)
