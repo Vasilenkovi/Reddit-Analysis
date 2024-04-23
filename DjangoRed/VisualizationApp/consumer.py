@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
 from VisualizationApp.services import clusterize
+from IdApp.task_id_manager import get_task_id, Job_types
 class ClusterConsumer(WebsocketConsumer):
     def connect(self):
         self.accept()
@@ -11,7 +12,9 @@ class ClusterConsumer(WebsocketConsumer):
         ))
     def receive(self, text_data=None, bytes_data=None):
         received_message = json.loads(text_data)
-        dataset_id = "prsc_1"#received_message["dataset_id"]
+        print(text_data)
+        #try:
+        dataset_id = ["prsc_1"]
         methods = {'1':"SVD",'2':"TSNE"}
         langs = {'1':"english",'2':"russian"}
         dists = {'1':"cosine",'2':"euclidean"}
@@ -21,9 +24,14 @@ class ClusterConsumer(WebsocketConsumer):
         lang = langs[received_message["language"]]
         reduct_method = methods[received_message["downsising_method"]]
         distance = dists[received_message["measure_of_distance"]]
-        res = clusterize(dataset_id=dataset_id, method=method,lang=lang,reduct_method=reduct_method, distance=distance, cluster_count=cluster_count)
+        job_id = get_task_id(Job_types.CLUSTER, text_data)
+        res = clusterize(job_id=job_id, dataset_id=dataset_id, method=method,lang=lang,reduct_method=reduct_method, distance=distance, cluster_count=cluster_count)
         labels = res[0]
         points = res[1]
+        self.send(text_data=json.dumps({
+                'type': 'begin',
+            }
+        ))
         for i in range(len(labels)):
             self.send(text_data=json.dumps({
                 'type': 'point message',
@@ -35,5 +43,13 @@ class ClusterConsumer(WebsocketConsumer):
                 'type': 'end',
             }
             ))
+        #except Exception as e:
+        self.send(
+            text_data=json.dumps({
+                'type': 'error_message',
+                'error': "dsf"
+            }
+            ))
+
     def disconnect(self, close_code):
         print(close_code)

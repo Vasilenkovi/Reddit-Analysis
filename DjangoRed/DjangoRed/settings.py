@@ -104,7 +104,9 @@ NATIVE_SQL_DATABASES = {
 
     'dataset_reader': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_parser_reader.yaml"),
 
-    'clustering_read': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering.yaml")
+    'clustering_read': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering_reader.yaml"),
+
+    'clustering_saving': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering_saving.yaml"),
 }
 
 
