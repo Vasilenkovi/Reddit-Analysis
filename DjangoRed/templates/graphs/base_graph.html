@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% block scripts %}
+        <link rel="stylesheet" href="{% static 'css/graphs/style.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+
+        {% autoescape off %}
+            {{ html_embed }}
+        {% endautoescape %}
+
+    {% endblock %}
+
+    <script src="{% static 'js/graphs/toolbar.js' %}"></script>
+</body>
+
+</html>

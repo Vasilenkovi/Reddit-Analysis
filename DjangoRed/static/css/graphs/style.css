@@ -1,0 +1,11 @@
+g.mpld3-xaxis, g.mpld3-yaxis {
+    display: none;
+}
+
+image.mpld3-resetbutton, image.mpld3-zoombutton, image.mpld3-boxzoombutton {
+    width: 32px;
+    height: 32px;
+    opacity: 1;
+    position: absolute;
+    bottom: 0px;
+}
