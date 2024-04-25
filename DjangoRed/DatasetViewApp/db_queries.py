@@ -1,5 +1,6 @@
 from DjangoRed.settings import NATIVE_SQL_DATABASES
 from IdApp.db_query import select_in_shortcut
+from functools import partial
 
 def select_comment_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
 
@@ -15,6 +16,17 @@ def select_comment_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
     
     return (select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids), headers)
 
+def sub_select_comment_dataset_from_ids(columns: list, dataset_ids: list) -> list[tuple]:
+    
+    f_query_cols = """SELECT {cols} 
+                    FROM reddit_parsing.submission_comment AS sc 
+                    JOIN reddit_parsing.submission AS s ON (sc.submission_name = s.full_name) AND (sc.job_id = s.job_id)
+                    WHERE sc.job_id {in_expr};"""
+    
+    f_query = partial(f_query_cols.format, cols = ", ".join(columns))
+    
+    return select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids)
+
 def select_user_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
 
     headers = ["dataset id", "user full name", "subreddit full name", "parsed timestamp", "displayed subreddit name", "subreddi url"]
@@ -25,3 +37,14 @@ def select_user_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
                     WHERE su.job_id {in_expr};"""
     
     return (select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids), headers)
+
+def sub_select_user_dataset_from_ids(columns: list, dataset_ids: list) -> list[tuple]:
+
+    f_query_cols = """SELECT {cols}
+                    FROM reddit_parsing.subreddit_active_users AS su 
+                    JOIN reddit_parsing.subreddit AS s ON (su.job_id = s.job_id) AND (su.subreddit_full_name = s.full_name)
+                    WHERE su.job_id {in_expr};"""
+    
+    f_query = partial(f_query_cols.format, cols = ", ".join(columns))
+    
+    return select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids)

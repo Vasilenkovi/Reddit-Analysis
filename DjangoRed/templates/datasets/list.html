@@ -52,7 +52,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2">
-                    <div><input type="submit" formaction="/graph" value="graph"></div>
+                    <div><input type="submit" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
                     <div><input type="submit" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
                 </div>
                 <div class="col-10">

@@ -1,6 +1,4 @@
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
-from IdApp.task_id_manager import Job_types, get_task_id
+from django.shortcuts import render
 
 # Create your views here.
 
