@@ -10,7 +10,43 @@
 
 <body>
     {% block content %}
-        <p class="display-6 text-primary">Стараюсь изо всех сил</p>
+    <!-- <h>Game</h> -->
+    <a href="{% url 'VisualizationApp:visualization-app' %}">Game</a><br>
+    <h3><a href="{% url 'ParserApp:start' %}">Parser</a></h3>
+    <h3><a href="{% url 'DatasetViewApp:list' %}">Datasets</a></h3>
+
+    <form action="/test_id" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="give me sample job ids">
+    </form>
+
+    <h4>id tests</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Job type</th>
+                <th>Job id</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if test_ids %} {% if test_ids.parse_com %}
+            <tr>
+                <td>parse_com</td>
+                <td>{{test_ids.parse_com}}</td>
+            </tr>
+            {% endif %} {% if test_ids.parse_sub %}
+            <tr>
+                <td>parse_sub</td>
+                <td>{{test_ids.parse_sub}}</td>
+            </tr>
+            {% endif %} {% if test_ids.cluster %}
+            <tr>
+                <td>cluster</td>
+                <td>{{test_ids.cluster}}</td>
+            </tr>
+            {% endif %} {% endif %}
+        </tbody>
+    </table>
     {% endblock %}
 </body>
 
