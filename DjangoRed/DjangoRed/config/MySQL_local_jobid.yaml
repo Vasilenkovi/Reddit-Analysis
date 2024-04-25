@@ -2,4 +2,4 @@ user: job_id_client
 password: ~X+qPJX<w:FKu$O
 database: reddit_job_id
 host: '127.0.0.1'
-port: 3306
+port: 8001

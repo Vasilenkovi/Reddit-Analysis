@@ -1,23 +1,27 @@
 version: '3.8'
-
+networks:
+  backnet:
 services:
-  web:
-    # Берем Dockerfile из каталога app
-    build: ./DjangoRed
-    # Запускаем тестовый сервер
-    command: gunicorn DjangoRed.wsgi:application --bind 0.0.0.0:8000
-    # куда будут помещены данные из каталога app
-    volumes:
-      - ./DjangoRed/:/usr/src/DjangoRed/
-    # Открываем порт 8000 внутри и снаружи
-    ports:
-      - 8000:8000
-    # Файл содержащий переменные для контейнера
-    env_file:
-      - ./.env.dev
+#  web:
+#    image: shizvizor/reddjango
+#    command: gunicorn DjangoRed.asgi:application --bind 0.0.0.0:8000
+#    volumes:
+#      - ./DjangoRed/:/usr/src/DjangoRed/
+#    ports:
+#      - 8000:8000
+#    env_file:
+#      - ./.env.dev
   nginx:
     build: ./nginx
     ports:
      - 1337:80
-    depends_on:
-     - web
+  message-broker:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+  mysqlRed:
+    image: shizvizor/redmysql
+    ports:
+      - 8001:3306
+    command: --lower_case_table_names=1

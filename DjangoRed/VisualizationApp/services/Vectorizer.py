@@ -14,8 +14,8 @@ import mysql.connector
 from mysql.connector import Error
 import numpy as np
 import pickle
-import scipy as sp
 from IdApp.db_query import execute
+from DatasetViewApp.db_queries import sub_select_comment_dataset_from_ids
 class LSA:
     def normalization(language, item):
         list_of_tokens = item.split()
@@ -81,24 +81,9 @@ class Vectorizer:
         self.doc_to_doc = None
         self.job_id = job_id
     def _collect_corpus(self, language, dataset_id):
-        try:
-            conn = mysql.connector.connect(host=self.bd_conf_read["host"],
-                                           database=self.bd_conf_read["database"],
-                                           user=self.bd_conf_read["user"],
-                                           password=self.bd_conf_read["password"])
-            if conn.is_connected():
-                print('Connected to MySQL database')
-            cursor = conn.cursor()
-            cursor.execute("SELECT text_body FROM submission_comment WHERE job_id=\'"+dataset_id+"\';")
-            row = cursor.fetchone()
-            while row is not None:
-                row = cursor.fetchone()
-                if row!=None:
-                    self.corpus.append(row[0])
-        except Error as e:
-            print(e)
-        else:
-            conn.close()
+        row = sub_select_comment_dataset_from_ids(['sc.text_body'], dataset_id)
+        for i in row:
+            self.corpus.append(i[0])
 
     def _vectorize(self, dataset_id):
         checking_query = """SELECT Vector FROM clusteringdb.clustdata WHERE DataSet=%(dataset_id)s;"""
