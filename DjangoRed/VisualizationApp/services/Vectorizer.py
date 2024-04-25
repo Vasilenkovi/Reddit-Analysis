@@ -37,7 +37,6 @@ class LSA:
 
     def LSA_SVD(matrix, k):
         svd = TruncatedSVD(n_components=k)
-        print(type(matrix), "type of matrix")
         matrix_scaled = svd.fit_transform(matrix)
         return matrix_scaled
 
@@ -92,7 +91,6 @@ class Vectorizer:
         if len(checking_result)==0:
             vectorizer = TfidfVectorizer(stop_words=stopwords.words('english'))
             X = vectorizer.fit_transform(self.corpus)
-            print(type(X), "type of X")
             S = X
             self.vectorized = X
             blob_vectorized = pickle.dumps(S)
@@ -115,6 +113,7 @@ class Vectorizer:
             "dataset_id": "|".join(dataset_id)
         }
         checking_result = execute(self.bd_conf_save, checking_query, checking_params)
+        print(checking_result)
         if len(checking_result[0])==1:
             if(method=="SVD"):
                 self.truncated["SVD"] = LSA.LSA_SVD(self.vectorized, k)

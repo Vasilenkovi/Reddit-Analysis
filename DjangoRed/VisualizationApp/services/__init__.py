@@ -13,6 +13,7 @@ def clusterize(**kwargs):
     check_params = {
         "cmd" : command
     }
+    print(bd_conf_save)
     check_result = execute(bd_conf_save, queue_check, check_params)
     query_to_add = "INSERT clusteringdb.clustresult (Labels, command, JobID, DataSet) values(%(labs)s, %(cmd)s, %(jid)s, %(dts)s); COMMIT;"
     addition_params = {
@@ -36,14 +37,11 @@ def clusterize(**kwargs):
             insert_resp = execute(bd_conf_save, query_to_add, addition_params)
             return (opt.cluster(), vc.truncated[kwargs["reduct_method"]])
     else:
-        queue_get_coordinates = "SELECT %(method)s from clusteringdb.clustdata where DataSet = %(dts)s;"
+        queue_get_coordinates = "SELECT " +kwargs["reduct_method"] +" from clusteringdb.clustdata where DataSet = %(dts)s;"
         get_coords_params = {
-            "method": kwargs["reduct_method"],
             "dts": "|".join(kwargs["dataset_id"])
         }
         coord_query_res = execute(bd_conf_save, queue_get_coordinates, get_coords_params)
-        print("labels",check_result)
-        print("coords",coord_query_res)
         return (pickle.loads(check_result[0][0]), pickle.loads(coord_query_res[0][0]))
 
 
