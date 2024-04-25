@@ -47,7 +47,7 @@ class ClusterConsumer(WebsocketConsumer):
             self.send(
                 text_data=json.dumps({
                     'type': 'error_message',
-                    'error': "dsf"
+                    'error': str(e)
                 }
                 ))
 
