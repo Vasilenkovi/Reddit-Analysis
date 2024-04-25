@@ -31,19 +31,19 @@
             {% endfor %}
         </div>
 
-        <input type="text" name="name-for-added-datasets" id="add-dataset-source">
-        <button type="button" id="add-dataset">Add dataset</button>
-        <input type="submit" value="Recalculate datasets">
+        <input type="text" class="form-control" name="name-for-added-datasets" id="add-dataset-source">
+        <button type="button" class="btn active" id="add-dataset">Add dataset</button>
+        <input type="submit" class="btn complete" value="Recalculate datasets">
 
         {% if downloadable %}
-            <input formaction="{% url 'DatasetViewApp:download' %}" type="submit" value="Download CSV">
+            <input formaction="{% url 'DatasetViewApp:download' %}" class="btn complete" type="submit" value="Download CSV">
         {% endif %}
     </form>
 
     {% if not error %}
         <div class="container-fluid">
             <div class="d-flex flex-row flex-nowrap overflow-auto">
-                <table class="table table-striped">
+                <table class="table table-dark table-striped ">
                     <thead>
                         {% for h in headers %}
                         <th>

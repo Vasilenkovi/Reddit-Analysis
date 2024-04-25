@@ -23,12 +23,15 @@
         {% csrf_token %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2">
-                    <div><input type="submit" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
-                    <div><input type="submit" formaction="/statistic" value="statistic"></div>
-                    <div><input type="submit" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                <div class="col-lg-2 col-sm-12">
+                    <div class="main-interface grid-buttons">
+                        <h4>Options:</h4>
+                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="cluster"></div>
+                        <div><input type="submit" class="btn complete grid-button" formaction="/statistic" value="statistic"></div>
+                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                    </div>
                 </div>
-                <div class="col-10">
+                <div class="col-lg-9 col-sm-12 main-interface">
                     <div class="d-flex flex-row flex-nowrap overflow-auto">
                         {% for set in comment_sets %}
                             <div class="card m-2 card-class">
@@ -51,11 +54,14 @@
         {% csrf_token %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2">
-                    <div><input type="submit" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
-                    <div><input type="submit" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                <div class="col-lg-2 col-sm-12">
+                <div class="main-interface grid-buttons">
+                    <h4>Options:</h4>
+                    <div><input type="submit" class="btn complete grid-button" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
+                    <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                </div>                    
                 </div>
-                <div class="col-10">
+                <div class="col-lg-9 col-sm-12">
                     <div class="d-flex flex-row flex-nowrap overflow-auto">
                         {% for set in user_sets %}
                             <div class="card m-2 card-class">

@@ -30,48 +30,84 @@
       
       {% load widget_tweaks %}
       <div class="container content-padding">
+        
         <h1 class="main-head">3D cluster visualization app</h1>
-          
-          <div class="main-interface main-form">
-            <form class="" method="post" id="vis-app-form">
-  
-              <div id="dataset-holder">
-              
-                  <h4 id="form-header">No datasets selcted</h4>
-                  {% for dataset_id in dataset_ids %}
-                      <div>
-                          <input class="dataset_id" type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
-                          <label for="{{dataset_id}}">{{dataset_id}}</label>
-                      </div>
-                  {% endfor %}
+        <div class="main-interface main-form">
+          <form method="post" id="vis-app-form">
+            
+            <div id="dataset-holder">
+            
+                <h4 id="form-header">No datasets selcted</h4>
+                {% for dataset_id in dataset_ids %}
+                    <div>
+                        <input class="dataset_id" type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
+                        <label for="{{dataset_id}}">{{dataset_id}}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="row form-field">
+              <div class="col-7">
+                <input type="text" class="form-control" name="name-for-added-datasets" id="add-dataset-source" contentEditable="true">
               </div>
-              <input type="text" name="name-for-added-datasets" id="add-dataset-source" contentEditable="true">
-              <button type="button" class="btn active" id="add-dataset">Add dataset</button>
-              <br>
-              <label class="form-field" for="{{ visualization_form.clasterization_method.id_for_label }}">Clasterization method</label>
-              {% render_field visualization_form.clasterization_method id="clasterization-input" class="clasterization_params btn active" %}
-              <br>
-              <label class="form-field" for="{{ visualization_form.clasters_count.id_for_label }}">Clasters count</label>
-              {% render_field visualization_form.clasters_count id="clasters-count-input" class="clasterization_params btn active" %}
-              <br>
-              <label class="form-field" for="{{ visualization_form.language.id_for_label }}">Language</label>
-              {% render_field visualization_form.language id="language-input" class="clasterization_params btn active" %}
-              <br>
-              <label class="form-field" for="{{ visualization_form.downsising_method.id_for_label }}">Downsizing method</label>
-              {% render_field visualization_form.downsising_method id="downsising-input" class="clasterization_params btn active" %}
-              <br>
-              <label class="form-field" for="{{ visualization_form.measure_of_distance.id_for_label }}">Measure of distance</label>
-              {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params btn active" %}
-              <br>
-              {% csrf_token %}
-              <p><input type="button" class="btn complete" value="Load" onclick="createString()"></p>
-            </form>
-          </div>
+              <div class="col-5 form-input">
+                <button type="button" class="btn active" id="add-dataset">Add dataset</button>
+              </div>
+            </div>
+            <div class="row form-field">
+              <div class="col-7">
+                <label class="form-field" for="{{ visualization_form.clasterization_method.id_for_label }}">Clasterization method</label>
+              </div>
+              <div class="col-5 form-input">
+                {% render_field visualization_form.clasterization_method id="clasterization-input" class="clasterization_params btn active" %}
+              </div>
+            </div>
+            <div class="row form-field">
+              <div class="col-7">
+                <label class="form-field" for="{{ visualization_form.clasters_count.id_for_label }}">Clasters count</label>
+              </div>
+              <div class="col-5 form-input">
+                {% render_field visualization_form.clasters_count id="clasters-count-input" class="clasterization_params btn active" %}
+              </div>
+            </div>
+            <div class="row form-field">
+              <div class="col-7">
+                <label class="form-field" for="{{ visualization_form.language.id_for_label }}">Language</label>
+              </div>
+              <div class="col-5 form-input">
+                {% render_field visualization_form.language id="language-input" class="clasterization_params btn active" %}
+              </div>
+            </div>
+            <div class="row form-field">
+              <div class="col-7">
+                <label class="form-field" for="{{ visualization_form.downsising_method.id_for_label }}">Downsizing method</label>
+              </div>
+              <div class="col-5 form-input">
+                {% render_field visualization_form.downsising_method id="downsising-input" class="clasterization_params btn active" %}
+              </div>
+            </div>
+            <div class="row form-field">
+              <div class="col-7">
+                <label class="form-field" for="{{ visualization_form.measure_of_distance.id_for_label }}">Measure of distance</label>
+              </div>
+              <div class="col-5 form-input">
+                {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params btn active" %}
+              </div>
+            </div>
+            
+            <div class="row form-field">
+              <div class="col form-input">
+                {% csrf_token %}
+                <input type="button" class="btn complete complete-button" value="Load" onclick="createString()">
+              </div>
+            </div>
+          </form>
         </div>
-        
-        
+      </div>
 
-        <div id="unity-container" class="unity-desktop" style="margin: 500px 100px 100px 100px">
+
+          
+        <div id="unity-container" class="unity-desktop" style="margin: 550px 100px 100px 100px">
           <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
           <div id="unity-loading-bar">
             <div id="unity-logo"></div>

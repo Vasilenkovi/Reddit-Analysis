@@ -41,11 +41,10 @@ hr {
 }
 
 .main-form  {
-    width: 500px;
+    width: 400px;
     height: inherit;
     justify-self: center;
     display: grid;
-    
 }
 
 .container {
@@ -53,9 +52,19 @@ hr {
     height: auto;
 }
 
+.form-control {
+    display: inline !important;
+    width: auto !important;
+}
 .form-field {
     margin: 10px;
+    justify-self: start;
 }
+.form-input {
+    display: grid;
+    justify-content: end;
+}
+
 
 .active {
     background-color: #5489f2 !important;
@@ -64,6 +73,10 @@ hr {
 
 .active:hover {
     background-color: #36538d !important;
+}
+
+.complete-button {
+    justify-self: end;
 }
 
 .complete {
@@ -75,3 +88,8 @@ hr {
     background-color: #267038 !important;
     color: white !important;
 }
+
+.input-text-field {
+    background-color: white !important;
+}
+

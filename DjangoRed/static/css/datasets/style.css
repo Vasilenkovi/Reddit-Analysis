@@ -2,10 +2,20 @@
     width: 20%;
     min-width: 20% !important;
     aspect-ratio: 1/1;
-    
+    background-color: #292e32 !important;
+    border: 1px solid white !important;
 }
 
 .card-body {
     background-color: #292e32 !important;
 }
 
+.grid-buttons {
+    display: grid;
+    justify-content: center;
+}
+
+.grid-button {
+    
+    margin-top: 20px;
+}
