@@ -9,7 +9,7 @@ def clusterize(**kwargs):
     bd_conf_save = NATIVE_SQL_DATABASES['clustering_saving']
     job_id = kwargs["job_id"]
     queue_check = "SELECT Labels from clusteringdb.clustresult where  command=%(cmd)s"
-    command = kwargs["method"] + kwargs["reduct_method"] + kwargs["distance"] + str(kwargs["cluster_count"]+kwargs["lang"])
+    command = kwargs["method"] + kwargs["reduct_method"] + kwargs["distance"] + str(kwargs["cluster_count"])+kwargs["lang"]
     check_params = {
         "cmd" : command
     }
