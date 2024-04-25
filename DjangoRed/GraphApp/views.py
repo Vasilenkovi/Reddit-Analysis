@@ -31,9 +31,19 @@ def base_graph_view(request):
     
     column_list = ["su.user_full_name", "s.display_name"]
     user_data = sub_select_user_dataset_from_ids(column_list, dataset_ids)
+    sub_adjacency = {}
+    subs = set()
 
+    for user, sub in user_data:
+        if not sub_adjacency.get(user):
+            sub_adjacency[user] = []
+            
+        sub_adjacency[user].append(sub)
+
+        if not sub in subs:
+            subs.add(sub)
     
-
+    
 
     G = nx.complete_bipartite_graph(3, 3)
     fig, ax = plt.subplots(1, 1)
