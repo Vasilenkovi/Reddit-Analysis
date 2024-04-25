@@ -1,16 +1,6 @@
 version: '3.8'
-networks:
-  backnet:
+
 services:
-#  web:
-#    image: shizvizor/reddjango
-#    command: gunicorn DjangoRed.asgi:application --bind 0.0.0.0:8000
-#    volumes:
-#      - ./DjangoRed/:/usr/src/DjangoRed/
-#    ports:
-#      - 8000:8000
-#    env_file:
-#      - ./.env.dev
   nginx:
     build: ./nginx
     ports:
