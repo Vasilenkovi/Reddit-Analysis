@@ -2,4 +2,10 @@
     width: 20%;
     min-width: 20% !important;
     aspect-ratio: 1/1;
+    
 }
+
+.card-body {
+    background-color: #292e32 !important;
+}
+

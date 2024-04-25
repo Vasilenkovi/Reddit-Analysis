@@ -1,12 +1,9 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reddit Analysis</title>
-    <link rel="stylesheet" href="{% static 'css/base/navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/main.css' %}">
     {% block scripts %}
     {% endblock %}
 
@@ -17,39 +14,32 @@
     {% endblock %}
 </head>
 <body>
+    
     {% block header %}
-    <nav class="navbar-main">
-        <div class="navbar-profile"><img class="profile-img" src="{% static 'img/jokerge.png' %}" alt="joker"></div>
-        <ul class="navbar-list">
+        <ul class="nav nav-tabs nav-justified">
             <li class="nav-item">
-                <a href="{% url 'HomeApp:home' %}">Home</a>
+                <a href="{% url 'VisualizationApp:visualization-app' %}">Game</a>
             </li>
-            <hr>
-            <li class="nav-item">
-                <a href="{% url 'VisualizationApp:visualization-app' %}">3D Cluster</a>
-            </li>
-            <hr>
             <li class="nav-item">
                 <a href="{% url 'ParserApp:start' %}">Parser</a>
             </li>
-            <hr>
             <li class="nav-item">
                 <a href="{% url 'DatasetViewApp:list' %}">Datasets</a>
             </li>
-            <hr>
+            <li class="nav-item">
+                <a href="{% url 'HomeApp:home' %}">Home</a>
+            </li>
             <li class="nav-item">
                 <a href="{% url 'GraphApp:base_graph' %}">Graph</a>
             </li>
         </ul>
     </nav>
+    <hr>
     {% endblock %}
 
-    <div class="main-content">
-        {% block content %}
-    
-        {% endblock %}
-    </div>
-    
+    {% block content %}
+    {% endblock %}
+
     {% block footer %}
     {% endblock %}
 </body>

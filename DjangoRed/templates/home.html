@@ -10,14 +10,11 @@
 
 <body>
     {% block content %}
-    <!-- <h>Game</h> -->
-    <a href="{% url 'VisualizationApp:visualization-app' %}">Game</a><br>
-    <h3><a href="{% url 'ParserApp:start' %}">Parser</a></h3>
-    <h3><a href="{% url 'DatasetViewApp:list' %}">Datasets</a></h3>
+    
 
     <form action="/test_id" method="POST">
         {% csrf_token %}
-        <input type="submit" value="give me sample job ids">
+        <input class="btn btn-primary" type="submit" value="give me sample job ids">
     </form>
 
     <h4>id tests</h4>
