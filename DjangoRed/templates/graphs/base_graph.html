@@ -11,15 +11,39 @@
 
     {% block scripts %}
         <link rel="stylesheet" href="{% static 'css/graphs/style.css' %}">
+        <script src="{% static 'js/datasets/dataset_details.js' %}"></script> 
     {% endblock %}
 </head>
 
 <body>
     {% block content %}
 
-        {% autoescape off %}
-            {{ html_embed }}
-        {% endautoescape %}
+        <form action="{% url 'GraphApp:base_graph' %}" method="post">
+            {% csrf_token %}
+
+            <div id="dataset-holder">
+                {% for dataset_id in dataset_ids %}
+                    <div>
+                        <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
+                        <label for="{{dataset_id}}">{{dataset_id}}</label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <input type="text" name="name-for-added-datasets" id="add-dataset-source">
+            <button type="button" id="add-dataset">Add dataset</button>
+            <input type="submit" value="Rebuild graph">
+
+            <!--{% if downloadable %}
+                <input formaction="{% url 'GraphApp:download' %}" type="submit" value="Download CSV">
+            {% endif %}-->
+        </form>
+
+        {% if html_embed %}
+            {% autoescape off %}
+                {{ html_embed }}
+            {% endautoescape %}
+        {% endif %}
 
     {% endblock %}
 
