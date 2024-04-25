@@ -23,7 +23,7 @@ def sub_select_comment_dataset_from_ids(columns: list, dataset_ids: list) -> lis
                     JOIN reddit_parsing.submission AS s ON (sc.submission_name = s.full_name) AND (sc.job_id = s.job_id)
                     WHERE sc.job_id {in_expr};"""
     
-    f_query = partial(f_query_cols.format, cols = ", ".join(columns))
+    f_query = f_query_cols.format(cols = ", ".join(columns), in_expr = "{in_expr}")
     
     return select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids)
 
@@ -45,6 +45,6 @@ def sub_select_user_dataset_from_ids(columns: list, dataset_ids: list) -> list[t
                     JOIN reddit_parsing.subreddit AS s ON (su.job_id = s.job_id) AND (su.subreddit_full_name = s.full_name)
                     WHERE su.job_id {in_expr};"""
     
-    f_query = partial(f_query_cols.format, cols = ", ".join(columns))
+    f_query = f_query_cols.format(cols = ", ".join(columns), in_expr = "{in_expr}")
     
     return select_in_shortcut(NATIVE_SQL_DATABASES['dataset_reader'], f_query, {}, dataset_ids)
