@@ -30,19 +30,15 @@
         <div class="parser-form-comments-submission parser-form-option">
             <form action="{% url 'ParserApp:report' %}" method="post">
                 {% csrf_token %} 
-                <div class="row form-field">
-                    <div class="col-7">
-                        <label for="{{ submission_parsing_form.target.id_for_label }}">Url of submission</label><br>
-                    </div>
-                    <div class="col-5 form-input">
-                        {% render_field submission_parsing_form.submission_url id="ephemeral-submission-input" class="form-control" %}
-                    </div>
+                <div>
+                    <label for="{{ submission_parsing_form.target.id_for_label }}">Url of submission</label><br>
+                    {% render_field submission_parsing_form.submission_url id="ephemeral-submission-input" class="form-control btn active" %}
                 </div>
                 <div>
                     <div id="ephemeral-submission-div">
     
                     </div>
-                    <input type="button" value="Add more" class="form-add-more btn active" data-ephemeral="ephemeral-submission">
+                    <input type="button" value="Add more" class="form-add-more btn active mt-2" data-ephemeral="ephemeral-submission">
                 </div>
                 
                 <label for="{{ submission_parsing_form.target.id_for_label }}">How deep to parse threads</label><br>
@@ -60,27 +56,35 @@
         <div class="parser-form-comments-subreddit parser-form-option">
             <form action="{% url 'ParserApp:report' %}" method="post">
                 {% csrf_token %} 
+
+                <div>
+                    <label for="{{ subreddit_parsing_form.target.id_for_label }}">Subreddit name</label><br>
+                    {% render_field subreddit_parsing_form.subreddit_name id="ephemeral-sub-comment-input" class="btn active" %}
+                </div>
+                <div>
+                    <div id="ephemeral-sub-comment-div">
     
-                <label for="{{ subreddit_parsing_form.target.id_for_label }}">Subreddit name</label><br>
-                {% render_field subreddit_parsing_form.subreddit_name class=" btn active" %}<br>
+                    </div>
+                    <input type="button" value="Add more" class="form-add-more btn active mt-2" data-ephemeral="ephemeral-sub-comment">
+                </div>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">In-subreddit query</label><br>
-                {% render_field subreddit_parsing_form.subreddit_query class=" btn active" %}<br>
+                {% render_field subreddit_parsing_form.subreddit_query class="btn active" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">Sort recency</label><br>
-                {% render_field subreddit_parsing_form.time_filter class=" btn active" %}<br>
+                {% render_field subreddit_parsing_form.time_filter class="btn active" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">Sort type</label><br>
-                {% render_field subreddit_parsing_form.subreddit_sort class=" btn active" %}<br>
+                {% render_field subreddit_parsing_form.subreddit_sort class="btn active" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">Maximum search items</label><br>
-                {% render_field subreddit_parsing_form.search_limit class=" btn active" %}<br>
+                {% render_field subreddit_parsing_form.search_limit class="btn active" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">How deep to parse threads</label><br>
-                {% render_field subreddit_parsing_form.comment_replace_limit %}<br>
+                {% render_field subreddit_parsing_form.comment_replace_limit class="btn active" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}"></label>Minimum depth of thread to parse deeper<br>
-                {% render_field subreddit_parsing_form.comment_replace_threshold %} <br>
+                {% render_field subreddit_parsing_form.comment_replace_threshold class="btn active" %} <br>
                 
                 {{subreddit_parsing_form.form_type}}<br>
     
@@ -91,15 +95,17 @@
         <div class="parser-form-users parser-form-option">
             <form action="{% url 'ParserApp:report' %}" method="post">
                 {% csrf_token %} 
-    
-                <label for="{{ subreddit_users_parsing_form.multi_subreddit_name.id_for_label }}">Source subreddits</label><br>
-                {% render_field subreddit_users_parsing_form.multi_subreddit_name id="ephemeral-users-input" class=" btn active"  %}
-                
+
+                <div>
+                    <label for="{{ subreddit_users_parsing_form.multi_subreddit_name.id_for_label }}">Source subreddits</label><br>
+                    {% render_field subreddit_users_parsing_form.multi_subreddit_name id="ephemeral-users-input" class=" btn active" %}
+                </div>
+
                 <div>
                     <div id="ephemeral-users-div">
     
                     </div>
-                    <input type="button" value="Add more" class="form-add-more btn active" data-ephemeral="ephemeral-users">
+                    <input type="button" value="Add more" class="form-add-more btn active mt-2" data-ephemeral="ephemeral-users">
                 </div>
                 
                 <label for="{{ subreddit_users_parsing_form.target.id_for_label }}">Sort discipline</label><br>

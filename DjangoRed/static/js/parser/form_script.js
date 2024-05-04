@@ -6,6 +6,8 @@ function generic_add_more(e) {
     const new_input = document.createElement("input")
     new_input.classList.add(form_reference + "-multiple")
     new_input.classList.add("ephemeral-multiple")
+    new_input.classList.add("btn")
+    new_input.classList.add("active")
     new_input.type = "text"
 
     ephemeral_div.appendChild(new_input)
