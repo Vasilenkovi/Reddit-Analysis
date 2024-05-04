@@ -1,17 +1,37 @@
 version: '3.8'
 
 services:
-  nginx:
-    build: ./nginx
+  backend:
+    image: shizvizor/djangoapp
+    command:
+      - uvicorn DjangoRed.asgi --log-level critical --workers 4 --host 0.0.0.0
     ports:
-     - 1337:80
+      - 8000:8000
+    networks:
+      - nginxNet
+  nginx:
+    build: shizvizor/nginx
+    ports:
+     - 80:80
+    networks:
+      - nginxNet
   message-broker:
     image: rabbitmq:3-management
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - nginxNet
   mysqlRed:
     image: shizvizor/redmysql
     ports:
       - 8001:3306
     command: --lower_case_table_names=1
+    volumes:
+      - /var/lib/mysql
+    networks:
+      - nginxNet
+
+networks:
+  nginxNet:
+    driver: bridge
