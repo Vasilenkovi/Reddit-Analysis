@@ -9,7 +9,7 @@ services:
       - 8000:8000
 
   nginx:
-    build: shizvizor/nginx
+    image: shizvizor/nginx
     ports:
      - 80:80
 
