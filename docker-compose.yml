@@ -12,6 +12,11 @@ services:
     image: shizvizor/nginx
     ports:
      - 80:80
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - DAPHNE_HOST=127.0.0.1
+      - DAPHNE_PORT=8000
 
   message-broker:
     image: rabbitmq:3-management
