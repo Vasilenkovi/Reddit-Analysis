@@ -4,7 +4,7 @@ services:
   backend:
     image: shizvizor/djangoapp
     command:
-      - uvicorn DjangoRed.asgi --log-level critical --workers 4 --host 0.0.0.0
+      - Bash Start.sh
     ports:
       - 8000:8000
     networks:

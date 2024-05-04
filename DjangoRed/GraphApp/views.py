@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import networkx as nx
 import matplotlib.pyplot as plt
 from mpld3 import fig_to_html, plugins
 from DatasetViewApp.db_queries import sub_select_user_dataset_from_ids
