@@ -22,22 +22,30 @@
     <form action="{% url 'DatasetViewApp:details' %}" method="post">
         {% csrf_token %}
 
-        <div id="dataset-holder">
-            {% for dataset_id in dataset_ids %}
-                <div>
-                    <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
-                    <label for="{{dataset_id}}">{{dataset_id}}</label>
+        <div class="container-fluid">
+            <div class="row">
+                <div id="dataset-holder" class="my-1 background-small">
+                    {% for dataset_id in dataset_ids %}
+                        <div>
+                            <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" class="mx-1" checked>
+                            <label for="{{dataset_id}}">{{dataset_id}}</label>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
+            
+            <div class="row">
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control mx-1" name="name-for-added-datasets" id="add-dataset-source">
+                    <button type="button" class="btn active mx-1" id="add-dataset">Add dataset</button>
+                    <input type="submit" class="btn complete mx-1" value="Recalculate datasets">
+                    {% if downloadable %}
+                        <input formaction="{% url 'DatasetViewApp:download' %}" class="btn complete mx-1" type="submit" value="Download CSV">
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-        <input type="text" class="form-control" name="name-for-added-datasets" id="add-dataset-source">
-        <button type="button" class="btn active" id="add-dataset">Add dataset</button>
-        <input type="submit" class="btn complete" value="Recalculate datasets">
-
-        {% if downloadable %}
-            <input formaction="{% url 'DatasetViewApp:download' %}" class="btn complete" type="submit" value="Download CSV">
-        {% endif %}
     </form>
 
     {% if not error %}

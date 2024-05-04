@@ -32,7 +32,7 @@
                 {% csrf_token %} 
                 <div>
                     <label for="{{ submission_parsing_form.target.id_for_label }}">Url of submission</label><br>
-                    {% render_field submission_parsing_form.submission_url id="ephemeral-submission-input" class="form-control btn active" %}
+                    {% render_field submission_parsing_form.submission_url id="ephemeral-submission-input" class="form-control btn active my-1 text-start" %}
                 </div>
                 <div>
                     <div id="ephemeral-submission-div">
@@ -59,7 +59,7 @@
 
                 <div>
                     <label for="{{ subreddit_parsing_form.target.id_for_label }}">Subreddit name</label><br>
-                    {% render_field subreddit_parsing_form.subreddit_name id="ephemeral-sub-comment-input" class="btn active" %}
+                    {% render_field subreddit_parsing_form.subreddit_name id="ephemeral-sub-comment-input" class="btn active my-1 text-start" %}
                 </div>
                 <div>
                     <div id="ephemeral-sub-comment-div">
@@ -69,7 +69,7 @@
                 </div>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">In-subreddit query</label><br>
-                {% render_field subreddit_parsing_form.subreddit_query class="btn active" %}<br>
+                {% render_field subreddit_parsing_form.subreddit_query class="btn active text-start" %}<br>
     
                 <label for="{{ subreddit_parsing_form.target.id_for_label }}">Sort recency</label><br>
                 {% render_field subreddit_parsing_form.time_filter class="btn active" %}<br>
@@ -88,7 +88,7 @@
                 
                 {{subreddit_parsing_form.form_type}}<br>
     
-                <input type="submit" class="parser-form-submit-single btn complete" value="send">
+                <input type="submit" class="parser-form-submit btn complete" value="send" data-ephemeral="ephemeral-sub-comment">
             </form>
         </div>
     
@@ -98,7 +98,7 @@
 
                 <div>
                     <label for="{{ subreddit_users_parsing_form.multi_subreddit_name.id_for_label }}">Source subreddits</label><br>
-                    {% render_field subreddit_users_parsing_form.multi_subreddit_name id="ephemeral-users-input" class=" btn active" %}
+                    {% render_field subreddit_users_parsing_form.multi_subreddit_name id="ephemeral-users-input" class="btn active my-1 text-start" %}
                 </div>
 
                 <div>

@@ -16,6 +16,36 @@
 }
 
 .grid-button {
-    
     margin-top: 20px;
+}
+
+.background-border {
+    height: 45vh;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 5em;
+    background-color: #292e32;
+    overflow: auto;
+}
+
+.right-vertical-rule {
+    border-right: 2px solid #1f2227;
+}
+
+.background-small {
+    width: 15em !important;
+    max-height: 6em;
+    border-radius: 2em;
+    background-color: #292e32;
+    overflow: auto;
+}
+
+.checkbox-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.scrollbar {
+    scrollbar-width: none;
 }

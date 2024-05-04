@@ -60,6 +60,22 @@ class Extended_Reddit_RO(Reddit):
                         yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
 
 
+    def parse_subreddit_list(self, job_id: str, subreddit_display_name: list, query: str, sort: str = "new", time_filter: str = "all", limit: int = 10000, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[Generator[tuple[ORM_submission, Generator[ORM_comment, None, None]], None, None], None, None]:
+        """Description: Returns multiple submissions matched with given query through Reddit search. Takes considerable time to execute (approximately 1 second for every 100 submissions + time to replace "more comments"). Reddit API has been known to return not more than a 1000 submissions this way.\n
+        Parameters: \n
+            subreddit_display_name - list of visible, case insensitive names of subreddits to search from;\n
+            query - string to match in search. If Falsey, subreddit streams will be used according to "sort" attribute;\n
+            sort - sorting methods (includes "relevance", "hot", "top", "new");\n
+            time_filter - method of limiting the search timeframe (includes "all", "day", "hour", "month", "week", or "year");\n
+            limit - the maximum number of submissions to retrieve. Reddit API has been known to return not more than 1000 submissions;\n
+            comment_replace_limit - how many "more comments" to replace in each submission. Each replacement incures a network call (around 1 second of wait time);\n
+            comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
+        Returns: A generator of tuples: Submission and generator of Submission's comments.
+        """
+
+        for sub in subreddit_display_name:
+           yield self.parse_subreddit(job_id, sub, query, sort, time_filter, limit, comment_replace_limit, comment_replace_threshold)
+
     def parse_submission(self, job_id: str, submission: str | praw.reddit.Submission, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> tuple[ORM_submission, Generator[ORM_comment, None, None]]:
         """Description: Parses specified submission and its comments. Takes considerable time to execute (approximately 1 second + time to replace "more comments").\n
         Parameters: \n

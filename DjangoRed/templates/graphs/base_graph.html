@@ -11,6 +11,7 @@
 
     {% block scripts %}
         <link rel="stylesheet" href="{% static 'css/graphs/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
         <script src="{% static 'js/datasets/dataset_details.js' %}"></script> 
     {% endblock %}
 </head>
@@ -21,19 +22,26 @@
         <form action="{% url 'GraphApp:base_graph' %}" method="post">
             {% csrf_token %}
 
-            <div id="dataset-holder">
-                {% for dataset_id in dataset_ids %}
-                    <div>
-                        <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
-                        <label for="{{dataset_id}}">{{dataset_id}}</label>
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="dataset-holder" class="my-1 background-small">
+                        {% for dataset_id in dataset_ids %}
+                            <div>
+                                <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" class="mx-1" checked>
+                                <label for="{{dataset_id}}">{{dataset_id}}</label>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="d-flex align-items-center">
+                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1">
+                        <button type="button" id="add-dataset" class="btn active mx-1">Add dataset</button>
+                        <input type="submit" value="Rebuild graph" class="btn complete mx-1">
+                    </div>
+                </div>
             </div>
-
-            <input type="text" name="name-for-added-datasets" id="add-dataset-source">
-            <button type="button" id="add-dataset">Add dataset</button>
-            <input type="submit" value="Rebuild graph">
-
             <!--{% if downloadable %}
                 <input formaction="{% url 'GraphApp:download' %}" type="submit" value="Download CSV">
             {% endif %}-->
