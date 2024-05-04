@@ -7,21 +7,18 @@ services:
       - Bash Start.sh
     ports:
       - 8000:8000
-    networks:
-      - nginxNet
+
   nginx:
     build: shizvizor/nginx
     ports:
      - 80:80
-    networks:
-      - nginxNet
+
   message-broker:
     image: rabbitmq:3-management
     ports:
       - 5672:5672
       - 15672:15672
-    networks:
-      - nginxNet
+
   mysqlRed:
     image: shizvizor/redmysql
     ports:
@@ -29,9 +26,4 @@ services:
     command: --lower_case_table_names=1
     volumes:
       - /var/lib/mysql
-    networks:
-      - nginxNet
 
-networks:
-  nginxNet:
-    driver: bridge
