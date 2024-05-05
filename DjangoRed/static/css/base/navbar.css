@@ -7,15 +7,12 @@
     background-color: #15191c;
     position: fixed;
     height: 100%;
-    overflow: auto;
     
     
     display: grid;
     flex-direction: column;
     justify-content: space-evenly;
-    align-items: stretch
-    
-    
+    align-items: stretch;
 }
   
 .navbar-list {
@@ -52,6 +49,7 @@
 .navbar-profile {
     margin: 10px;
     justify-self: center;
+    width: inherit;
 }
 
 .profile-img {

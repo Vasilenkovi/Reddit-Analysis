@@ -68,6 +68,27 @@ function createString() {
     clusSocket.send(JSON.stringify(messageDict))
 }
 
+var comments = ['keke', 'best thing ever', 'you are not ready', 'C# is the best programming language ever']
+
+function getRandom (list) {
+    return list[Math.floor((Math.random()*list.length))];
+}
+
+async function ImitateDotTextProcess() {
+    if (!startedRecievingData) 
+    {
+        gameInstance.SendMessage('FrontendConnector', 'StartRecievingDotText');
+        startedRecievingData = true;
+    }
+    let messageDict = {}
+    await sleep(2000);
+    messageDict['text'] = getRandom(comments);
+    let jsonString = JSON.stringify(messageDict);
+
+    gameInstance.SendMessage('FrontendConnector', 'DotTextRecieved', jsonString);
+    startedRecievingData = false;
+}
+
 function createStringNoJSON() {
     const formId = "vis-app-form"
     const form = document.getElementById(formId)

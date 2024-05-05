@@ -24,4 +24,5 @@ urlpatterns = [
     path('parser/', include('ParserApp.urls', namespace="ParserApp")),
     path('datasets/', include('DatasetViewApp.urls', namespace="DatasetViewApp")),
     path('users/', include('GraphApp.urls', namespace="GraphApp")),
+    path('account/', include('AccountsApp.urls', namespace="AccountsApp")),
 ]
