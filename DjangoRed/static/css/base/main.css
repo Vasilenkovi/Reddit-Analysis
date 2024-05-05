@@ -106,3 +106,7 @@ hr {
     justify-self: center;
     margin-top: 20px;
 }
+
+.w-fit {
+    width: fit-content;
+}

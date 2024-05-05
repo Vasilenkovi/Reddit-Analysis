@@ -1,9 +1,12 @@
 .card-class {
-    width: 20%;
-    min-width: 20% !important;
-    aspect-ratio: 1/1;
+    width: 15%;
+    min-width: 15% !important;
     background-color: #292e32 !important;
     border: 1px solid white !important;
+}
+
+.card-img-top-sizing {
+    aspect-ratio: 2 / 1;
 }
 
 .card-body {
@@ -35,7 +38,7 @@
 .background-small {
     width: 15em !important;
     max-height: 6em;
-    border-radius: 2em;
+    border-radius: 1em;
     background-color: #292e32;
     overflow: auto;
 }

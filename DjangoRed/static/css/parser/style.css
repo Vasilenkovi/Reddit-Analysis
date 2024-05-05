@@ -17,3 +17,9 @@
 .w-fit {
     width: fit-content;;
 }
+
+.background-small {
+    max-width: 40vw !important;
+    border-radius: 1em;
+    background-color: #292e32;
+}

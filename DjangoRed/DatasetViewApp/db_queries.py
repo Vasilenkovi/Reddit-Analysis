@@ -1,6 +1,5 @@
 from DjangoRed.settings import NATIVE_SQL_DATABASES
 from IdApp.db_query import select_in_shortcut
-from functools import partial
 
 def select_comment_dataset_from_ids(dataset_ids: list) -> tuple[list, list]:
 
