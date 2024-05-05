@@ -10,7 +10,7 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  mysqlRed:
+  mysqlred:
     build: ./MySQL/
     ports:
       - 8001:3306
