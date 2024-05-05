@@ -4,9 +4,8 @@ services:
   backend:
     image: shizvizor/djangoapp
 #    command: "python manage.py runserver 0.0.0.0:8000"
-    command: "celery -A proj beat -l info"
 #    command: "python manage.py collectstatic --noinput"
-    command: "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application"
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & celery -A DjangoRed worker --loglevel=INFO"
 #    command: "gunicorn --log-level debug --workers 3 DjangoRed.asgi:application --worker-class uvicorn.workers.UvicornWorker -b 0.0.0.0:8000"
     expose:
       - "8000"

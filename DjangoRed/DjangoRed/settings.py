@@ -166,3 +166,5 @@ CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY=None
