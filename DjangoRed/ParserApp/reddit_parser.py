@@ -1,18 +1,23 @@
+import praw.exceptions
 from .ORM import ORM_submission, ORM_comment, ORM_subreddit, ORM_subreddit_active_users
 from praw import Reddit
 import praw.reddit
 from collections.abc import Generator
+import logging
 
 class Extended_Reddit_RO(Reddit):
     """Class that encapsulates logic of structural retrieval of public objects through Reddit API"""
 
-    def __init__(self, client_id: str, client_secret: str, user_agent: str, username: str | None = None, password: str | None = None):
+    def __init__(self, client_id: str, client_secret: str, user_agent: str, username: str | None = None, password: str | None = None, ratelimit_seconds: int = 3600, application_level_retries: int = 3):
         """Parameters:
             client_id - client id of registered Reddit app;\n
             client_secret - client secret of registered Reddit app;\n
             user_agent - unique user agent;\n
             username - provide to access private content of user;\n
-            password - provide to access private content of user;\n"""
+            password - provide to access private content of user;\n
+            ratelimit_seconds - maximum number of seconds to wait out following Reddit's "Too many requests" response;\n
+            application_level_retries - maximum number of retries in class methods following HTTP 429 Reddit response.
+            """
 
         if username and password:
             super().__init__(
@@ -20,14 +25,18 @@ class Extended_Reddit_RO(Reddit):
                 client_secret = client_secret,
                 user_agent = user_agent,
                 username = username,
-                password = password
+                password = password,
+                ratelimit_seconds = ratelimit_seconds
             )
         else:
             super().__init__(
                 client_id = client_id,
                 client_secret = client_secret,
-                user_agent = user_agent
+                user_agent = user_agent,
+                ratelimit_seconds = ratelimit_seconds
             )
+
+        self.application_level_retries = application_level_retries
 
     def parse_subreddit(self, job_id: str, subreddit_display_name: str, query: str, sort: str = "new", time_filter: str = "all", limit: int = 10000, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[tuple[ORM_submission, Generator[ORM_comment, None, None]], None, None]:
         """Description: Returns multiple submissions matched with given query through Reddit search. Takes considerable time to execute (approximately 1 second for every 100 submissions + time to replace "more comments"). Reddit API has been known to return not more than a 1000 submissions this way.\n
@@ -41,24 +50,31 @@ class Extended_Reddit_RO(Reddit):
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         Returns: A generator of tuples: Submission and generator of Submission's comments.
         """
-        if query:
-            for submission in self.subreddit(subreddit_display_name).search(query = query, sort = sort, time_filter = time_filter, limit = limit):
-                yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
-        else:
-            match sort:
-                case "hot":
-                    for submission in self.subreddit(subreddit_display_name).hot(limit = limit):
-                        yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
-                case "new":
-                    for submission in self.subreddit(subreddit_display_name).new(limit = limit):
-                        yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
-                case "top":
-                    for submission in self.subreddit(subreddit_display_name).top(time_filter = time_filter, limit = limit):
-                        yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
-                case _:
-                    for submission in self.subreddit(subreddit_display_name).top(time_filter = "all", limit = limit):
-                        yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
 
+        for i in range(self.application_level_retries):
+            try:
+
+                if query:
+                    for submission in self.subreddit(subreddit_display_name).search(query = query, sort = sort, time_filter = time_filter, limit = limit):
+                        yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
+                else:
+                    match sort:
+                        case "hot":
+                            for submission in self.subreddit(subreddit_display_name).hot(limit = limit):
+                                yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
+                        case "new":
+                            for submission in self.subreddit(subreddit_display_name).new(limit = limit):
+                                yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
+                        case "top":
+                            for submission in self.subreddit(subreddit_display_name).top(time_filter = time_filter, limit = limit):
+                                yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
+                        case _:
+                            for submission in self.subreddit(subreddit_display_name).top(time_filter = "all", limit = limit):
+                                yield self.parse_submission(job_id, submission, comment_replace_limit, comment_replace_threshold)
+
+            except praw.exceptions.PRAWException as e:
+                logging.warn(e)
+                logging.warn(f"Retrying {i+1} out of {self.application_level_retries}")
 
     def parse_subreddit_list(self, job_id: str, subreddit_display_name: list, query: str, sort: str = "new", time_filter: str = "all", limit: int = 10000, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[Generator[tuple[ORM_submission, Generator[ORM_comment, None, None]], None, None], None, None]:
         """Description: Returns multiple submissions matched with given query through Reddit search. Takes considerable time to execute (approximately 1 second for every 100 submissions + time to replace "more comments"). Reddit API has been known to return not more than a 1000 submissions this way.\n
@@ -84,53 +100,60 @@ class Extended_Reddit_RO(Reddit):
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         Returns: Tuple of Submission and generator of Submission's comments"""
         
-        submission_url = submission #assume url was provided
+        for i in range(self.application_level_retries):
+            try:
 
-        if isinstance(submission, str):
-            submission = self.submission(url = submission) #Network call
-        elif isinstance(submission, praw.reddit.Submission):
-            submission_url = "reddit.com" + submission.permalink #Network call
-        else:
-            raise ValueError("submission must be str (assumed url) or praw.reddit.Submission")
-        
-        submission_name = submission.name
-        submission_title = submission.title
-        submission_text_body = submission.selftext
-        submission_upvotes = submission.ups
-        submission_downvotes = submission.downs
-        submission_created_timestamp = int(submission.created)
-        submission_author = "" #assume deleted author account
-        submission_flair = submission.link_flair_text
+                submission_url = submission #assume url was provided
 
-        if submission.author: #if author account was not deleted
-            submission_author = submission.author_fullname
+                if isinstance(submission, str):
+                    submission = self.submission(url = submission) #Network call
+                elif isinstance(submission, praw.reddit.Submission):
+                    submission_url = "reddit.com" + submission.permalink #Network call
+                else:
+                    raise ValueError("submission must be str (assumed url) or praw.reddit.Submission")
 
-        submission_instance = ORM_submission(submission_url, submission_name, submission_title, 
-                                             submission_text_body, submission_author, submission_upvotes, 
-                                             submission_downvotes, submission_created_timestamp, submission_flair,
-                                             job_id)
-        
-        submission.comments.replace_more(limit = comment_replace_limit, threshold = comment_replace_threshold) #incurs network calls ~comment_replace_limit
+                submission_name = submission.name
+                submission_title = submission.title
+                submission_text_body = submission.selftext
+                submission_upvotes = submission.ups
+                submission_downvotes = submission.downs
+                submission_created_timestamp = int(submission.created)
+                submission_author = "" #assume deleted author account
+                submission_flair = submission.link_flair_text
 
-        def comment_generator() -> Generator[ORM_comment, None, None]:
-            """Helper function to create a comment generator"""
+                if submission.author: #if author account was not deleted
+                    submission_author = submission.author_fullname
 
-            for comment in submission.comments.list():
-                full_name = comment.fullname
-                text_body = comment.body
-                upvotes = comment.ups
-                downvotes = comment.downs
-                created_timestamp = int(comment.created)
-                author = "" #assume deleted author account
+                submission_instance = ORM_submission(submission_url, submission_name, submission_title, 
+                                                     submission_text_body, submission_author, submission_upvotes, 
+                                                     submission_downvotes, submission_created_timestamp, submission_flair,
+                                                     job_id)
 
-                if comment.author: #if author account was not deleted
-                    author = comment.author_fullname
+                submission.comments.replace_more(limit = comment_replace_limit, threshold = comment_replace_threshold) #incurs network calls ~comment_replace_limit
 
-                yield ORM_comment(submission_name, full_name, text_body, 
-                                  author, upvotes, downvotes, 
-                                  created_timestamp, job_id)
+                def comment_generator() -> Generator[ORM_comment, None, None]:
+                    """Helper function to create a comment generator"""
 
-        return submission_instance, comment_generator()
+                    for comment in submission.comments.list():
+                        full_name = comment.fullname
+                        text_body = comment.body
+                        upvotes = comment.ups
+                        downvotes = comment.downs
+                        created_timestamp = int(comment.created)
+                        author = "" #assume deleted author account
+
+                        if comment.author: #if author account was not deleted
+                            author = comment.author_fullname
+
+                        yield ORM_comment(submission_name, full_name, text_body, 
+                                          author, upvotes, downvotes, 
+                                          created_timestamp, job_id)
+
+                return submission_instance, comment_generator()
+            
+            except praw.exceptions.PRAWException as e:
+                logging.warn(e)
+                logging.warn(f"Retrying {i+1} out of {self.application_level_retries}")
 
     def parse_submission_list(self, job_id: str, submissions: list[str], comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[tuple[ORM_submission, Generator[ORM_comment, None, None]], None, None]:
         """Description: Parses specified submissions and their comments. Takes considerable time to execute (approximately 1 second + time to replace "more comments").\n
@@ -153,39 +176,47 @@ class Extended_Reddit_RO(Reddit):
             comment_replace_threshold - how many additional replies "more comments" must have to incur a replacement call;\n
         Returns: Tuple of Subreddit and generator of Subreddit's active users grouped by submissions"""
 
-        subreddit = self.subreddit(subreddit_display_name)
-        full_url = "reddit.com" + subreddit.url
-        sub_orm = ORM_subreddit(subreddit.fullname, subreddit_display_name, full_url, job_id)
+        for i in range(self.application_level_retries):
+            try:
 
-        submission_generator = None
-        match sort_discipline:
-            case "hot":
-                submission_generator = subreddit.hot(limit = limit)
-            case "new":
-                submission_generator = subreddit.new(limit = limit)
-            case "top":
-                submission_generator = subreddit.top(time_filter = "month", limit = limit)
-            case _:
-                submission_generator = subreddit.hot(limit = limit)
+                subreddit = self.subreddit(subreddit_display_name)
+                full_url = "reddit.com" + subreddit.url
+                sub_orm = ORM_subreddit(subreddit.fullname, subreddit_display_name, full_url, job_id)
 
-        def author_generator() -> Generator[ORM_subreddit_active_users, None, None]:
-            """Helper function to create a comment author generator"""
+                submission_generator = None
+                match sort_discipline:
+                    case "hot":
+                        submission_generator = subreddit.hot(limit = limit)
+                    case "new":
+                        submission_generator = subreddit.new(limit = limit)
+                    case "top":
+                        submission_generator = subreddit.top(time_filter = "month", limit = limit)
+                    case _:
+                        submission_generator = subreddit.hot(limit = limit)
 
-            for submission in submission_generator:
-                total_user_list = []
+                def author_generator() -> Generator[ORM_subreddit_active_users, None, None]:
+                    """Helper function to create a comment author generator"""
 
-                if submission.author: #Submissions from deleted accounts set this field to None
-                    total_user_list.append(ORM_subreddit_active_users(subreddit.fullname, submission.author_fullname, job_id))
+                    for submission in submission_generator:
+                        total_user_list = []
 
-                submission.comments.replace_more(limit = comment_replace_limit, threshold = comment_replace_threshold)
+                        if submission.author: #Submissions from deleted accounts set this field to None
+                            total_user_list.append(ORM_subreddit_active_users(subreddit.fullname, submission.author_fullname, job_id))
 
-                for comment in submission.comments.list():
-                    if comment.author: #Comments from deleted accounts set this field to None
-                        total_user_list.append(ORM_subreddit_active_users(subreddit.fullname, comment.author_fullname, job_id))
+                        submission.comments.replace_more(limit = comment_replace_limit, threshold = comment_replace_threshold)
 
-                yield total_user_list
+                        for comment in submission.comments.list():
+                            if comment.author: #Comments from deleted accounts set this field to None
+                                total_user_list.append(ORM_subreddit_active_users(subreddit.fullname, comment.author_fullname, job_id))
 
-        return sub_orm, author_generator()
+                        yield total_user_list
+
+                return sub_orm, author_generator()
+        
+            except praw.exceptions.PRAWException as e:
+                logging.warn(e)
+                logging.warn(f"Retrying {i+1} out of {self.application_level_retries}")
+
     
     def parse_subreddits_for_users(self, job_id: str, subreddits: list, sort_discipline: str = "hot", limit: int = 1000, comment_replace_limit: int | None = 0, comment_replace_threshold: int = 1) -> Generator[tuple[ORM_subreddit, Generator[list[ORM_subreddit_active_users], None, None]], None, None]:
         """Description: Parses active users of specified subreddits. Users are selected among posters and commentors. Active users are defined by sort_discipline. Submissions from deleted accounts are dropped. Method uses 1 network call for every 100 submissions (~1 sec for 100 submissions) + network call for every comment replacement.\n
