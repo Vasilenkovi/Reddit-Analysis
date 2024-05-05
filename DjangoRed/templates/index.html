@@ -157,13 +157,18 @@
         }
         updateBannerVisibility();
       }
-
-      var buildUrl = "../static/unity/Build";
-      var loaderUrl = buildUrl + "/Test Build.loader.js";
+      
+      // var buildUrl = "../static/unity/Build";
+      var buildUrl = "{% static 'unity/Build' %}";
+      // var loaderUrl = buildUrl + "/Test Build.loader.js";
+      var loaderUrl = "{% static 'js/unity_build/Test Build.loader.js' %}";
       var config = {
-        dataUrl: buildUrl + "/Test Build.data.gz",
-        frameworkUrl: buildUrl + "/Test Build.framework.js.gz",
-        codeUrl: buildUrl + "/Test Build.wasm.gz",
+        // dataUrl: buildUrl + "/Test Build.data.gz",
+        // frameworkUrl: buildUrl + "/Test Build.framework.js.gz",
+        // codeUrl: buildUrl + "/Test Build.wasm.gz",
+        dataUrl: "{% static 'unity/Build/Test Build.data.unityweb' %}",
+        frameworkUrl: "{% static 'unity/Build/Test Build.framework.js.unityweb' %}",
+        codeUrl: "{% static 'unity/Build/Test Build.wasm.unityweb' %}",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "RedditGraphs3D",

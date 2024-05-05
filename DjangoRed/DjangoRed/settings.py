@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'HomeApp',
     'VisualizationApp',
     'ParserApp',
-    'DatasetViewApp'
+    'DatasetViewApp',
+    'AccountsApp'
 ]
 
 MIDDLEWARE = [
@@ -90,8 +91,12 @@ ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'reddit_test_accounts',
+        'USER': 'test_accounts_client',
+        'PASSWORD': 't9a!4Ic1G+X',
+        'HOST': 'localhost',
+        'PORT': '8001',
     },
 }
 
