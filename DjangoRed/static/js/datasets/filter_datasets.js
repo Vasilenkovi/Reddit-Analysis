@@ -1,5 +1,5 @@
 function filter_datasets(e) {
-    const search_str = e.target.value
+    const search_str = e.target.value.trim()
     const set_type = e.target.dataset.set_type
     const cards = document.getElementsByClassName(set_type)
 

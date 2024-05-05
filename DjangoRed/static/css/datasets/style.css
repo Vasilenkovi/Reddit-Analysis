@@ -52,3 +52,7 @@
 .scrollbar {
     scrollbar-width: none;
 }
+
+#add-dataset {
+    min-width: 7em;
+}

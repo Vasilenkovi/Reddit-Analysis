@@ -1,7 +1,9 @@
 from django.shortcuts import render
 import networkx as nx
 import matplotlib.pyplot as plt
+from matplotlib import colormaps
 from mpld3 import fig_to_html
+from itertools import cycle
 from DatasetViewApp.db_queries import sub_select_user_dataset_from_ids
 from DatasetViewApp.forms import Dataset_operation_form
 from IdApp.task_id_manager import Job_types
@@ -12,7 +14,9 @@ def base_graph_view(request):
         "dataset_ids": [],
         "error": None,
         "downloadable": None,
-        "html_embed": None
+        "html_embed": None,
+        "centrality": None,
+        "communities": None
     }
     
     if request.method == "GET":
@@ -66,24 +70,60 @@ def base_graph_view(request):
                 edge_list.append((i_sub, j_sub, jaccard))
                 edge_labels_dict[(i_sub, j_sub)] = jaccard
 
-            
+    # Construct graph
     G = nx.Graph()
     G.add_nodes_from(sub_set)
     G.add_weighted_edges_from(edge_list)
     pos = nx.spring_layout(G)
     weights = tuple(map(lambda x: x[2], edge_list))
 
+    # Centrality
+    centrality_dict = nx.eigenvector_centrality_numpy(G, weight = "weight")
+    centrality_list_sorted = list(map( 
+        lambda x: (x[0], round(x[1], 5)), 
+        centrality_dict.items())
+    )
+    centrality_list_sorted.sort(key = lambda x: x[1], reverse = True)
+
+    context["centrality"] = centrality_list_sorted
+
+    # Communities
+    community_list = nx.community.greedy_modularity_communities(
+        G, 
+        cutoff = 2,
+        best_n = len(sub_set) // 2, 
+        weight = "weight"
+    )
+    community_list = [list(x) for x in community_list]
+
+    context["communities"] = community_list
+
+    # Draw graph
     fig, ax = plt.subplots(1, 1)
+    
+    node_color_map = {}
+    for community, color in zip(community_list, cycle(colormaps['tab20'].colors)):
+        for node in community:
+            node_color_map[node] = color
+
     nx.draw_networkx(
-                        G, 
-                        pos = pos,
-                        ax = ax, 
-                        edge_cmap = plt.cm.gnuplot2,
-                        edge_vmin = 0.0, 
-                        edge_vmax = max_jaccard*1.1, 
-                        edge_color = weights
-                    )
-    nx.draw_networkx_edge_labels(G, pos = pos, edge_labels = edge_labels_dict)
+        G, 
+        pos = pos,
+        ax = ax, 
+        edge_cmap = plt.cm.gnuplot2,
+        edge_vmin = 0.0, 
+        edge_vmax = max_jaccard*1.1, 
+        edge_color = weights,
+        node_color = list(node_color_map.values())
+    )
+    
+    nx.draw_networkx_edge_labels(
+        G, 
+        pos = pos, 
+        ax = ax, 
+        edge_labels = edge_labels_dict
+    )
+
     html_embed_string = fig_to_html(fig)
     context["html_embed"] = html_embed_string
 
