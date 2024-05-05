@@ -1,4 +1,4 @@
-let url = `ws://${window.location.host}/ws/socket-server-clustering/`
+let url = `ws://${window.location.host}:80/ws/socket-server-clustering/`
 const clusSocket = new WebSocket(url)
 var isRecieving = false;
 var startedRecievingData = false;
@@ -62,12 +62,7 @@ function createString() {
     {
         messageDict[clasterizationParam.name] = clasterizationParam.value
     }
-    // var i = 0
-    // for (var pair of formData.entries()) {
-    //     if (i == 6) continue;
-    //     messageDict[pair[0]] = pair[1];
-    //     i += 1;
-    // }
+    
     isRecieving = true;
     console.log(messageDict)
     clusSocket.send(JSON.stringify(messageDict))

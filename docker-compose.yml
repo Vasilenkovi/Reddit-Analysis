@@ -10,8 +10,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  mysqlRed:
-    image: shizvizor/redmysql
+  mysqlred:
+    build: ./MySQL/
     ports:
       - 8001:3306
     command: --lower_case_table_names=1
