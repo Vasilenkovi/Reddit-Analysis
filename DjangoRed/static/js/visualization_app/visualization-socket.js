@@ -1,4 +1,4 @@
-let url = `ws://${window.location.host}/ws/socket-server-clustering/`
+let url = `ws://${window.location.host}:80/ws/socket-server-clustering/`
 const clusSocket = new WebSocket(url)
 var isRecieving = false;
 var startedRecievingData = false;
