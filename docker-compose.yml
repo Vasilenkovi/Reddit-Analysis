@@ -1,17 +1,47 @@
-version: '3.8'
+version: '3.0'
 
 services:
+  backend:
+    image: shizvizor/djangoapp
+#    command: "python manage.py runserver 0.0.0.0:8000"
+#    command: "python manage.py collectstatic --noinput"
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & celery -A DjangoRed worker --loglevel=INFO"
+#    command: "gunicorn --log-level debug --workers 3 DjangoRed.asgi:application --worker-class uvicorn.workers.UvicornWorker -b 0.0.0.0:8000"
+    expose:
+      - "8000"
+    volumes:
+     - ./DjangoRed/static/:/static/
+    links:
+     - 'mysqlRed'
+     - 'message-broker'
   nginx:
-    build: ./nginx
+    image: shizvizor/nginx
     ports:
-     - 1337:80
+     - 80:80
+    command: ""
+    healthcheck:
+        test: ["CMD", "curl", "-fk", "http://localhost:8000"]
+        interval: 5s
+        timeout: 6s
+        retries: 10
+    environment:
+      - NGINX_HOST=51.250.112.4
+      - NGINX_PORT=80
+      - DAPHNE_HOST=backend
+      - DAPHNE_PORT=8000
+    volumes:
+      - ./DjangoRed/static/:/static/
   message-broker:
     image: rabbitmq:3-management
     ports:
       - 5672:5672
       - 15672:15672
-  mysqlred:
-    build: ./MySQL/
+  mysqlRed:
+    image: shizvizor/redmysql
     ports:
-      - 8001:3306
+      - 3307:3306
     command: --lower_case_table_names=1
+#    command: --bind_address=%
+    volumes:
+      - /var/lib/mysql
+
