@@ -48,10 +48,23 @@
         </form>
 
         {% if html_embed %}
-            {% autoescape off %}
-                {{ html_embed }}
-            {% endautoescape %}
+            <div class="container-fluid my-5">
+                <div class="row mx-auto center-outline">
+                    {% autoescape off %}
+                        {{ html_embed }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        {% else %}
+            <div class="container-fluid my-5">
+                <div class="row mx-auto center-outline">
+                    <p class="text display-6">
+                        Select datasets at the top of the page
+                    </p>
+                </div>
+            </div>
         {% endif %}
+
 
     {% endblock %}
 

@@ -13,3 +13,7 @@
 .parser-form-users {
     display: none;
 }
+
+.w-fit {
+    width: fit-content;;
+}
