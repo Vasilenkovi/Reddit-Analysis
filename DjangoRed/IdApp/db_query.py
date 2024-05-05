@@ -25,6 +25,31 @@ def select_in_shortcut(database_dict: dict, f_query: str, params: dict, in_param
 
     return execute(database_dict, query, params)
 
+def select_in_limit(database_dict: dict, f_query: str, params: dict, in_params: list, limit: int = 1000, offset: int = 0) -> list[tuple]:
+    """Shortcut for variable length IN queries in injection-safe manner. \n
+        parameters: \n
+        \t database_dict - dict with db connection info. \n
+        \t f_query - query as f-string where {in_expr} will be replaced with IN (...) and {limit} and {offset} will be substituted. \n
+        \t params - regular parameters for query. This dict will be modified with in_params values. \n
+        \t in_params - list of IN expression values. \n
+        """
+
+    in_expr = "IN ( "
+
+    wrapped = []
+    for s in in_params:
+        params[s] = s
+        wrapped.append(f"%({s})s")
+
+    in_expr += ", ".join(wrapped) +" )"
+
+    query = f_query.format(
+        in_expr = in_expr,
+        limit = limit,
+        offset = offset
+    )
+
+    return execute(database_dict, query, params)
 
 def execute(database_dict: dict, query: str, params: dict) -> list[tuple]:
 

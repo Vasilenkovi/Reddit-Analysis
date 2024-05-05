@@ -42,6 +42,14 @@
                     {% if downloadable %}
                         <input formaction="{% url 'DatasetViewApp:download' %}" class="btn complete mx-1" type="submit" value="Download CSV">
                     {% endif %}
+                    <div class="d-flex justify-content-end w-100">
+                        {% if previous_page %}
+                            <input formaction="{% url 'DatasetViewApp:details_page' previous_page %}" class="btn complete mx-1" type="submit" value="previous_page">
+                        {% endif %}
+                        {% if next_page %}
+                            <input formaction="{% url 'DatasetViewApp:details_page' next_page %}" class="btn complete mx-1" type="submit" value="next_page">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
