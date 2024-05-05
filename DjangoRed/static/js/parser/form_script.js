@@ -8,6 +8,8 @@ function generic_add_more(e) {
     new_input.classList.add("ephemeral-multiple")
     new_input.classList.add("btn")
     new_input.classList.add("active")
+    new_input.classList.add("my-1")
+    new_input.classList.add("text-start")
     new_input.type = "text"
 
     ephemeral_div.appendChild(new_input)

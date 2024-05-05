@@ -11,6 +11,7 @@ function add_dataset_button(e) {
         input_tag.name = dataset_id
         input_tag.id = dataset_id
         input_tag.checked = true
+        input_tag.classList.add("mx-1")
 
     div_container.appendChild(input_tag)
 

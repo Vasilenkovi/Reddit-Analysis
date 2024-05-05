@@ -1,3 +1,11 @@
 g.mpld3-xaxis, g.mpld3-yaxis {
     display: none;
 }
+
+.center-outline {
+    border: 1em solid #292e32;
+    background-color: #5489f2;
+    border-radius: 2em;
+    width: fit-content;
+    height: fit-content;
+}
