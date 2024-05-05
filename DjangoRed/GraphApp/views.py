@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import matplotlib.pyplot as plt
+import networkx as nx
 from matplotlib import colormaps
 from mpld3 import fig_to_html
 from itertools import cycle
@@ -115,7 +116,7 @@ def base_graph_view(request):
         edge_color = weights,
         node_color = list(node_color_map.values())
     )
-    
+
     nx.draw_networkx_edge_labels(
         G, 
         pos = pos, 
