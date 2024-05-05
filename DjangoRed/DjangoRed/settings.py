@@ -32,9 +32,7 @@ SECRET_KEY = 'django-insecure-ecwm#*8s14myek8xi+%yc1tk$v2@=&l18=cg8(a+rk7rrz+k@f
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4']
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '51.250.112.4', '0.0.0.0', 'backendserv']
 
 # Application definition
 
@@ -52,7 +50,8 @@ INSTALLED_APPS = [
     'HomeApp',
     'VisualizationApp',
     'ParserApp',
-    'DatasetViewApp'
+    'DatasetViewApp',
+    'AccountsApp'
 ]
 
 MIDDLEWARE = [
@@ -92,8 +91,12 @@ ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'reddit_test_accounts',
+        'USER': 'test_accounts_client',
+        'PASSWORD': 't9a!4Ic1G+X',
+        'HOST': 'localhost',
+        'PORT': '8001',
     },
 }
 
@@ -147,7 +150,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [STATIC_DIR]
-
+STATIC_ROOT = "/statics"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -164,7 +167,9 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-
+CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY=None

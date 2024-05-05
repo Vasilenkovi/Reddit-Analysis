@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib import colormaps
 from mpld3 import fig_to_html
