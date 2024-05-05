@@ -1,6 +1,7 @@
 WebRed/Reddit-Analysis
 /venv
 /.venv
+/.vscode
 *.pyc
 WebRed/DjangoRed/__pycache__
 compose-dev.yaml
