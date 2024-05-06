@@ -73,20 +73,28 @@ var comments = ['keke', 'best thing ever', 'you are not ready', 'C# is the best 
 function getRandom (list) {
     return list[Math.floor((Math.random()*list.length))];
 }
+const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 async function ImitateDotTextProcess() {
+    if (isRecieving)
+    {
+        alert("Already recieving data");
+        return;
+    }
     if (!startedRecievingData) 
     {
         gameInstance.SendMessage('FrontendConnector', 'StartRecievingDotText');
         startedRecievingData = true;
     }
+    isRecieving = true;
     let messageDict = {}
     await sleep(2000);
     messageDict['text'] = getRandom(comments);
     let jsonString = JSON.stringify(messageDict);
-
+    console.log(jsonString);
     gameInstance.SendMessage('FrontendConnector', 'DotTextRecieved', jsonString);
     startedRecievingData = false;
+    isRecieving = false;
 }
 
 function createStringNoJSON() {

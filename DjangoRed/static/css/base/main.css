@@ -17,8 +17,9 @@ hr {
 }
 
 .main-content {
-    margin-left:120px;
-    padding: 20px;
+    /* margin-top: px; */
+    margin-left: 120px;
+    padding: 80px;
 }
 
 /* .content-padding {

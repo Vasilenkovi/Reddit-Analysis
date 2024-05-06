@@ -44,7 +44,7 @@ def register(request):
         register_form = UserRegistrationForm()
     return render(request,
                 'accounts/register.html',
-                {'register_form': register_form})
+                {'registration_form': register_form})
 
 @login_required(login_url='/account/login/')
 def user_profile(request):

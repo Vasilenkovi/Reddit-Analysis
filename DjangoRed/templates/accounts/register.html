@@ -3,11 +3,42 @@
 {% block title %}Create an account{% endblock %}
 
 {% block content %}
-    <h1>Create an account</h1>
-    <p>Please, sign up using the following form:</p>
-    <form method="post">
-        {{ register_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Register"></p>
-    </form>
+    
+    <div class="container content-padding">
+        <h1 class="main-head">Register</h1>
+        <div class="main-interface main-form">
+            {% load widget_tweaks %}
+            <form method="post">
+                <h1>Create an account</h1>
+                {% if form.errors %}
+                    <p>
+                        Your username and password didn't match.
+                        Please try again.
+                    </p>
+                {% else %}
+                    <p>Please, sign up using the following form:</p>
+                {% endif %}
+
+                <label for="{{ registration_form.username.id_for_label }}">Username</label><br>
+                {% render_field registration_form.username class="form-control btn active my-1 text-start" %}<br>
+                        
+                <label for="{{ registration_form.email.id_for_label }}">Email</label><br>
+                {% render_field registration_form.email class="form-control btn active my-1 text-start" %}<br>
+                
+                <label for="{{ registration_form.password1.id_for_label }}">Password</label><br>
+                {% render_field registration_form.password1 class="form-control btn active my-1 text-start" %}<br>
+                
+                <label for="{{ registration_form.password2.id_for_label }}">Confirm password</label><br>
+                {% render_field registration_form.password2 class="form-control btn active my-1 text-start" %}<br>
+                
+                <label for="{{ registration_form.date_of_birth.id_for_label }}">Date of birth (YYYY-MM-DD)</label><br>
+                {% render_field registration_form.date_of_birth class="form-control btn active my-1 text-start" %}<br>
+                
+                <!-- {{ register_form.as_p }} -->
+                {% csrf_token %}
+                <p><input type="submit" value="Register" class="parser-form-submit btn complete"></p>
+            </form>
+        </div>
+    </div>
+    
 {% endblock %}
