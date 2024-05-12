@@ -1,9 +1,12 @@
 .card-class {
-    width: 20%;
-    min-width: 20% !important;
-    aspect-ratio: 1/1;
+    width: 15%;
+    min-width: 15% !important;
     background-color: #292e32 !important;
     border: 1px solid white !important;
+}
+
+.card-img-top-sizing {
+    aspect-ratio: 2 / 1;
 }
 
 .card-body {
@@ -16,6 +19,36 @@
 }
 
 .grid-button {
-    
     margin-top: 20px;
+}
+
+.background-border {
+    height: 45vh;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 5em;
+    background-color: #292e32;
+    overflow: auto;
+}
+
+.right-vertical-rule {
+    border-right: 2px solid #1f2227;
+}
+
+.background-small {
+    width: 15em !important;
+    max-height: 6em;
+    border-radius: 1em;
+    background-color: #292e32;
+    overflow: auto;
+}
+
+.checkbox-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.scrollbar {
+    scrollbar-width: none;
 }

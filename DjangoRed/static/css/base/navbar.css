@@ -44,12 +44,9 @@
 .nav-item > a:hover {
     color: white;
 }
-
-
   
 .nav-item:hover {
     background-color: #555;
-    
 }
 
 .navbar-profile {

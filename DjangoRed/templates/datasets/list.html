@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {% block scripts %}
-        <script src="{% static 'js/parser/form_script.js' %}"></script> 
+        <script src="{% static 'js/datasets/filter_datasets.js' %}"></script> 
         <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
     {% endblock %}
 </head>
@@ -19,29 +19,33 @@
 
     {% load widget_tweaks %}
 
-    <form method="post">
+    <form method="post" onkeydown="return event.key != 'Enter'">
         {% csrf_token %}
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-sm-12">
-                    <div class="main-interface grid-buttons">
+            <div class="row background-border scrollbar">
+                <div class="col-lg-2 col-sm-12 right-vertical-rule">
+                    <div class="grid-buttons">
                         <h4>Options:</h4>
                         <div><input type="submit" class="btn complete grid-button" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
                         <div><input type="submit" class="btn complete grid-button" formaction="/statistic" value="statistic"></div>
                         <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                        <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="comment_set"></div>
                     </div>
                 </div>
-                <div class="col-lg-9 col-sm-12 main-interface">
+                <div class="col-lg-9 col-sm-12">
                     <div class="d-flex flex-row flex-nowrap overflow-auto">
                         {% for set in comment_sets %}
-                            <div class="card m-2 card-class">
-                                <img src="{% static 'img/comment.png' %}" class="card-img-top" alt="comments">
-                                <div class="card-body">
-                                    <p class="card-text">{{set.0}}</p>
-                                    <p class="card-text">{{set.1}}</p>
-                                    <p class="card-text">{{set.2}}</p>
-                                </div>
-                                <input type="checkbox" id="{{set.0}}" name="{{set.0}}">
+                            <div class="card m-2 card-class comment_set">
+                                <label for="{{set.0}}" class="label-pos">
+                                    <img src="{% static 'img/comment.png' %}" class="card-img-top card-img-top-sizing" alt="comments">
+                                    <div class="card-body">
+                                        <p class="card-text set-id">{{set.0}}</p>
+                                        <p class="card-text px-2">{{set.1.type}}</p>
+                                        <p class="card-text px-2 set-context">{{set.1.context}}</p>
+                                        <p class="card-text">{{set.2}}</p>
+                                    </div>
+                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}"  class="checkbox-absolute">
+                                </label>
                             </div>
                         {% endfor %}
                     </div>
@@ -50,28 +54,32 @@
         </div>
     </form>
 
-    <form method="post">
+    <form method="post" onkeydown="return event.key != 'Enter'">
         {% csrf_token %}
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-sm-12">
-                <div class="main-interface grid-buttons">
-                    <h4>Options:</h4>
-                    <div><input type="submit" class="btn complete grid-button" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
-                    <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
-                </div>                    
+            <div class="row background-border scrollbar">
+                <div class="col-lg-2 col-sm-12 right-vertical-rule">
+                    <div class="grid-buttons">
+                        <h4>Options:</h4>
+                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
+                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                        <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="user_sets"></div>
+                    </div>                    
                 </div>
                 <div class="col-lg-9 col-sm-12">
                     <div class="d-flex flex-row flex-nowrap overflow-auto">
                         {% for set in user_sets %}
-                            <div class="card m-2 card-class">
-                                <img src="{% static 'img/user.png' %}" class="card-img-top" alt="users">
-                                <div class="card-body">
-                                    <p class="card-text">{{set.0}}</p>
-                                    <p class="card-text">{{set.1}}</p>
-                                    <p class="card-text">{{set.2}}</p>
-                                </div>
-                                <input type="checkbox" id="{{set.0}}" name="{{set.0}}">
+                            <div class="card m-2 card-class user_sets">
+                                <label for="{{set.0}}" class="label-pos">
+                                    <img src="{% static 'img/user.png' %}" class="card-img-top card-img-top-sizing" alt="users">
+                                    <div class="card-body">
+                                        <p class="card-text set-id">{{set.0}}</p>
+                                        <p class="card-text px-2">{{set.1.type}}</p>
+                                        <p class="card-text px-2 set-context">{{set.1.context}}</p>
+                                        <p class="card-text">{{set.2}}</p>
+                                    </div>
+                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}" class="checkbox-absolute">
+                                </label>
                             </div>
                         {% endfor %}
                     </div>

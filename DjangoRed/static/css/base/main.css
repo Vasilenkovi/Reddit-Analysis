@@ -93,3 +93,20 @@ hr {
     background-color: white !important;
 }
 
+.grid-buttons {
+    display: grid;
+    
+}
+
+.grid-left {
+    justify-self: end;
+}
+
+.grid-button {
+    justify-self: center;
+    margin-top: 20px;
+}
+
+.w-fit {
+    width: fit-content;
+}

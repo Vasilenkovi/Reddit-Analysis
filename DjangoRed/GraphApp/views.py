@@ -1,10 +1,10 @@
 from django.shortcuts import render
+import networkx as nx
 import matplotlib.pyplot as plt
-from mpld3 import fig_to_html, plugins
+from mpld3 import fig_to_html
 from DatasetViewApp.db_queries import sub_select_user_dataset_from_ids
 from DatasetViewApp.forms import Dataset_operation_form
 from IdApp.task_id_manager import Job_types
-from collections import Counter
 
 # Create your views here.
 def base_graph_view(request):  
@@ -59,7 +59,7 @@ def base_graph_view(request):
             j_sub, j_users = sub_users_iter[j]
             intersect = len(i_users.intersection(j_users))
             union = len(i_users.union(j_users))
-            jaccard = intersect / union
+            jaccard = round(intersect / union, 5)
 
             if jaccard > 0:
                 max_jaccard = max(max_jaccard, jaccard)

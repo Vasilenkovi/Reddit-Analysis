@@ -27,7 +27,7 @@ def get_task_id(job: Job_types, query: dict) -> str:
         case _:
             raise AttributeError("Unregistered job type. Consult task_id_manager.Job_types")
             
-def __mysql_query(job_type: Job_types, table_name: Valid_tables, query: dict) -> str:
+def __mysql_query(job_type: Job_types, table_name: Valid_tables, in_query: dict) -> str:
     if table_name not in vars(Valid_tables).keys():
         raise AttributeError("Unsupported table name")
 
@@ -38,7 +38,7 @@ def __mysql_query(job_type: Job_types, table_name: Valid_tables, query: dict) ->
     query = """INSERT INTO reddit_job_id.{safe_table_name}(query, created_timestamp) 
             VALUES (%(query)s, FROM_UNIXTIME(%(timestamp)s))""".format(safe_table_name = table_name)
     cur.execute(query, params = {
-        'query': dumps(query),
+        'query': dumps(in_query),
         'timestamp': int(time.time())
     })
     cur.reset()

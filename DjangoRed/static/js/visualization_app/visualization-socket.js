@@ -62,12 +62,7 @@ function createString() {
     {
         messageDict[clasterizationParam.name] = clasterizationParam.value
     }
-    // var i = 0
-    // for (var pair of formData.entries()) {
-    //     if (i == 6) continue;
-    //     messageDict[pair[0]] = pair[1];
-    //     i += 1;
-    // }
+    
     isRecieving = true;
     console.log(messageDict)
     clusSocket.send(JSON.stringify(messageDict))
