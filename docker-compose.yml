@@ -2,20 +2,20 @@ version: '3.0'
 
 services:
   backend:
-    image: shizvizor/djangoapp
+    build: ./DjangoRed
 #    command: "python manage.py runserver 0.0.0.0:8000"
 #    command: "python manage.py collectstatic --noinput"
-    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & celery -A DjangoRed worker --loglevel=INFO"
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & python ./DjangoRed/manage.py makemigrations & python ./DjangoRed/manage.py migrate & celery -A DjangoRed worker --loglevel=INFO"
 #    command: "gunicorn --log-level debug --workers 3 DjangoRed.asgi:application --worker-class uvicorn.workers.UvicornWorker -b 0.0.0.0:8000"
     expose:
       - "8000"
     volumes:
      - ./DjangoRed/static/:/static/
     links:
-     - 'mysqlRed'
+     - 'mysqlred'
      - 'message-broker'
   nginx:
-    image: shizvizor/nginx
+    build: ./nginx
     ports:
      - 80:80
     command: ""
@@ -36,8 +36,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  mysqlRed:
-    image: shizvizor/redmysql
+  mysqlred:
+    build: ./MySQL
     ports:
       - 3307:3306
     command: --lower_case_table_names=1
