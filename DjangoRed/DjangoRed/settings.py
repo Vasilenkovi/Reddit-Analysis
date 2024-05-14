@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'HomeApp',
     'VisualizationApp',
     'ParserApp',
-    'DatasetViewApp'
+    'DatasetViewApp',
+    'AccountsApp'
 ]
 
 MIDDLEWARE = [
@@ -90,8 +91,12 @@ ASGI_APPLICATION = 'DjangoRed.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'reddit_test_accounts',
+        'USER': 'test_accounts_client',
+        'PASSWORD': 't9a!4Ic1G+X',
+        'HOST': 'localhost',
+        'PORT': '8001',
     },
 }
 
@@ -168,3 +173,9 @@ CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
 SESSION_DATASET_IDS = "dataset_ids"
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY=None
+
+AUTH_USER_MODEL = "AccountsApp.UserAccount"
+
+LOGIN_REDIRECT_URL = 'HomeApp:home'
+LOGIN_URL = 'HomeApp:home'
+LOGOUT_URL = 'HomeApp:home'

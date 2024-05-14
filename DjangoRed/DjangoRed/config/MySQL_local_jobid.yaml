@@ -1,5 +1,5 @@
 user: job_id_client
 password: ~X+qPJX<w:FKu$O
 database: reddit_job_id
-host: mysqlRed
-port: 3306
+host: localhost
+port: 8001

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+   
+    
+
+    {% load widget_tweaks %}
+    <div class="container content-padding">
+        <h1 class="main-head">Log-in</h1>
+        <div class="main-interface main-form">
+            {% if form.errors %}
+                <p>
+                    Your username and password didn't match.
+                    Please try again.
+                </p>
+            {% else %}
+                <p>Please, use the following form to log-in:</p>
+            {% endif %}
+            <form action="{% url 'AccountsApp:login' %}" method="post">
+                <label for="{{ login_form.username.id_for_label }}">Username</label><br>
+                {% render_field login_form.username class="form-control btn active my-1 text-start" %}<br>
+                
+                <label for="{{ login_form.password.id_for_label }}">Password</label><br>
+                {% render_field login_form.password class="form-control btn active my-1 text-start" %}<br>
+                
+                <!-- {{ login_form.as_p }} -->
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}" />
+                <p><input type="submit" value="Log-in" class="parser-form-submit btn complete"></p>
+            </form>
+        </div>
+    </div>
+    
+    
+{% endblock %}

@@ -49,11 +49,58 @@
 
         {% if html_embed %}
             <div class="container-fluid my-5">
-                <div class="row mx-auto center-outline">
+                <div class="row mx-auto center-outline my-1">
                     {% autoescape off %}
                         {{ html_embed }}
                     {% endautoescape %}
                 </div>
+
+                {% if centrality %}
+                    <div class="row mx-auto center-outline my-1">
+                        <p class="text display-6 my-1">
+                            Eigenvector centrality of nodes
+                        </p>
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <td>Node</td>
+                                    <td>Centrality</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for node, value in centrality %}
+                                    <tr>
+                                        <td>{{node}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+                {% if communities %}
+                    <div class="row mx-auto center-outline my-1">
+                        <p class="text display-6 my-1">
+                            Maximum modularity communities
+                        </p>
+                        <table class="table table-dark table-striped">
+                            <tbody>
+                                {% for com in communities %}
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                {% for node in com %}
+                                                    <li>{{node}}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
             </div>
         {% else %}
             <div class="container-fluid my-5">

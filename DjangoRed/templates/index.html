@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 
@@ -17,28 +18,28 @@
     <link rel="shortcut icon" href="{% static 'unity/TemplateData/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'unity/TemplateData/style.css' %}">
     {% endblock %}
-
-
+    
     {% block scripts %}
-      <script src="{% static 'js/visualization_app/visualization-socket.js' %}"></script>
-      <script src="{% static 'js/visualization_app/dataset_check.js' %}"></script>
+      <script src="{% static 'js/visualization_app/visualization-socket.js' %}"></script> 
+      <script src="{% static 'js/visualization_app/dataset_check.js' %}"></script> 
     {% endblock %}
-
+    
   </head>
   <body>
     {% block content %}
-
-
+    
+      
       {% load widget_tweaks %}
       <div class="container content-padding">
-
-        <h1 class="main-head">3D cluster visualization app</h1>
+        
+        <button id="imitate-button" onclick="ImitateDotTextProcess()" style="display: none;">keke</button>
+        
+        <h1 class="main-head ">3D cluster visualization app</h1>
         <div class="main-interface main-form">
           <form method="post" id="vis-app-form">
-
+            
             <div id="dataset-holder">
-
-
+            
                 <h4 id="form-header">No datasets selcted</h4>
                 {% for dataset_id in dataset_ids %}
                     <div>
@@ -47,7 +48,7 @@
                     </div>
                 {% endfor %}
             </div>
-
+            
             <div class="row form-field">
               <div class="col-7">
                 <input type="text" class="form-control" name="name-for-added-datasets" id="add-dataset-source" contentEditable="true">
@@ -96,7 +97,7 @@
                 {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params btn active" %}
               </div>
             </div>
-
+            
             <div class="row form-field">
               <div class="col form-input">
                 {% csrf_token %}
@@ -108,6 +109,7 @@
       </div>
 
 
+          
         <div id="unity-container" class="unity-desktop" style="margin: 550px 100px 100px 100px">
           <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
           <div id="unity-loading-bar">
@@ -123,11 +125,9 @@
             <div id="unity-build-title">RedditGraphs3D</div>
           </div>
         </div>
-
-
+    
       </div>
-
-
+      
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -160,7 +160,7 @@
         }
         updateBannerVisibility();
       }
-
+      
       // var buildUrl = "../static/unity/Build";
       var buildUrl = "{% static 'unity/Build' %}";
       // var loaderUrl = buildUrl + "/Test Build.loader.js";

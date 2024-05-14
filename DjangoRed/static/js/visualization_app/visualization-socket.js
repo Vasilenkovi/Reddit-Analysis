@@ -1,4 +1,4 @@
-let url = `ws://${window.location.host}:80/ws/socket-server-clustering/`
+let url = `ws://${window.location.host}/ws/socket-server-clustering/`
 const clusSocket = new WebSocket(url)
 var isRecieving = false;
 var startedRecievingData = false;
@@ -66,6 +66,35 @@ function createString() {
     isRecieving = true;
     console.log(messageDict)
     clusSocket.send(JSON.stringify(messageDict))
+}
+
+var comments = ['keke', 'best thing ever', 'you are not ready', 'C# is the best programming language ever']
+
+function getRandom (list) {
+    return list[Math.floor((Math.random()*list.length))];
+}
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+async function ImitateDotTextProcess() {
+    if (isRecieving)
+    {
+        alert("Already recieving data");
+        return;
+    }
+    if (!startedRecievingData) 
+    {
+        gameInstance.SendMessage('FrontendConnector', 'StartRecievingDotText');
+        startedRecievingData = true;
+    }
+    isRecieving = true;
+    let messageDict = {}
+    await sleep(2000);
+    messageDict['text'] = getRandom(comments);
+    let jsonString = JSON.stringify(messageDict);
+    console.log(jsonString);
+    gameInstance.SendMessage('FrontendConnector', 'DotTextRecieved', jsonString);
+    startedRecievingData = false;
+    isRecieving = false;
 }
 
 function createStringNoJSON() {
