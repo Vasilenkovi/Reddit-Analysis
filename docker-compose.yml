@@ -3,7 +3,7 @@ services:
 
   backend:
     build: ./DjangoRed
-    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & python ./DjangoRed/manage.py makemigrations & python ./DjangoRed/manage.py migrate & celery -A DjangoRed worker --loglevel=INFO"
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & python ./DjangoRed/manage.py makemigrations & python manage.py createsuperuser --noinput --username Vasilenich --email Vasilenich@bezd.com --password Vasilenich &  celery -A DjangoRed worker --loglevel=INFO"
     expose:
       - "8000"
     volumes:
@@ -34,7 +34,6 @@ services:
       - 5672:5672
       - 15672:15672
   mysqlred:
-
     build: ./MySQL
     ports:
       - 3307:3306

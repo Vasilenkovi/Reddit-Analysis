@@ -22,7 +22,9 @@ SECRET_KEY = 'django-insecure-ecwm#*8s14myek8xi+%yc1tk$v2@=&l18=cg8(a+rk7rrz+k@f
 # ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-
+DJANGO_SUPERUSER_PASSWORD="Vasilenich"
+DJANGO_SUPERUSER_USERNAME="Vasilenich"
+DJANGO_SUPERUSER_EMAIL="my_user@domain.com"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -95,8 +97,8 @@ DATABASES = {
         'NAME': 'reddit_test_accounts',
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
-        'HOST': 'localhost',
-        'PORT': '8001',
+        'HOST': 'mysqlred',
+        'PORT': '3306',
     },
 }
 

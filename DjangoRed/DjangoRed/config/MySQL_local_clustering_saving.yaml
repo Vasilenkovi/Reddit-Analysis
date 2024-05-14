@@ -1,5 +1,5 @@
 user: clusterizerbezdarge
 password: Clusterizing1984bezdarge!
 database: clusteringdb
-host: localhost
-port: 8001
+host: mysqlred
+port: 3306
