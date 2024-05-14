@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import networkx as nx
 import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib import colormaps

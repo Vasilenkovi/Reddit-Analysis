@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+
+  backend:
+    build: ./DjangoRed
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & python ./DjangoRed/manage.py makemigrations & python ./DjangoRed/manage.py migrate & celery -A DjangoRed worker --loglevel=INFO"
+    expose:
+      - "8000"
+    volumes:
+     - ./DjangoRed/static/:/static/
+    links:
+     - 'mysqlred'
+     - 'message-broker'
   nginx:
     build: ./nginx
     ports:
@@ -10,7 +21,10 @@ services:
       - 5672:5672
       - 15672:15672
   mysqlred:
-    build: ./MySQL/
+
+    build: ./MySQL
     ports:
-      - 8001:3306
+      - 3307:3306
     command: --lower_case_table_names=1
+    volumes:
+      - /var/lib/mysql
