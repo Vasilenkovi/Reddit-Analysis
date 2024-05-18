@@ -2,4 +2,4 @@
 password: Reddit_Yarik_1984!
 database: reddit_parsing
 host: localhost
-port: 8001
+port: 3307

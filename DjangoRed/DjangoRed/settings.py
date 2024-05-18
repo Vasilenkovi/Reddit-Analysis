@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
         'HOST': 'localhost',
-        'PORT': '8001',
+        'PORT': '3307',
     },
 }
 
@@ -167,7 +167,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"
