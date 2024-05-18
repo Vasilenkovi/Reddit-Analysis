@@ -10,11 +10,15 @@
     <title>Document</title>
     {% block scripts %}
         <script src="{% static 'js/datasets/filter_datasets.js' %}"></script> 
+        <script src="{% static 'js/datasets/dataset_fav_socket.js' %}"></script> 
         <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
     {% endblock %}
 </head>
 
 <body>
+    {{ value|json_script:"hello-data" }}
+    <script id="hello-data" type="application/json">{"hello": "world"}</script>
+    
     {% block content %}
 
     {% load widget_tweaks %}
@@ -46,6 +50,7 @@
                                     </div>
                                     <input type="checkbox" id="{{set.0}}" name="{{set.0}}"  class="checkbox-absolute">
                                 </label>
+                                <div type="button" id="fav {{set.0}}" name ="fav {{set.0}}" class="button-absolute" onclick="send_data(this)"></div> 
                             </div>
                         {% endfor %}
                     </div>

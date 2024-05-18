@@ -49,6 +49,18 @@
     left: 0;
 }
 
+.button-absolute {
+    background-image: url(../../img/favorite.png);
+    background-size: cover;
+    border-radius: 3px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 30px;
+    width: 30px;
+}
+
+
 .scrollbar {
     scrollbar-width: none;
 }

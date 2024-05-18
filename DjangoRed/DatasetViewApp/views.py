@@ -12,7 +12,8 @@ import csv
 
 # Create your views here.
 def datasets_list_view(request):
-
+    response = HttpResponse()
+    response.set_cookie('username', request.user.username)
     return render(request, "datasets/list.html", {
         "comment_sets": get_comment_datasets(),
         "user_sets": get_user_datasets(),

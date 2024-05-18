@@ -74,3 +74,7 @@ class UserAccount(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+class FavoriteJobIDs(models.Model):
+    username = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, blank=True)
+    job_id = models.CharField(max_length=10)
