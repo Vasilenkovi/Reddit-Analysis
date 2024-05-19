@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ "stable" ]
+  pull_request:
+    branches: [ "stable" ]
+
+
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      # Runs a single command using the runners shell
+      - name: docker
+        run: docker-compose up
+      #test
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      
+      
