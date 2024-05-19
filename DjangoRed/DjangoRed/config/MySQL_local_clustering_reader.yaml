@@ -3,4 +3,4 @@ password: Clusterizing1984!
 database: reddit_parsing
 database_cluster: reddit_clustering
 host: localhost
-port: 3307
+port: 3309

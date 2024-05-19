@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
         'HOST': 'localhost',
-        'PORT': '3307',
+        'PORT': '3309',
     },
 }
 

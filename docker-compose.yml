@@ -15,7 +15,7 @@ services:
 
     build: ./MySQL
     ports:
-      - 3307:3306
+      - 3309:3306
     command: --lower_case_table_names=1
     volumes:
       - /var/lib/mysql
