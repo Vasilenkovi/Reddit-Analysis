@@ -81,6 +81,10 @@ class UserAdmin(BaseUserAdmin):
     ordering = ["email"]
     filter_horizontal = []
 
+class UserChangeDataForm(forms.Form):
+    date_of_birth = forms.CharField()
+    email = forms.EmailField()
+
 
 
 # Now register the new UserAdmin...
