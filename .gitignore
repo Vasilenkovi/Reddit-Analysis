@@ -5,3 +5,4 @@ WebRed/Reddit-Analysis
 *.pyc
 WebRed/DjangoRed/__pycache__
 compose-dev.yaml
+notes.txt
