@@ -1,8 +1,8 @@
 let url = `ws://${window.location.host}/ws/socket-server-clustering/`
-const clusSocket = new WebSocket(url)
+const favSocket = new WebSocket(url)
 var isRecieving = false;
 var startedRecievingData = false;
-clusSocket.onmessage = function(e) {
+favSocket.onmessage = function(e) {
     let data = JSON.parse(e.data)
     let jsonString = JSON.stringify(data)
     console.log('Data:', jsonString)
@@ -65,7 +65,7 @@ function createString() {
     
     isRecieving = true;
     console.log(messageDict)
-    clusSocket.send(JSON.stringify(messageDict))
+    favSocket.send(JSON.stringify(messageDict))
 }
 
 var comments = ['keke', 'best thing ever', 'you are not ready', 'C# is the best programming language ever']
@@ -112,7 +112,7 @@ function createStringNoJSON() {
         i += 1;
     }
     
-    clusSocket.send(JSON.stringify({
+    favSocket.send(JSON.stringify({
         'message': message
     }))
 }

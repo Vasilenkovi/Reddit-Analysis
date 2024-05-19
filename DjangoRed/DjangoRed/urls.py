@@ -25,4 +25,5 @@ urlpatterns = [
     path('datasets/', include('DatasetViewApp.urls', namespace="DatasetViewApp")),
     path('users/', include('GraphApp.urls', namespace="GraphApp")),
     path('account/', include('AccountsApp.urls', namespace="AccountsApp")),
+    path('statistic/', include('StatApp.urls', namespace="StatApp")),
 ]

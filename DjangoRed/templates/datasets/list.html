@@ -10,11 +10,14 @@
     <title>Document</title>
     {% block scripts %}
         <script src="{% static 'js/datasets/filter_datasets.js' %}"></script> 
+        {{ request.user.username|json_script:"user_id" }}
+        <script src="{% static 'js/datasets/dataset_fav_socket.js' %}"></script> 
         <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
     {% endblock %}
 </head>
 
 <body>
+    
     {% block content %}
 
     {% load widget_tweaks %}
@@ -27,7 +30,7 @@
                     <div class="grid-buttons">
                         <h4>Options:</h4>
                         <div><input type="submit" class="btn complete grid-button" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
-                        <div><input type="submit" class="btn complete grid-button" formaction="/statistic" value="statistic"></div>
+                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'StatApp:stat' %}" value="statistic"></div>
                         <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
                         <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="comment_set"></div>
                     </div>
@@ -46,6 +49,7 @@
                                     </div>
                                     <input type="checkbox" id="{{set.0}}" name="{{set.0}}"  class="checkbox-absolute">
                                 </label>
+                                <div type="button" id="fav {{set.0}}" name ="fav {{set.0}}" class="button-absolute" onclick="send_data(this)"></div> 
                             </div>
                         {% endfor %}
                     </div>
@@ -80,6 +84,7 @@
                                     </div>
                                     <input type="checkbox" id="{{set.0}}" name="{{set.0}}" class="checkbox-absolute">
                                 </label>
+                                <div type="button" id="fav {{set.0}}" name ="fav {{set.0}}" class="button-absolute" onclick="send_data(this)"></div>
                             </div>
                         {% endfor %}
                     </div>

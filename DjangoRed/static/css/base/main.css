@@ -36,6 +36,15 @@ hr {
 
 }
 
+.scroll-list {
+    height: 240px;
+    overflow-y: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
 .main-head {
     text-align: center;
     margin: 20px;

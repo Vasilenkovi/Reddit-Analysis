@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'VisualizationApp',
     'ParserApp',
     'DatasetViewApp',
-    'AccountsApp'
+    'AccountsApp',
+    'StatApp'
 ]
 
 MIDDLEWARE = [
@@ -97,8 +98,8 @@ DATABASES = {
         'NAME': 'reddit_test_accounts',
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
+        'PORT': '3309',
         'HOST': 'mysqlred',
-        'PORT': '3306',
     },
 }
 
@@ -112,6 +113,8 @@ NATIVE_SQL_DATABASES = {
     'clustering_read': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering_reader.yaml"),
 
     'clustering_saving': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_clustering_saving.yaml"),
+
+    'stat': OmegaConf.load(BASE_DIR / "DjangoRed/config/MySQL_local_stat_saving.yaml"),
 }
 
 
@@ -169,7 +172,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"

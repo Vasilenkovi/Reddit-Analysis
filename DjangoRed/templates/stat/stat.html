@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% block scripts %}
+        <link rel="stylesheet" href="{% static 'css/graphs/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/stat/style.css' %}">
+        <script src="{% static 'js/stat/stat.js' %}"></script>
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+
+        <form action="{% url 'StatApp:stat' %}" method="post">
+            {% csrf_token %}
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="dataset-holder" class="my-1 background-small">
+                        {% for dataset_id in dataset_ids %}
+                            <div>
+                                <input type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" class="mx-1" checked>
+                                <label for="{{dataset_id}}">{{dataset_id}}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="d-flex align-items-center">
+                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1">
+                        <button type="button" id="add-dataset" class="btn active mx-1">Add dataset</button>
+                        <input type="submit" value="Remake statistic" class="btn complete mx-1">
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <div class = "container-fluid">
+            {% for a in stat_dict.items %}
+            <div class = "row my-2">
+                <button class="btn active mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#{{a.0}}coll">
+                    <p class="text-primary display-6 text-light">
+                        {{ a.0 }}: {{ a.1.0}}
+                    </p>
+                </button>
+                <div class="collapse" id="{{a.0}}coll">
+                    <table class="table table-dark">
+                        <thead class="text-light">
+                            <tr> 
+                                <th>Popularity statistic (%)</th>
+                                <th>Rating</th>
+                                <th>Rating stats (%)</th>
+                            </tr>
+                        </thead>
+                            <tr>
+                                <td>{{a.1.1}}</td>
+                                <td>{{a.1.3}}</td>
+                                <td>{{a.1.4}}</td>
+                            </tr>
+                    </table>
+                    {% if a.1.5 == a.1.6 %}
+                        <h5>Comment with most negative and postive words: </h5>
+                        <p class="fs-6 text-start">
+                            {{ a.1.5 }}
+                        </p>
+                    {% else %}
+                        <h5>Comment with most postive words: </h5>
+                        <p class="fs-6 text-start">
+                            {{ a.1.5 }}  
+                        </p>
+                        <h5>Comment with most negative words: </h5>
+                        <p class="fs-6 text-start">
+                            {{ a.1.6 }}
+                        </p>
+                    {% endif %}
+                    <div class = "container-fluid">
+                        <div class = "row"> 
+                            <img id = "{{a.0}}" class = "containsName mx-auto" src="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>      
+        
+    {% endblock %}
+</body>
+</html>

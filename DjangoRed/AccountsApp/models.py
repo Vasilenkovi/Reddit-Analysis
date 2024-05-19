@@ -41,6 +41,7 @@ class UserAccount(AbstractBaseUser):
     username = models.CharField(
         max_length=32,
         unique=True,
+        verbose_name="username"
     )
     email = models.EmailField(
         verbose_name="email address",
@@ -74,3 +75,7 @@ class UserAccount(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+class FavoriteJobIDs(models.Model):
+    username = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, blank=True, related_name='comments')
+    job_id = models.CharField(max_length=10)

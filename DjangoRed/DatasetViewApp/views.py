@@ -12,7 +12,6 @@ import csv
 
 # Create your views here.
 def datasets_list_view(request):
-
     return render(request, "datasets/list.html", {
         "comment_sets": get_comment_datasets(),
         "user_sets": get_user_datasets(),
