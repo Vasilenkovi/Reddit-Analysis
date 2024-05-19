@@ -18,6 +18,7 @@ from channels.auth import AuthMiddlewareStack
 import os
 import VisualizationApp.routing
 import AccountsApp.routing
+import StatApp.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoRed.settings')
 
@@ -28,7 +29,8 @@ application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack((
         URLRouter(
             VisualizationApp.routing.websocket_urlpatterns +
-            AccountsApp.routing.websocket_urlpatterns
+            AccountsApp.routing.websocket_urlpatterns +
+            StatApp.routing.websocket_urlpatterns
         )
 
     ))

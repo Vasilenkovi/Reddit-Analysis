@@ -1,0 +1,5 @@
+user: stat
+password: 40460da8c882cdc791836fba76009870f960a151287798f1df8af5e963398f84
+database: statisticsdb
+host: localhost
+port: 8001
