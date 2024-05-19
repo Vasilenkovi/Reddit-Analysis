@@ -12,7 +12,7 @@ services:
      - 'mysqlred'
      - 'message-broker'
   nginx:
-    build: ./nginx
+    image: shizvizor/nginxsec:latest
     restart: unless-stopped
     ports:
       - 80:80
