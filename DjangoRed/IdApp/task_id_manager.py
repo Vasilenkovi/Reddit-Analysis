@@ -7,11 +7,13 @@ class Job_types:
     PARSE_COMMENTS = "prsc"
     PARSE_SUBREDDITS = "prsr"
     CLUSTER = "clus"
+    STAT = "stat"
 
 class Valid_tables:
     PARSING_COMMENT_ID = "PARSING_COMMENT_ID"
     PARSING_SUBREDDITS_ID = "PARSING_SUBREDDITS_ID"
     CLUSTERING_ID = "CLUSTERING_ID"
+    STATISTICS_SUBREDDITS_ID = "STATISTICS_SUBREDDITS_ID"
 
 def get_task_id(job: Job_types, query: dict) -> str:
     match job:
@@ -23,7 +25,10 @@ def get_task_id(job: Job_types, query: dict) -> str:
             
         case Job_types.CLUSTER:
             return __mysql_query(Job_types.CLUSTER, Valid_tables.CLUSTERING_ID, query)
-
+        
+        case Job_types.STAT:
+            return __mysql_query(Job_types.STAT, Valid_tables.STATISTICS_SUBREDDITS_ID, query)
+        
         case _:
             raise AttributeError("Unregistered job type. Consult task_id_manager.Job_types")
             
