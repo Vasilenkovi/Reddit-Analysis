@@ -13,6 +13,7 @@ services:
      - 'message-broker'
   nginx:
     build: ./nginx
+    restart: unless-stopped
     ports:
       - 80:80
     command: ""
@@ -28,6 +29,25 @@ services:
       - DAPHNE_PORT=8000
     volumes:
       - ./DjangoRed/static/:/static/
+      - ./appsec-logs:/ext/appsec-logs
+      - ./appsec-localconfig:/ext/appsec
+
+  appsec-agent:
+    container_name: open-appsec-agent
+    image: 'ghcr.io/openappsec/agent:latest'
+    network_mode: service:nginx
+    ipc: host
+    restart: unless-stopped
+    environment:
+      - nginx=true
+      - autoPolicyLoad=true
+    volumes:
+      - ./appsec-config:/etc/cp/conf
+      - ./appsec-data:/etc/cp/data
+      - ./appsec-logs:/var/log/nano_agent
+      - ./appsec-localconfig:/ext/appsec
+    command: /cp-nano-agent --standalone
+
   message-broker:
     image: rabbitmq:3-management
     ports:

@@ -5,3 +5,6 @@ WebRed/Reddit-Analysis
 *.pyc
 WebRed/DjangoRed/__pycache__
 compose-dev.yaml
+/appsec-config
+/appsec-data
+/appsec-logs
