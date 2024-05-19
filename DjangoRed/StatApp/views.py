@@ -12,14 +12,14 @@ import pandas as pd
 import string
 
 from IdApp.task_id_manager import get_task_id, Job_types
-from DjangoRed.settings import NATIVE_SQL_DATABASES
+from DjangoRed.settings import BASE_DIR
 
 # Create your views here.
 def stat_view(request):
     stopw = STOPWORDS
     punk = list(string.punctuation)
-    neg = open("StatApp/posnag/negative-words.txt").read().split('\n')
-    paz = open("StatApp/posnag/positive-words.txt").read().split('\n')
+    neg = open(BASE_DIR / "StatApp/posnag/negative-words.txt").read().split('\n')
+    paz = open(BASE_DIR / "StatApp/posnag/positive-words.txt").read().split('\n')
 
     context = {
         "dataset_ids": [],
