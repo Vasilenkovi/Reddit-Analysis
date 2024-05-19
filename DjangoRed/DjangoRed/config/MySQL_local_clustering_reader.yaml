@@ -3,5 +3,5 @@ password: Clusterizing1984!
 database: reddit_parsing
 database_cluster: reddit_clustering
 port: 3309
-host: mysqlred
+host: localhost
 

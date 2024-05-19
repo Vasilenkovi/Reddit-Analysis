@@ -99,7 +99,7 @@ DATABASES = {
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
         'PORT': '3309',
-        'HOST': 'mysqlred',
+        'HOST': 'localhost',
     },
 }
 
