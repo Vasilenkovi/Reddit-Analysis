@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'VisualizationApp',
     'ParserApp',
     'DatasetViewApp',
-    'AccountsApp'
+    'AccountsApp',
+    'StatApp'
 ]
 
 MIDDLEWARE = [
