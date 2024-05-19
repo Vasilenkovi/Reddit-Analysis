@@ -1,5 +1,7 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
+from django.shortcuts import get_object_or_404
+from .models import UserAccount, FavoriteJobIDs
 
 class FavConsumer(WebsocketConsumer):
     def connect(self):
@@ -13,9 +15,27 @@ class FavConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         received_message = json.loads(text_data)
         try:
-            cookies = received_message["cookies"]
+            user_id = received_message["user_id"]
             dataset_id = received_message["dataset_id"]
-            print(f"cookies: {cookies} \n dataset_id: {dataset_id}")
+            user_reference = get_object_or_404(UserAccount, username=user_id)
+            message = ''
+            match (len(FavoriteJobIDs.objects.filter(job_id=dataset_id))):
+                case (0):
+                    new_favorite = FavoriteJobIDs(username=user_reference, job_id=dataset_id)
+                    new_favorite.save()
+                    message = f'Successfully added {dataset_id} to favorites'
+                case(1):
+                    message = f'{dataset_id} is already added to favorites'
+                case _:
+                    raise Exception("More than one entry of that dataset in the database")
+
+            self.send(
+                text_data=json.dumps({
+                    'type': 'favorite_add_success',
+                    'message': message
+                })
+            )
+
 
         except Exception as e:
             self.send(

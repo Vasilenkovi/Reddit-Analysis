@@ -3,7 +3,56 @@
 {% block title %}
     {{ user.username }} profile 
 {% endblock %}
+
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
+{% endblock %}
+
 {% block content %}
     <h1>User profile</h1>
+    <h1>keke</h1>
     <h2>There will be content once we start working</h2>
+    
+        <div class="container-fluid">
+            <div class="row">
+                <form method="post" onkeydown="return event.key != 'Enter'">
+                    {% csrf_token %}
+                    <div class="main-interface col-lg-3 col-sm-12" style="height: 370px;">
+                        <h2 class="text-center">Favorite datasets</h2>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12 right-vertical-rule ">
+                                <div class="my-1">
+                                    <h4>Options:</h4>
+                                    <div class="grid-buttons">
+                                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
+                                        <div><input type="submit" class="btn complete grid-button" formaction="/statistic" value="statistic"></div>
+                                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                                        <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="comment_set"></div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                                <h4 >Datasets:</h4>
+                                <div id="dataset-holder" class="my-1 scroll-list">
+                                    
+                                    {% for favorite in favorite_job_ids %}
+                                        <div>
+                                            <input type="checkbox" name="{{favorite.job_id}}" id="{{favorite.job_id}}" class="mx-1" checked>
+                                            <label for="{{favorite.job_id}}">{{ favorite.job_id }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+   
+    
+    
+
 {% endblock %}

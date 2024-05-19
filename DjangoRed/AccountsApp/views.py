@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm
-from .models import UserAccountManager
+from .models import UserAccountManager, FavoriteJobIDs
 
 def user_login(request):
     if request.method == 'POST':
@@ -48,5 +48,14 @@ def register(request):
 
 @login_required(login_url='/account/login/')
 def user_profile(request):
-    return render   (request, 
-                    'accounts/profile.html')
+    context = {
+        "favorite_job_ids": []
+    }
+    favorite_job_ids = FavoriteJobIDs.objects.filter(username=request.user)
+    # print(favorite_job_ids)
+    context["favorite_job_ids"] = favorite_job_ids
+    return render (
+        request, 
+        'accounts/profile.html',
+        context
+    )
