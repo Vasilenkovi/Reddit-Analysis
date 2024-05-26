@@ -1,5 +1,5 @@
 ﻿user: reddit_client
 password: Reddit_Yarik_1984!
 database: reddit_parsing
-port: 3309
+port: 3306
 host: mysqlred

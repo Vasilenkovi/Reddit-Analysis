@@ -12,17 +12,18 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import URLRouter
 """
 from django.core.asgi import get_asgi_application
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoRed.settings')
+
+django_asgi_app = get_asgi_application()
 
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
-import os
+
 import VisualizationApp.routing
 import AccountsApp.routing
 import StatApp.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoRed.settings')
-
-django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
@@ -32,6 +33,5 @@ application = ProtocolTypeRouter({
             AccountsApp.routing.websocket_urlpatterns +
             StatApp.routing.websocket_urlpatterns
         )
-
     ))
 })

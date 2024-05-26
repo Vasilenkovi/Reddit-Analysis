@@ -3,16 +3,16 @@ services:
 
   backend:
     image: shizvizor/djangoapp:stable
-    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application & python ./DjangoRed/manage.py migrate &  celery -A DjangoRed worker --loglevel=INFO"
+    command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application &  celery -A DjangoRed worker --loglevel=INFO"
     expose:
       - "8000"
     volumes:
-     - ./DjangoRed/static/:/static/
+     - /home/shizanalysis/Reddit-Analysis/DjangoRed/static/:/static/
     links:
      - 'mysqlred'
      - 'message-broker'
   nginx:
-    image: shizvizor/nginx:stable
+    image: shizvizor/nginxdev:stable
     ports:
       - 80:80
     command: ""
@@ -27,7 +27,7 @@ services:
       - DAPHNE_HOST=backend
       - DAPHNE_PORT=8000
     volumes:
-      - ./DjangoRed/static/:/static/
+      - /home/shizanalysis/Reddit-Analysis/DjangoRed/static/:/static/
   message-broker:
     image: rabbitmq:3-management
     ports:
