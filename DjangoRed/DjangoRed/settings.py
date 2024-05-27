@@ -98,8 +98,8 @@ DATABASES = {
         'NAME': 'reddit_test_accounts',
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
-        'PORT': '3306',
-        'HOST': 'mysqlred',
+        'PORT': '3306', # during development change to 3309
+        'HOST': 'mysqlred', # during development change to localhost
     },
 }
 

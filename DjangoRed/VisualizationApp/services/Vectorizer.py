@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 from sklearn.preprocessing import normalize
 import nltk
-#nltk.download('stopwords')
+nltk.download('stopwords')
 from nltk.stem import WordNetLemmatizer
 from .russian_stemmer import *
 import math
