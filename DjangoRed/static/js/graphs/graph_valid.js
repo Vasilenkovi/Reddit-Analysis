@@ -27,6 +27,7 @@ function add_dataset_button(e) {
         dataset_container.appendChild(div_container)
     }
     else {
+        add_dataset_input.value = ""
         alert("You can only use reddit user datasets (prsr_ prefix)")
     }
 }
