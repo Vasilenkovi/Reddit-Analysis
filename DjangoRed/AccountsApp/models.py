@@ -49,6 +49,8 @@ class UserAccount(AbstractBaseUser):
         unique=True,
     )
     date_of_birth = models.DateField()
+    image = models.ImageField(upload_to='users/',
+ blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 

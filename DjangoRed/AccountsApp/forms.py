@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from .models import UserAccount
 
 from AccountsApp.models import UserAccount
 
@@ -85,7 +86,41 @@ class UserChangeDataForm(forms.Form):
     date_of_birth = forms.CharField()
     email = forms.EmailField()
 
+# class ChangeImageForm(forms.Form):
+#     image = forms.ImageField()
 
+
+class ChangeImageForm(forms.ModelForm):
+ 
+    class Meta:
+        model = UserAccount
+        fields = ['image']
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label="New password", widget=forms.PasswordInput);
+    password1 = forms.CharField(label="New password", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Repeat new password", widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = UserAccount
+
+    def clean_password2(self):
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
 
 # Now register the new UserAdmin...
 admin.site.register(UserAccount, UserAdmin)

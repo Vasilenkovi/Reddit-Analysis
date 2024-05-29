@@ -9,19 +9,62 @@
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
     <script src="{% static 'js/datasets/filter_datasets.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/user/style.css' %}">
+
 {% endblock %}
 
 {% block content %}
-    <h1>User profile</h1>
-    <h1>keke</h1>
-    <h2>There will be content once we start working</h2>
-    
-        <div class="container-fluid">
-            <div class="row">
-                <div class="main-interface col-lg-3 col-sm-12">
-                    
+    <h1 class="main-head">{{ user.username }} profile</h1>
+    {% load widget_tweaks %}
+        <div class="">
+            <div class="row d-flex justify-content-around align-items-center">
+                <div class="main-interface user-page col-lg-3 col-md-5 col-sm-12">
+                    <h2 class="text-center">User Image</h2>
+                    <div class="img-container d-flex justify-content-center">
+                        <img class="user-img" src="{% if user_image %}{{ user_image.url }}{% else %}{% static 'img/jokerge.png' %}{% endif %}">
+                    </div>
+                    <form method="post" action="{% url 'AccountsApp:profile' %}" enctype="multipart/form-data">
+                        <div class="row d-flex">
+                            <label  for="{{ change_image_form.image.id_for_label }}" class="m-2">Upload new image</label>
+                            
+                                {% render_field change_image_form.image id="image" class="m-2 form-control" type="file" id="formFile" %}
+                            
+                        </div>
+                        {% csrf_token %}
+                        <div class="user-info-item d-flex justify-content-end ">
+                            <input type="submit" class="btn complete m-3" value="Change-image" name="Change-image">
+                        </div>
+                    </form>
                 </div>
-                <div class="main-interface col-lg-3 col-sm-12" style="height: 370px;">
+                <div class="main-interface col-lg-3 col-md-5  col-sm-12">
+                    <h2 class="text-center">User Info</h2>
+                    <div class="row user-info-item m-2">
+                        <label class="col-4">Change Password?</label>
+                        <div class="col-8">
+                            <a class="btn complete m-3" href="{% url 'AccountsApp:password_change' %}">Change password</a>
+                        </div>
+                    </div>
+                    <form method="post" action="{% url 'AccountsApp:profile' %}">
+                        <div class="row user-info-item m-2">
+                            <label class="col-4" for="{{ change_data_form.email.id_for_label }}">Email</label>
+                            <div class="col-8">
+                                {% render_field change_data_form.email id="email" class="form-input "  style="width:100%" %}
+                            </div>
+                        </div>
+
+                        <div class="row user-info-item m-2">
+                            <label class="col-4" for="{{ change_data_form.date_of_birth.id_for_label }}">Date of birth</label>
+                            <div class="col-8">
+                                {% render_field change_data_form.date_of_birth id="date_of_birth" class="form-input"  style="width:100%" %}
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                        <div class="user-info-item d-flex justify-content-end ">
+                            <input type="submit" class="btn complete m-3" value="Change-data" name="Change-data" >
+                        </div>
+                    </form>
+                </div>
+                <div class="main-interface col-lg-3 col-md-5  col-sm-12" >
                     <form method="post" onkeydown="return event.key != 'Enter'">
                         {% csrf_token %}
                         <div>
