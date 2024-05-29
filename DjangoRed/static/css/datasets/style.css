@@ -1,21 +1,34 @@
+input[type=checkbox].list {
+    transform: scale(2);
+}
+
 .card-class {
-    width: 200px;
-    min-width: 15% !important;
+    min-width: 20em !important;
+    max-width: 20em !important;
+    height: 100% !important;
     background-color: #292e32 !important;
     border: 1px solid white !important;
 }
 
-.card-img-top-sizing {
-    aspect-ratio: 2 / 1;
+.card-img-top {
+    aspect-ratio: 4 / 1;
+}
+
+.scroll-cards {
+  scrollbar-color: #74767A #C4C5C7;
+  scrollbar-width: thin;
 }
 
 .card-body {
-    background-color: #292e32 !important;
+    background-color: #74767A !important;
+    overflow-x: auto;
+    height: 15em;
 }
 
 .grid-buttons {
     display: grid;
     justify-content: center;
+    position: relative;
 }
 
 .grid-button {
@@ -28,7 +41,8 @@
     padding: 1em;
     border-radius: 5em;
     background-color: #292e32;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .right-vertical-rule {
@@ -45,8 +59,8 @@
 
 .checkbox-absolute {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0.3125em;
+    left: 0.3125em;
 }
 
 .button-absolute {
@@ -62,6 +76,24 @@
 
 .scrollbar {
     scrollbar-width: none;
+}
+
+.trans-input {
+    background-color: transparent !important;
+    border: 1px solid #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+.grey-bkg {
+    background-color: #6A6C6F !important;
+}
+
+.filter-button-class {
+    color: #FFFFFF !important;
+}
+
+.pos-rel {
+    position: relative;
 }
 
 #add-dataset {

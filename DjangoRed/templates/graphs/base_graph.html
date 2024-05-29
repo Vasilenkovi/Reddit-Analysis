@@ -36,11 +36,11 @@
 
                 <div class="row">
                     <div class="d-flex align-items-center">
-                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1">
-                        <button type="button" id="add-dataset" class="btn active mx-1">Add dataset</button>
-                        <input type="submit" value="Rebuild graph" class="btn complete mx-1">
+                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1 trans-input">
+                        <button type="button" id="add-dataset" class="btn active mx-1 grey-bkg">Add dataset</button>
+                        <input type="submit" value="Rebuild graph" class="btn complete mx-1 grey-bkg">
                         {% if downloadable %}
-                            <input formaction="{% url 'GraphApp:base_graph_download' %}" id="download-button" class="btn complete mx-1" type="submit" value="Download graph">
+                            <input formaction="{% url 'GraphApp:base_graph_download' %}" id="download-button" class="btn complete mx-1 grey-bkg" type="submit" value="Download graph">
                         {% endif %}
                     </div>
                 </div>
