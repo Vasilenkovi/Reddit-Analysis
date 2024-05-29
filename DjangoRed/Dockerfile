@@ -6,3 +6,4 @@ COPY ./requirements_linux.txt .
 RUN pip install -r requirements_linux.txt
 COPY . .
 ADD static /DjangoRed/static
+RUN python nltk_resources.py
