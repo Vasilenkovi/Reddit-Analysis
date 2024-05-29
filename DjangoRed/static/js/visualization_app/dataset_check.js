@@ -19,7 +19,7 @@ function add_dataset_button(e) {
         return
     }
 
-    const div_container = document.createElement("div")
+    const div_container = document.createElement("li")
 
         const input_tag = document.createElement("input")
         input_tag.classList.add("dataset_id")
@@ -44,7 +44,7 @@ function add_dataset_button(e) {
 function check_if_added() {
     let datasetsIds = document.getElementsByClassName("dataset_id")
     if (datasetsIds.length != 0) {
-        form_label.innerHTML = "Selected datasets:" 
+        form_label.innerHTML = "Selected datasets" 
     }
 }
 
