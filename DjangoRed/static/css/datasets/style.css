@@ -60,11 +60,18 @@
     width: 30px;
 }
 
-
 .scrollbar {
     scrollbar-width: none;
 }
 
 #add-dataset {
     min-width: 7em;
+}
+
+#download-button-true {
+    display: none;
+}
+
+#download-button-false {
+    min-width: 15rem;
 }

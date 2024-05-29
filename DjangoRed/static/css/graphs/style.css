@@ -9,3 +9,7 @@ g.mpld3-xaxis, g.mpld3-yaxis {
     width: fit-content;
     height: fit-content;
 }
+
+#download-button {
+    min-width: 15rem;
+}

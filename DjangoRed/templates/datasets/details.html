@@ -18,7 +18,7 @@
     {% block content %}
 
     {% load widget_tweaks %}
-    
+
     <form action="{% url 'DatasetViewApp:details' %}" method="post">
         {% csrf_token %}
 
@@ -40,7 +40,8 @@
                     <button type="button" class="btn active mx-1" id="add-dataset">Add dataset</button>
                     <input type="submit" class="btn complete mx-1" value="Recalculate datasets">
                     {% if downloadable %}
-                        <input formaction="{% url 'DatasetViewApp:download' %}" class="btn complete mx-1" type="submit" value="Download CSV">
+                        <button id="download-button-false" class="btn complete mx-1">Download CSV</button>
+                        <input formaction="{% url 'DatasetViewApp:download' %}" id="download-button-true" class="btn complete mx-1" type="submit" value="Download CSV">
                     {% endif %}
                     <div class="d-flex justify-content-end w-100">
                         {% if previous_page %}
