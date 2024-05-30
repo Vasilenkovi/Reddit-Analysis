@@ -1,0 +1,19 @@
+.fit-content {
+    width: fit-content;
+}
+
+.cluster-color {
+    background-color: #566C91 !important;
+    color: white !important;
+}
+
+.right-vertical-rule {
+    border-right: 2px solid #ffffff;
+}
+
+.dataset-dropdown {
+    color: white !important;
+    width: 90%;
+    white-space: initial !important;
+    font-size: large;
+}

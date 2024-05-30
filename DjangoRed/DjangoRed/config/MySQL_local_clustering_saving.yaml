@@ -4,4 +4,3 @@ database: clusteringdb
 port: 3306 # during development change to 3309
 # during development change to localhost
 host: mysqlred #
-

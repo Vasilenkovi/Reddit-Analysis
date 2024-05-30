@@ -156,6 +156,9 @@ STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = "/statics"
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -172,7 +175,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-CELERY_BROKER_URL = 'amqp://guest:guest@message-broker:5672//'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"

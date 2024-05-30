@@ -12,6 +12,7 @@
     <title>Unity WebGL Player | RedditGraphs3D</title>
 
     {% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cluster/style.css' %}">
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -30,103 +31,96 @@
     
       
       {% load widget_tweaks %}
-      <div class="container content-padding">
+      <div class="container ">
         
         <button id="imitate-button" onclick="ImitateDotTextProcess()" style="display: none;">keke</button>
-        
-        <h1 class="main-head ">3D cluster visualization app</h1>
-        <div class="main-interface main-form">
-          <form method="post" id="vis-app-form">
-            
-            <div id="dataset-holder">
-            
-                <h4 id="form-header">No datasets selcted</h4>
-                {% for dataset_id in dataset_ids %}
-                    <div>
+        <div class="main-interface">
+          <h1 class="main-head ">3D cluster visualization app</h1>
+          <form method="post" id="vis-app-form" class="form-inline m-4">
+            <div class="row" id="main-form-clust">
+              <div class="col-lg-3 col-md-6 d-flex flex-column right-vertical-rule">
+                
+                <div class="row" >  
+                  <h5 class="col-lg-6 col-md-12">Dataset selection</h5>
+                  <a class="dropdown-toggle col-lg-6 col-md-12 dataset-dropdown" id="form-header" role="button" data-bs-toggle="dropdown" >
+                    No datasets selected
+                  </a>
+                  <ul class="dropdown-menu " id="dataset-holder" style="width: 200px;">
+                    {% for dataset_id in dataset_ids %}
+                      <li>
                         <input class="dataset_id" type="checkbox" name="{{dataset_id}}" id="{{dataset_id}}" checked>
                         <label for="{{dataset_id}}">{{dataset_id}}</label>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <input type="text" class="form-input" name="name-for-added-datasets" id="add-dataset-source" style="width: 100%;" contentEditable="true">
                     </div>
-                {% endfor %}
-            </div>
-            
-            <div class="row form-field">
-              <div class="col-7">
-                <input type="text" class="form-control" name="name-for-added-datasets" id="add-dataset-source" contentEditable="true">
+                    <div class="col-lg-6 col-md-12">
+                      <button type="button" class="btn active cluster-color fit-content" id="add-dataset">Add dataset</button>
+                    </div>
+                  </div>
+                  
               </div>
-              <div class="col-5 form-input">
-                <button type="button" class="btn active" id="add-dataset">Add dataset</button>
+              
+              <div class="col-xl-2 col-lg-3 col-md-6 d-flex flex-column right-vertical-rule">
+                  <label class="form-field" for="{{ visualization_form.clasterization_method.id_for_label }}">Clusterization method</label>
+                  {% render_field visualization_form.clasterization_method id="clasterization-input" class="clasterization_params btn cluster-color fit-content"   %}
               </div>
-            </div>
-            <div class="row form-field">
-              <div class="col-7">
-                <label class="form-field" for="{{ visualization_form.clasterization_method.id_for_label }}">Clusterization method</label>
+              <div class="col-xl-1 col-lg-3 col-md-6 d-flex flex-column right-vertical-rule">
+                  <label class="form-field" for="{{ visualization_form.clasters_count.id_for_label }}">Clusters count</label>
+                  {% render_field visualization_form.clasters_count id="clasters-count-input" class="clasterization_params btn cluster-color " style="width: 65px" %}
               </div>
-              <div class="col-5 form-input">
-                {% render_field visualization_form.clasterization_method id="clasterization-input" class="clasterization_params btn active" %}
+              <div class="col-xl-2 col-lg-3 col-md-6 d-flex flex-column right-vertical-rule">
+  
+                  <label class="form-field" for="{{ visualization_form.language.id_for_label }}">Language</label>
+                  
+                  {% render_field visualization_form.language id="language-input" class="clasterization_params btn cluster-color fit-content" %}
               </div>
-            </div>
-            <div class="row form-field">
-              <div class="col-7">
-                <label class="form-field" for="{{ visualization_form.clasters_count.id_for_label }}">Clusters count</label>
-              </div>
-              <div class="col-5 form-input">
-                {% render_field visualization_form.clasters_count id="clasters-count-input" class="clasterization_params btn active" %}
-              </div>
-            </div>
-            <div class="row form-field">
-              <div class="col-7">
-                <label class="form-field" for="{{ visualization_form.language.id_for_label }}">Language</label>
-              </div>
-              <div class="col-5 form-input">
-                {% render_field visualization_form.language id="language-input" class="clasterization_params btn active" %}
-              </div>
-            </div>
-            <div class="row form-field">
-              <div class="col-7">
+              <div class="col-xl-2 col-lg-3 col-md-6 d-flex flex-column right-vertical-rule">
                 <label class="form-field" for="{{ visualization_form.downsising_method.id_for_label }}">Downsizing method</label>
-              </div>
-              <div class="col-5 form-input">
-                {% render_field visualization_form.downsising_method id="downsising-input" class="clasterization_params btn active" %}
-              </div>
-            </div>
-            <div class="row form-field">
-              <div class="col-7">
-                <label class="form-field" for="{{ visualization_form.measure_of_distance.id_for_label }}">Measure of distance</label>
-              </div>
-              <div class="col-5 form-input">
-                {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params btn active" %}
-              </div>
-            </div>
+                {% render_field visualization_form.downsising_method id="downsising-input" class="clasterization_params btn cluster-color fit-content" %}
             
-            <div class="row form-field">
-              <div class="col form-input">
-                {% csrf_token %}
-                <input type="button" class="btn complete complete-button" value="Load" onclick="createString()">
+              </div>
+              <div class="col-xl-2 col-lg-3 col-md-6 d-flex flex-column ">
+                  <label class="form-field" for="{{ visualization_form.measure_of_distance.id_for_label }}">Measure of distance</label>
+                  {% render_field visualization_form.measure_of_distance id="measure-input" class="clasterization_params btn cluster-color fit-content" %}
+              </div>
+              <div class="row form-field">
+                <div class="col d-flex justify-content-center">
+                  {% csrf_token %}
+                  <input type="button" class="btn complete complete-button m-2" value="Load" style="width: 200px;" onclick="createString()">
+                </div>
+              </div>
+          </form>
+          <div style="width: 960px; height: 600px; padding: 100px;">
+            <div id="unity-container" class="unity-desktop" >
+              <canvas id="unity-canvas" width=960 height=600 tabindex="-1" ></canvas>
+              <div id="unity-loading-bar">
+                <div id="unity-logo"></div>
+                <div id="unity-progress-bar-empty">
+                  <div id="unity-progress-bar-full"></div>
+                </div>
+              </div>
+              <div id="unity-warning"> </div>
+              <div id="unity-footer">
+                <div id="unity-webgl-logo"></div>
+                <div id="unity-fullscreen-button"></div>
+                <div id="unity-build-title">RedditGraphs3D</div>
               </div>
             </div>
-          </form>
+          </div>
+          
         </div>
-      </div>
-
+        
+      
 
           
-        <div id="unity-container" class="unity-desktop" style="margin: 550px 100px 100px 100px">
-          <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-          <div id="unity-loading-bar">
-            <div id="unity-logo"></div>
-            <div id="unity-progress-bar-empty">
-              <div id="unity-progress-bar-full"></div>
-            </div>
-          </div>
-          <div id="unity-warning"> </div>
-          <div id="unity-footer">
-            <div id="unity-webgl-logo"></div>
-            <div id="unity-fullscreen-button"></div>
-            <div id="unity-build-title">RedditGraphs3D</div>
-          </div>
-        </div>
-    
-      </div>
+        
+        
       
     <script>
 
