@@ -1,9 +1,11 @@
 let url = `ws://${window.location.host}/ws/socket-server-stat/`
 const statSocket = new WebSocket(url)
 
+
 statSocket.onopen = function(e) { // on load
     console.log("JS: Connection established")
     createString();
+    
 }
 
 statSocket.onmessage = function(e) { 
@@ -34,12 +36,13 @@ function getSubmissionsNames(){
 }
 
 function createString() { //message to back
-    const submissons = getSubmissionsNames()
+    const submissons = getSubmissionsNames();
+    //const job_id = document.getElementById("job_id_info").name;
+    const job_id = document.getElementById("job_id_info").getAttribute("name");
+    var messageDict = {"names": submissons, "job_id": job_id};
 
-    var messageDict = {"names": submissons}
-
-    console.log(messageDict)
-    statSocket.send(JSON.stringify(messageDict))
+    console.log(messageDict);
+    statSocket.send(JSON.stringify(messageDict));
 }
 
 function giveOutimages(recivedMessageList){ //after reciveing message from back

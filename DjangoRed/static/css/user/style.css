@@ -1,0 +1,28 @@
+.login-form {
+    border: 1px solid;
+    border-image-source: linear-gradient(166.93deg, #AFAFAF 3.24%, rgba(96, 96, 96, 0) 96.43%), linear-gradient(317.92deg, rgba(255, 255, 255, 0.6) 1.48%, rgba(0, 0, 0, 0) 67.95%) !important;
+    width: 350px; 
+    height: 400px; 
+    margin-right: 100px;
+}
+
+.register-form {
+    width: 350px !important; 
+    height: 600px !important;
+}
+
+
+
+.user-img {
+    width: 100% !important;
+    height: 200px;
+
+    border-radius: 20px;
+    object-fit: scale-down;
+    margin: 20px;
+}
+
+.user-page 
+{
+    height: inherit;
+}

@@ -98,8 +98,8 @@ DATABASES = {
         'NAME': 'reddit_test_accounts',
         'USER': 'test_accounts_client',
         'PASSWORD': 't9a!4Ic1G+X',
-        'PORT': '3309',
-        'HOST': 'localhost',
+        'PORT': '3306', # during development change to 3309
+        'HOST': 'mysqlred', # during development change to localhost
     },
 }
 
@@ -156,6 +156,9 @@ STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = "/statics"
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
