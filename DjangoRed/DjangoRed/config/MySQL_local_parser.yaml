@@ -1,7 +1,6 @@
 ﻿user: reddit_client
 password: f2O$$a6rA39Jcq]Y
 database: reddit_parsing
-port: 3306 # during development change to 3309
-# during development change to localhost
-host: mysqlred #
+host: localhost
+port: 3309
 

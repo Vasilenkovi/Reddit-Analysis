@@ -40,7 +40,7 @@
                     <button type="button" class="btn active mx-1 grey-bkg" id="add-dataset">Add dataset</button>
                     <input type="submit" class="btn complete mx-1 grey-bkg" value="Recalculate datasets">
                     {% if downloadable %}
-                        <button id="download-button-false" class="btn complete mx-1 grey-bkg">Download CSV</button>
+                        <button id="download-button-false" class="btn complete mx-1 grey-bkg" type="button">Download CSV</button>
                         <input formaction="{% url 'DatasetViewApp:download' %}" id="download-button-true" class="btn complete mx-1 grey-bkg" type="submit" value="Download CSV">
                     {% endif %}
                     <div class="d-flex justify-content-end w-100">

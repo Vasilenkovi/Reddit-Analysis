@@ -1,6 +1,5 @@
 user: clusterizer_save
 password: ;4U9i2efuVkfpTT#
 database: clusteringdb
-port: 3306 # during development change to 3309
-# during development change to localhost
-host: mysqlred #
+host: localhost
+port: 3309
