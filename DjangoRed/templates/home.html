@@ -10,13 +10,77 @@
 
 <body>
     {% block content %}
-        <div class="container-fluid">
+       <div class="container-fluid">
+            
+            {% load static %}
+            <h1 class="main-head" id="list">Home page</h1>
             <div class="row">
-                <p class="text display-6">Home page, really</p>
-            </div>
-            <br>
-            <div class="row">
-                <p class="text display-6">TODO: Put tutorials here</p>
+                <div class="main-interface" style="height: fit-content;">
+                    <h3 class="main-head">Tutorials</h3>
+                    <div class="d-flex flex-row justify-content-center">
+                        <ul class="link-list">
+                            <li class="m-3">
+                                <a href="#parser">Parser tutorial</a>
+                            </li>
+                            <li class="m-3">
+                                <a href="#datasets">Datasets tutorial</a>
+                            </li>
+                            <li class="m-3">
+                                <a href="#cluster">Cluster tutorial</a>
+                            </li>
+                            <li class="m-3">
+                                <a href="#stat">Statistics tutorial</a>
+                            </li>
+                            <li class="m-3">
+                                <a href="#graph">Graph tutorial</a>
+                            </li>
+                            <li class="m-3">
+                                <a href="#profile">Profile tutorial</a>
+                            </li>
+                        </ul>
+                    </div>
+                   
+                </ul>
+                </div>
+                <div class="main-interface">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        
+                        <h2 id="parser">Parser tutorial (<a href="#list">back to top</a>)</h2>
+                        <video  class="main-video" controls>
+                            <source src="{% static "videos/parser.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                        <hr>
+                        <h2 id="datasets">Datasets tutorial (<a href="#list">back to top</a>)</h2>
+                        <video class="main-video" controls>
+                            <source src="{% static "videos/datasets.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                        <hr>
+                        <h2 id="cluster">Cluster tutorial (<a href="#list">back to top</a>)</h2>
+                        <video class="main-video" controls>
+                            <source src="{% static "videos/cluster.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                        <hr>
+                        <h2 id="stat">Statistic tutorial (<a href="#list">back to top</a>)</h2>
+                        <video class="main-video" controls>
+                            <source src="{% static "videos/stat.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                        <h2 id="graph">Graph tutorial (<a href="#list">back to top</a>)</h2>
+                        <video class="main-video" controls>
+                            <source src="{% static "videos/graph.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                        <hr>
+                        <h2 id="profile">Profile tutorial (<a href="#list">back to top</a>)</h2>
+                        <video class="main-video" controls>
+                            <source src="{% static "videos/profile.mp4" %}" type="video/mp4"></source>
+                            Your browser does not support the video tag
+                        </video>
+                    </div>
+                </div>
             </div>
         </div>
     {% endblock %}
