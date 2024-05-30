@@ -22,18 +22,13 @@ hr {
     padding: 80px;
 }
 
-/* .content-padding {
-    margin-left: 100px !important;
-    margin-right: 100px !important;
-} */
-
 .main-interface {
     margin: 10px;
     padding: 30px !important;
     box-shadow: 0px 0px 6px 3px rgba(0, 0, 0, 0.2);
     border-radius: 50px;
-    background-color: #292e32;
-
+    border: 1px solid #FFFFFF;
+    background-color: #1B1E21;
 }
 
 .scroll-list {
@@ -74,7 +69,6 @@ hr {
     display: grid;
     justify-content: end;
 }
-
 
 .active {
     background-color: #5489f2 !important;

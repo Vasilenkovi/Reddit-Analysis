@@ -16,13 +16,42 @@
 <body>
     {% block content %}
     
-    <div class="container-fluid">
+    <div class="container-fluid main-bkg b-1-w">
+        <!--
         <div class="row mx-auto w-fit background-small">
             <p class="text display-4">Ok</p><br>
             <p class="text">Generated job_id: {{job_id}}</p><br>
             <p class="text display-6"><a href="{% url 'HomeApp:home' %}">Home</a></p><br>
             <p class="text display-6"><a href="{% url 'DatasetViewApp:list' %}">Check parsed datasets</a></p><br>
             <p class="text display-6"><a href="{% url 'ParserApp:start' %}">Parse more</a></p>
+        </div>
+        -->
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p class="display-6">Ok. Generated job_id: {{job_id}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-3 grey-bkg result-blob pos-rel">
+                <P class="large-text">Save identifier to check the results later on datasets page. Or explore other saved datasets</P>
+                <a href="{% url 'DatasetViewApp:list' %}" class="btn btn-outline-light btn-bottom-left">To dataset page</a>
+                <img src="{% static 'img/parser/save_id.png' %}" class="img-abs img-offset">
+            </div>
+            <div class="col m-3 grey-bkg result-blob pos-rel">
+                <p class="large-text">Learn more about the app.</p>
+                <a href="#" class="btn btn-outline-light btn-bottom-left">Go to tutorials</a>
+                <img src="{% static 'img/parser/intelligence.png' %}" class="img-abs">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-3 grey-bkg result-blob pos-rel">
+                <p class="large-text">Parse some more.</p>
+                <a href="{% url 'ParserApp:start' %}" class="btn btn-outline-light btn-bottom-left">To parser page</a>
+            </div>
+            <div class="col m-3 grey-bkg result-blob pos-rel">
+                <p class="large-text">Remember to have a nice day!</p>
+                <img src="{% static 'img/parser/have_a_nice.png' %}" class="img-abs img-offset">
+            </div>
         </div>
     </div>
 
