@@ -2,5 +2,5 @@ engine: django.db.backends.mysql
 name: reddit_test_accounts
 user: test_accounts_client
 password: t9a!4Ic1G+X
-port: 3309
-host: localhost
+port: 3306 # during development change to 3309
+host: mysqlred # during development change to localhost

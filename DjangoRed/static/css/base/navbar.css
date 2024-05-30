@@ -7,7 +7,7 @@
     flex-direction: row;
     justify-content: start;
     align-items: stretch;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .navbar-main {
@@ -55,6 +55,11 @@
   
 .nav-item:hover {
     background-color: #555;
+}
+
+.nav-item-active {
+    padding: 10px;
+    font-weight: bold;
 }
 
 .navbar-profile {

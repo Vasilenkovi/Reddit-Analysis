@@ -2,14 +2,21 @@
 
 {% block title %}Create an account{% endblock %}
 
+{% load static %}
+
+{% block custom_styles %}
+
+    <link rel="stylesheet" href="{% static 'css/user/style.css' %}">
+
+{% endblock %}
+
 {% block content %}
     
-    <div class="container content-padding">
-        <h1 class="main-head">Register</h1>
-        <div class="main-interface main-form">
+    <div class="container content-padding d-flex justify-content-end align-items-center full-height">
+        <div class="main-interface main-form login-form register-form">
+            <h1 class="main-head">Register</h1>
             {% load widget_tweaks %}
             <form method="post">
-                <h1>Create an account</h1>
                 {% if form.errors %}
                     <p>
                         Your username and password didn't match.
