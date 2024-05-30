@@ -12,7 +12,7 @@ favSocket.onmessage = function(e) {
         console.log(jsonString);
         if (!startedRecievingData) 
         {
-            gameInstance.SendMessage('FrontendConnector', 'StartRecievingData');
+            gameInstance.SendMessage('FrontendConnector', 'StartRecievingDotData');
             startedRecievingData = true;
         }
         gameInstance.SendMessage('FrontendConnector', 'RecieveDotData', jsonString);
@@ -22,7 +22,7 @@ favSocket.onmessage = function(e) {
     {
         if (startedRecievingData)
         {
-            gameInstance.SendMessage('FrontendConnector', 'StopRecievingData', jsonString);
+            gameInstance.SendMessage('FrontendConnector', 'StopRecievingDotData', jsonString);
             startedRecievingData = false;
             isRecieving = false;
         }
