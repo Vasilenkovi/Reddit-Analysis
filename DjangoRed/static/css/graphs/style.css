@@ -4,8 +4,12 @@ g.mpld3-xaxis, g.mpld3-yaxis {
 
 .center-outline {
     border: 1em solid #292e32;
-    background-color: #5489f2;
+    background-color: #6A6C6F;
     border-radius: 2em;
     width: fit-content;
     height: fit-content;
+}
+
+#download-button {
+    min-width: 15rem;
 }

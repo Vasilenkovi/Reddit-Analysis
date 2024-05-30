@@ -29,25 +29,25 @@
                 <div class="col-lg-2 col-sm-12 right-vertical-rule">
                     <div class="grid-buttons">
                         <h4>Options:</h4>
-                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
-                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'StatApp:stat' %}" value="statistic"></div>
-                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
-                        <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="comment_set"></div>
+                        <div><input type="submit" class="btn complete grid-button grey-bkg w-100" formaction="{% url 'VisualizationApp:visualization-app'%}" value="cluster"></div>
+                        <div><input type="submit" class="btn complete grid-button grey-bkg w-100" formaction="{% url 'StatApp:stat' %}" value="statistic"></div>
+                        <div><input type="submit" class="btn complete grid-button grey-bkg w-100" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                        <div><input type="text" class="form-control grid-button trans-input w-100 my-3 filter-button-class" placeholder="search" data-set_type="comment_set"></div>
                     </div>
                 </div>
-                <div class="col-lg-9 col-sm-12">
-                    <div class="d-flex flex-row flex-nowrap overflow-auto">
+                <div class="col-lg-9 col-sm-12 pos-rel">
+                    <div class="d-flex flex-row flex-nowrap overflow-auto pos-rel scroll-cards">
                         {% for set in comment_sets %}
-                            <div class="card m-2 card-class comment_set">
+                            <div class="card m-2 card-class comment_set card-bkg">
                                 <label for="{{set.0}}" class="label-pos">
                                     <img src="{% static 'img/comment.png' %}" class="card-img-top card-img-top-sizing" alt="comments">
-                                    <div class="card-body">
+                                    <div class="card-body scrollbar">
                                         <p class="card-text set-id">{{set.0}}</p>
                                         <p class="card-text px-2">{{set.1.type}}</p>
                                         <p class="card-text px-2 set-context">{{set.1.context}}</p>
                                         <p class="card-text">{{set.2}}</p>
                                     </div>
-                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}"  class="checkbox-absolute">
+                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}"  class="checkbox-absolute list">
                                 </label>
                                 <div type="button" id="fav {{set.0}}" name ="fav {{set.0}}" class="button-absolute" onclick="send_data(this)"></div> 
                             </div>
@@ -65,24 +65,24 @@
                 <div class="col-lg-2 col-sm-12 right-vertical-rule">
                     <div class="grid-buttons">
                         <h4>Options:</h4>
-                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
-                        <div><input type="submit" class="btn complete grid-button" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
-                        <div><input type="text" class="form-control w-75 my-3 filter-button-class" placeholder="search" data-set_type="user_sets"></div>
+                        <div><input type="submit" class="btn complete grid-button grey-bkg w-100" formaction="{% url 'GraphApp:base_graph'%}" value="graph"></div>
+                        <div><input type="submit" class="btn complete grid-button grey-bkg w-100" formaction="{% url 'DatasetViewApp:details'%}" value="view"></div>
+                        <div><input type="text" class="form-control grid-button trans-input w-100 my-3 filter-button-class" placeholder="search" data-set_type="user_sets"></div>
                     </div>                    
                 </div>
                 <div class="col-lg-9 col-sm-12">
-                    <div class="d-flex flex-row flex-nowrap overflow-auto">
+                    <div class="d-flex flex-row flex-nowrap overflow-auto scroll-cards">
                         {% for set in user_sets %}
-                            <div class="card m-2 card-class user_sets">
+                            <div class="card m-2 card-class user_sets card-bkg">
                                 <label for="{{set.0}}" class="label-pos">
                                     <img src="{% static 'img/user.png' %}" class="card-img-top card-img-top-sizing" alt="users">
-                                    <div class="card-body">
+                                    <div class="card-body scrollbar">
                                         <p class="card-text set-id">{{set.0}}</p>
                                         <p class="card-text px-2">{{set.1.type}}</p>
                                         <p class="card-text px-2 set-context">{{set.1.context}}</p>
                                         <p class="card-text">{{set.2}}</p>
                                     </div>
-                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}" class="checkbox-absolute">
+                                    <input type="checkbox" id="{{set.0}}" name="{{set.0}}" class="checkbox-absolute list">
                                 </label>
                                 <div type="button" id="fav {{set.0}}" name ="fav {{set.0}}" class="button-absolute" onclick="send_data(this)"></div>
                             </div>

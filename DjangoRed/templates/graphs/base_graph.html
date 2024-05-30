@@ -12,7 +12,7 @@
     {% block scripts %}
         <link rel="stylesheet" href="{% static 'css/graphs/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/datasets/style.css' %}">
-        <script src="{% static 'js/datasets/dataset_details.js' %}"></script> 
+        <script src="{% static 'js/graphs/graph_valid.js' %}"></script> 
     {% endblock %}
 </head>
 
@@ -36,15 +36,15 @@
 
                 <div class="row">
                     <div class="d-flex align-items-center">
-                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1">
-                        <button type="button" id="add-dataset" class="btn active mx-1">Add dataset</button>
-                        <input type="submit" value="Rebuild graph" class="btn complete mx-1">
+                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1 trans-input">
+                        <button type="button" id="add-dataset" class="btn active mx-1 grey-bkg">Add dataset</button>
+                        <input type="submit" value="Rebuild graph" class="btn complete mx-1 grey-bkg">
+                        {% if downloadable %}
+                            <input formaction="{% url 'GraphApp:base_graph_download' %}" id="download-button" class="btn complete mx-1 grey-bkg" type="submit" value="Download graph">
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <!--{% if downloadable %}
-                <input formaction="{% url 'GraphApp:download' %}" type="submit" value="Download CSV">
-            {% endif %}-->
         </form>
 
         {% if html_embed %}
@@ -77,6 +77,12 @@
                             </tbody>
                         </table>
                     </div>
+                {% else %}
+                    <div class="row mx-auto center-outline my-1">
+                        <p class="text display-6 my-1">
+                            Must provide at least 3 verticies to calculate centrality
+                        </p>
+                    </div>
                 {% endif %}
 
                 {% if communities %}
@@ -99,6 +105,12 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                    </div>
+                {% else %}
+                    <div class="row mx-auto center-outline my-1">
+                        <p class="text display-6 my-1">
+                            Must provide at least 3 verticies to discover communities
+                        </p>
                     </div>
                 {% endif %}
             </div>

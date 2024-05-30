@@ -22,8 +22,8 @@ SECRET_KEY = 'django-insecure-ecwm#*8s14myek8xi+%yc1tk$v2@=&l18=cg8(a+rk7rrz+k@f
 # ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-DJANGO_SUPERUSER_PASSWORD="Vasilenich"
-DJANGO_SUPERUSER_USERNAME="Vasilenich"
+DJANGO_SUPERUSER_PASSWORD="no_superuser_in_prod"
+DJANGO_SUPERUSER_USERNAME="Q2lHl8rFLe8RY1v3"
 DJANGO_SUPERUSER_EMAIL="my_user@domain.com"
 
 # Quick-start development settings - unsuitable for production
@@ -175,7 +175,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERY_BROKER_URL = 'amqp://prod:syGw76eja2k4Cmvn@localhost:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"

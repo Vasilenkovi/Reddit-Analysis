@@ -10,13 +10,15 @@ function generic_add_more(e) {
     new_input.classList.add("active")
     new_input.classList.add("my-1")
     new_input.classList.add("text-start")
+    new_input.classList.add("w-100")
+    new_input.classList.add("trans-input")
     new_input.type = "text"
 
     ephemeral_div.appendChild(new_input)
 }
 
 function parsing_target(e) {
-    const destroy_ephemeral = document.getElementsByClassName("ephemeral-multiple")
+    const destroy_ephemeral = Array.from(document.getElementsByClassName("ephemeral-multiple"))
     for (tag of destroy_ephemeral) {
         tag.remove()
     }
@@ -72,6 +74,22 @@ function generic_submit_transform(e) {
     common_input.value = sub_strings_array.join(";")
 }
 
+function set_select(e) {
+    const new_target_id = e.target.id
+    const target_btns = document.getElementsByClassName("target-btn")
+
+    for (button of target_btns) {
+        button.classList.remove("target-btn-active")
+    }
+    
+    const new_active = document.getElementById(new_target_id)
+    new_active.classList.add("target-btn-active")
+
+    const target_select = document.getElementById("parser-form-select")
+    target_select.value = new_target_id
+    target_select.dispatchEvent(new Event('change'))
+}   
+
 function main() {
     const target_select = document.getElementById("parser-form-select")
     target_select.addEventListener("change", parsing_target)
@@ -84,6 +102,11 @@ function main() {
     const submit_buttons = document.getElementsByClassName("parser-form-submit")
     for (button of submit_buttons) {
         button.addEventListener("click", generic_submit_transform)
+    }
+
+    const target_btns = document.getElementsByClassName("target-btn")
+    for (button of target_btns) {
+        button.addEventListener("click", set_select)
     }
 }
 

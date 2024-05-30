@@ -24,10 +24,21 @@ function add_dataset_button(e) {
     dataset_container.appendChild(div_container)
 }
 
+function send_form(e) {
+    const real_button = document.getElementById("download-button-true")
+    const confirm_text = `Reddit API terms of use require that no deleted content may be stored outside of platform. To comply with this policy, parsed data is not stored for longer than 48 hours. By downloading the dataset, you take the responsibility of data disposal upon yourself.`
+
+    if (window.confirm(confirm_text)) {
+        real_button.click()
+    }
+}
+
 function main() {
     const add_button = document.getElementById("add-dataset")
-
     add_button.addEventListener("click", add_dataset_button)
+    
+    const send_button = document.getElementById("download-button-false")
+    send_button.addEventListener("click", send_form)
 }
 
 window.addEventListener("DOMContentLoaded", main)

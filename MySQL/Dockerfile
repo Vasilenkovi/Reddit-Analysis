@@ -8,5 +8,5 @@ ENV MYSQL_DATABASE clusteringdb
 ENV MYSQL_DATABASE reddit_job_id
 ENV MYSQL_DATABASE reddit_parsing
 ENV MYSQL_DATABASE reddit_test_accounts
-ENV MYSQL_ROOT_PASSWORD root
+ENV MYSQL_ROOT_PASSWORD 1eHPdAi918Lf7X6b
 COPY my.cnf /etc/
