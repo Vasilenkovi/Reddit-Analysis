@@ -175,7 +175,7 @@ REDDIT_CLIENT = OmegaConf.load(BASE_DIR / "DjangoRed/config/reddit_script_config
 
 #CELERY
 CELERY_IMPORTS = ("ParserApp.tasks")
-CELERY_BROKER_URL = 'amqp://prod:syGw76eja2k4Cmvn@localhost:5672//'
+CELERY_BROKER_URL = 'amqp://prod:syGw76eja2k4Cmvn@message-broker:5672//'
 # Session
 
 SESSION_DATASET_IDS = "dataset_ids"

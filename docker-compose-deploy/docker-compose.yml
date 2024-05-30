@@ -1,18 +1,17 @@
 version: '3.8'
 services:
-
   backend:
-    image: shizvizor/djangoapp:stable
+    image: shizvizor/djangoapp:stable-huberless
     command:  sh -c "daphne -b 0.0.0.0 -p 8000 DjangoRed.asgi:application &  celery -A DjangoRed worker --loglevel=INFO"
     expose:
       - "8000"
     volumes:
-     - /home/shizanalysis/Reddit-Analysis/DjangoRed/static/:/static/
+     - /home/shizanalysis/dockerless-reddit-deploy/Reddit-Analysis/DjangoRed/static/:/static/
     links:
      - 'mysqlred'
      - 'message-broker'
   nginx:
-    image: shizvizor/nginxdev:stable
+    image: shizvizor/nginx:deploy
     ports:
       - 80:80
     command: ""
@@ -33,8 +32,12 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - /home/shizanalysis/dockerless-reddit-deploy/Reddit-Analysis/RabbitMQ/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - /home/shizanalysis/dockerless-reddit-deploy/Reddit-Analysis/RabbitMQ/definitions.json:/etc/rabbitmq/definitions.json
+
   mysqlred:
-    image: shizvizor/mysqlred:stable
+    image: shizvizor/mysqlred:stable-huberless
     ports:
       - 3309:3306
     command: --lower_case_table_names=1
