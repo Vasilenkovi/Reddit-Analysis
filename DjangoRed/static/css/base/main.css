@@ -22,6 +22,7 @@ hr {
     padding: 80px;
 }
 
+
 /* .content-padding {
     margin-left: 100px !important;
     margin-right: 100px !important;
@@ -80,7 +81,6 @@ hr {
     display: grid;
     justify-content: end;
 }
-
 
 .active {
     background-color: #5489f2 !important;

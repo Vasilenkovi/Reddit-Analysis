@@ -26,7 +26,8 @@ def stat_view(request):
         "error": None,
         "downloadable": None,
         "html_embed": None,
-        "stat_dict": {}
+        "stat_dict": {},
+        "job_id": None,
     }
 
     if request.method == "GET":
@@ -135,5 +136,6 @@ def stat_view(request):
         stat_dict[full_name].pop(1)
         stat_dict[full_name].pop(1)
     context['stat_dict'] = stat_dict
+    context['job_id'] = job_id
 
     return render(request, "stat/stat.html", context = context)

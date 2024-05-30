@@ -37,15 +37,15 @@
 
                 <div class="row">
                     <div class="d-flex align-items-center">
-                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1">
-                        <button type="button" id="add-dataset" class="btn active mx-1">Add dataset</button>
-                        <input type="submit" value="Remake statistic" class="btn complete mx-1">
+                        <input type="text" name="name-for-added-datasets" id="add-dataset-source" class="form-control mx-1 trans-input">
+                        <button type="button" id="add-dataset" class="btn active mx-1 grey-bkg">Add dataset</button>
+                        <input type="submit" value="Remake statistic" class="btn complete mx-1 grey-bkg">
                     </div>
                 </div>
             </div>
         </form>
         
-        <div class = "container-fluid">
+        <div class = "container-fluid" name="{{job_id}}" id="job_id_info">
             {% for a in stat_dict.items %}
             <div class = "row my-2">
                 <button class="btn active mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#{{a.0}}coll">

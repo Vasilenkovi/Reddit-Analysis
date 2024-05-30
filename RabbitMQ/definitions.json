@@ -1,0 +1,28 @@
+{
+	"vhosts": [
+		{"name": "/"}
+	],
+	
+	"queues": [
+
+	],
+	
+	"users": [
+        {
+            "name": "prod",
+            "password_hash": "dagy2c6o1isLe6eVmQgKubxqsk1g92gFpXRk8gB3rKc+V4L6",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": ["administrator"]
+        }
+    ],
+	
+    "permissions":[
+        {
+            "user":"prod",
+            "vhost":"/",
+            "configure":".*",
+            "read":".*",
+            "write":".*"
+		}
+    ]
+}

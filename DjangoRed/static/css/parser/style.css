@@ -23,3 +23,105 @@
     border-radius: 1em;
     background-color: #292e32;
 }
+
+.align-left {
+    text-align: left !important;
+}
+
+.grey-bkg {
+    background-color: #6A6C6F !important;
+}
+
+.trans-input {
+    background-color: transparent !important;
+    border: 1px solid #FFFFFF !important;
+}
+
+.b-1-w {
+    border: 1px solid #FFFFFF !important;
+    border-radius: 1em;
+}
+
+.main-bkg {
+    background-color: #292E33 !important;
+    border-radius: 1em;
+}
+
+.send-btn-w {
+    width: 10em !important;
+}
+
+.font-w {
+    font-weight: 500 !important;
+}
+
+.target-btn {
+    width: 15em !important;
+    font-size: 1.5rem !important;
+    background-color: #6A6C6F !important;
+}
+
+.target-btn:hover {
+    cursor: pointer;
+}
+
+.target-btn-active {
+    width: 15em !important;
+    font-size: 1.5rem !important;
+    background-color: #A4A5A6 !important;
+}
+
+.target-btn-active:hover {
+    cursor: pointer;
+}
+
+.w-70 {
+    width: 70% !important;
+}
+
+.w-27 {
+    width: 27% !important;
+}
+
+.pl-3 {
+    padding-left: 3% !important;
+}
+
+.pos-rel {
+    position: relative;
+}
+
+.pm-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.result-blob {
+    min-width: 35vw !important;
+    min-height: 26vh !important;
+}
+
+.img-abs {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 25vw;
+    max-height: 20vh;
+}
+
+.img-offset {
+    bottom: 0.5em;
+    right: 0.5em;
+}
+
+.large-text {
+    font-size: 24px;
+}
+
+.btn-bottom-left {
+    position: absolute;
+    bottom: 1em;
+    left: 0.5em;
+}
