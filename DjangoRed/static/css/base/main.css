@@ -126,3 +126,15 @@ hr {
 .w-fit {
     width: fit-content;
 }
+
+.link-list > li {
+    display: inline-block;
+}   
+
+.link-list > li > a {
+    font-size: x-large;
+}
+
+.main-video {
+    width: 80%;
+}
