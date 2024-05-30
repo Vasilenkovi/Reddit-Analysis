@@ -1,5 +1,6 @@
 ﻿user: parser_read
 password: bgqld9(#_5]Y]86
 database: reddit_parsing
-port: 3309
-host: localhost
+port: 3306 # during development change to 3309
+# during development change to localhost
+host: mysqlred
