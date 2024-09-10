@@ -12,7 +12,7 @@ from io import StringIO
 from DatasetViewApp.db_queries import sub_select_user_dataset_from_ids
 from DatasetViewApp.forms import Dataset_operation_form
 from IdApp.task_id_manager import Job_types
-from .GraphOps import calculate_jaccard_edges
+from .GraphOps import calculate_jaccard_edges, get_centrality, get_communities
 
 # Create your views here.
 def base_graph_view(request):  
@@ -77,25 +77,10 @@ def base_graph_view(request):
     if len(G.nodes) > 2:
         
         # Centrality
-        centrality_dict = nx.eigenvector_centrality_numpy(G, weight = "weight")
-        centrality_list_sorted = list(map( 
-            lambda x: (x[0], round(x[1], 5)), 
-            centrality_dict.items())
-        )
-        centrality_list_sorted.sort(key = lambda x: x[1], reverse = True)
-
-        context["centrality"] = centrality_list_sorted
+        context["centrality"] = get_centrality(G)
 
         # Communities
-        community_list = nx.community.greedy_modularity_communities(
-            G, 
-            cutoff = 2,
-            best_n = max(len(sub_set) // 2, 2), # Max ensures best_n >= cutoff
-            weight = "weight"
-        )
-        community_list = [list(x) for x in community_list]
-
-        context["communities"] = community_list
+        context["communities"] = get_communities(G)
     
     node_color_map = {}
     for community, color in zip(community_list, cycle(colormaps['tab20'].colors)):
