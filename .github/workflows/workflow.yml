@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: check out
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
       # Runs a single command using the runners shell
       - name: docker
         uses: docker/setup-buildx-action@v2
@@ -83,5 +83,4 @@ jobs:
           # В параметре tags задаётся название и тег для образа.
           # Для каждого пересобранного образа 
           # устанавливаем тег latest, чтобы потом
-          # на сервере и в docker-compose.yml не указывать версию образа:
           tags: shizvizor/mysqlred-auto:latest
