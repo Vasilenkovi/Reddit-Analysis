@@ -43,7 +43,7 @@ jobs:
         # Авторизация на Docker Hub:
         uses: docker/login-action@v2
         with:
-          username: secrets.docker_mail 
+          username: secrets.docker_login 
           password: secrets.docker_pass 
       - name: build-push-backend      
         uses: docker/build-push-action@v4
