@@ -31,6 +31,8 @@ jobs:
           # что нужно проверить файлы только в папке backend/
           run: python DjangoRed/manage.py test
   build:
+    needs: 
+      - tests
     runs-on: ubuntu-22.04
     steps:
       - name: check out
