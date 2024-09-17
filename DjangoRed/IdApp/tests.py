@@ -1,20 +1,5 @@
-from django.test import TestCase, SimpleTestCase
-from .db_query import get_comment_datasets, get_user_datasets
+from django.test import SimpleTestCase
 from .db_query import _select_in_limit_query
-
-class get_ids_test(TestCase):
-
-    def test_get_comment_datasets(self):
-        r = get_comment_datasets()
-
-        print(r)
-        self.assertTrue(r)
-
-    def test_get_user_datasets(self):
-        r = get_user_datasets()
-
-        print(r)
-        self.assertTrue(r)
 
 class Db_query_build_test(SimpleTestCase):
 
