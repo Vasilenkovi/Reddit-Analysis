@@ -9,7 +9,7 @@ on:
     branches: [ "stable-dev" ]
 jobs:
   tests:
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
         - name: Check out code
           uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
   build:
     needs: 
       - tests
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - name: check out
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
