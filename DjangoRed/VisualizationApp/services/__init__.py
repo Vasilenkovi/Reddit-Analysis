@@ -4,17 +4,14 @@ from .Optics import Optics
 from DjangoRed.settings import NATIVE_SQL_DATABASES
 from IdApp.db_query import execute
 import pickle
-def clusterize(**kwargs):
-    bd_conf_read = NATIVE_SQL_DATABASES['clustering_read']
-    bd_conf_save = NATIVE_SQL_DATABASES['clustering_saving']
+
+def query_generator(kwargs):
     job_id = kwargs["job_id"]
     queue_check = "SELECT Labels from clusteringdb.clustresult where  command=%(cmd)s"
     command = kwargs["method"] + kwargs["reduct_method"] + kwargs["distance"] + str(kwargs["cluster_count"])+kwargs["lang"]
     check_params = {
         "cmd" : command
     }
-    print(bd_conf_save)
-    check_result = execute(bd_conf_save, queue_check, check_params)
     query_to_add = "INSERT clusteringdb.clustresult (Labels, command, JobID, DataSet) values(%(labs)s, %(cmd)s, %(jid)s, %(dts)s); COMMIT;"
     addition_params = {
         "labs": None,
@@ -22,6 +19,18 @@ def clusterize(**kwargs):
         "cmd": command,
         "dts": "|".join(kwargs["dataset_id"])
     }
+    queue_get_coordinates = "SELECT " + kwargs[
+        "reduct_method"] + " from clusteringdb.clustdata where DataSet = %(dts)s;"
+    get_coords_params = {
+        "dts": "|".join(kwargs["dataset_id"])
+    }
+    return (queue_check, check_params, query_to_add, addition_params, queue_get_coordinates, get_coords_params, job_id )
+
+def clusterize(**kwargs):
+    queue_check, check_params, query_to_add, addition_params, queue_get_coordinates, get_coords_params, job_id  = query_generator(kwargs)
+    bd_conf_read = NATIVE_SQL_DATABASES['clustering_read']
+    bd_conf_save = NATIVE_SQL_DATABASES['clustering_saving']
+    check_result = execute(bd_conf_save, queue_check, check_params)
     if len(check_result) == 0:
         vc = Vectorizer(bd_conf_read=bd_conf_read, bd_conf_save=bd_conf_save, job_id=job_id)
         vc.get_doc_to_doc(kwargs["dataset_id"], kwargs["reduct_method"], kwargs["lang"])
@@ -37,10 +46,6 @@ def clusterize(**kwargs):
             insert_resp = execute(bd_conf_save, query_to_add, addition_params)
             return (opt.cluster(), vc.truncated[kwargs["reduct_method"]])
     else:
-        queue_get_coordinates = "SELECT " +kwargs["reduct_method"] +" from clusteringdb.clustdata where DataSet = %(dts)s;"
-        get_coords_params = {
-            "dts": "|".join(kwargs["dataset_id"])
-        }
         coord_query_res = execute(bd_conf_save, queue_get_coordinates, get_coords_params)
         return (pickle.loads(check_result[0][0]), pickle.loads(coord_query_res[0][0]))
 

@@ -1,19 +1,26 @@
-import mysql.connector
 from django.shortcuts import render
 from DatasetViewApp.forms import Dataset_operation_form
-from IdApp.task_id_manager import Job_types
 from .db_queries import select_comment_dataset_from_ids, make_job
-
 from wordcloud import WordCloud, STOPWORDS
 import io
 import base64
 from nltk.tokenize import word_tokenize
 import pandas as pd
 import string
-
 from IdApp.task_id_manager import get_task_id, Job_types
 from DjangoRed.settings import BASE_DIR
 
+def cloud(stopw, list_st):
+    if(len(stopw)==0):
+        raise Exception
+    WC = WordCloud(width=450, height=260, background_color='black', colormap='Set2', collocations=False,
+                   stopwords=stopw)
+    WC.generate(list_st)
+    buffer = io.BytesIO()
+    WC.to_image().save(buffer, 'png')
+    data64 = base64.b64encode(buffer.getvalue())
+    buffer.flush()
+    return  data64
 # Create your views here.
 def stat_view(request):
     stopw = STOPWORDS
@@ -49,7 +56,6 @@ def stat_view(request):
         context["error"] = "Only user datasets can be used for statistics"
     
         return render(request, "stat/stat.html", context = context)
-
     table_data = select_comment_dataset_from_ids(dataset_ids)
     stat_dict = {}
 
@@ -74,12 +80,7 @@ def stat_view(request):
         for comment in stat_dict[full_name][1]:
             if comment != "[deleted]":
                 list_st += ''.join(stri.strip('.!,*') + ' ' for stri in comment.replace("\n", " ").split(' '))
-        WC = WordCloud(width = 450, height = 260, background_color='black', colormap='Set2', collocations=False, stopwords=stopw)
-        WC.generate(list_st)
-        buffer = io.BytesIO()
-        WC.to_image().save(buffer, 'png')
-        data64 = base64.b64encode(buffer.getvalue())
-        buffer.flush()
+        data64 = cloud(stopw, list_st)
 
         stat_dict[full_name][4] = data64
         
@@ -116,7 +117,7 @@ def stat_view(request):
         stat_dict[full_name][5] = str_total
         stat_dict[full_name][6] = str(round(per_total,2))
         stat_dict[full_name][7] = pos_t
-        stat_dict[full_name][8] = neg_t 
+        stat_dict[full_name][8] = neg_t
 
         params = {
             'url': stat_dict[full_name][9],

@@ -10,21 +10,23 @@ class ClusterConsumer(WebsocketConsumer):
              'message': "Connected!!"
             }
         ))
-    def receive(self, text_data=None, bytes_data=None):
-        received_message = json.loads(text_data)
+    def receive_transform(self, received_message):
+        self.dataset_id = received_message["datasets"]
+        methods = {'1': "SVD", '2': "TSNE"}
+        langs = {'1': "english", '2': "russian"}
+        dists = {'1': "cosine", '2': "euclidean"}
+        methods_clust = {'1': "Aglo", '2': "Div", '3': "OPTICS"}
+        self.cluster_count = int(received_message["clasters_count"])
+        self.method = methods_clust[received_message["clasterization_method"]]
+        self.lang = langs[received_message["language"]]
+        self.reduct_method = methods[received_message["downsising_method"]]
+        self.distance = dists[received_message["measure_of_distance"]]
+        if self.cluster_count== None or self.method == None or self.lang == None or self.reduct_method == None or self.distance==None:
+            raise Exception
+        return {"distance": self.distance, "reduct_method": self.reduct_method, "lang": self.lang, "method": self.method, "cluster_count" : self.cluster_count}
+    def receive_answer(self):
         try:
-            dataset_id = received_message["datasets"]
-            methods = {'1':"SVD",'2':"TSNE"}
-            langs = {'1':"english",'2':"russian"}
-            dists = {'1':"cosine",'2':"euclidean"}
-            methods_clust = {'1':"Aglo",'2':"Div",'3':"OPTICS"}
-            cluster_count = int(received_message["clasters_count"])
-            method = methods_clust[received_message["clasterization_method"]]
-            lang = langs[received_message["language"]]
-            reduct_method = methods[received_message["downsising_method"]]
-            distance = dists[received_message["measure_of_distance"]]
-            job_id = get_task_id(Job_types.CLUSTER, text_data)
-            res = clusterize(job_id=job_id, dataset_id=dataset_id, method=method, lang=lang, reduct_method=reduct_method, distance=distance, cluster_count=cluster_count)
+            res = clusterize(job_id=self.job_id, dataset_id=self.dataset_id, method=self.method, lang=self.lang, reduct_method=self.reduct_method, distance=self.distance, cluster_count=self.luster_count)
             labels = res[0]
             points = res[1]
             self.send(text_data=json.dumps({
@@ -49,6 +51,13 @@ class ClusterConsumer(WebsocketConsumer):
                     'error': str(e)
                 }
                 ))
+        finally:
+            return
+    def receive(self, text_data=None, bytes_data=None):
+        received_message = json.loads(text_data)
+        self.job_id = get_task_id(Job_types.CLUSTER, text_data)
+        self.receive_transform(received_message, text_data)
+        self.receive_answer()
 
     def disconnect(self, close_code):
         print(close_code)

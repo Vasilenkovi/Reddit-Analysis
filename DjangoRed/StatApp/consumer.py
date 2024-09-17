@@ -1,10 +1,5 @@
 import json
-import base64
 from channels.generic.websocket import WebsocketConsumer
-from wordcloud import WordCloud
-import io
-from PIL import Image
-
 from IdApp.db_query import execute
 from DjangoRed.settings import NATIVE_SQL_DATABASES
 
