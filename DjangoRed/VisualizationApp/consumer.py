@@ -26,7 +26,7 @@ class ClusterConsumer(WebsocketConsumer):
         return {"distance": self.distance, "reduct_method": self.reduct_method, "lang": self.lang, "method": self.method, "cluster_count" : self.cluster_count}
     def receive_answer(self):
         try:
-            res = clusterize(job_id=self.job_id, dataset_id=self.dataset_id, method=self.method, lang=self.lang, reduct_method=self.reduct_method, distance=self.distance, cluster_count=self.luster_count)
+            res = clusterize(job_id=self.job_id, dataset_id=self.dataset_id, method=self.method, lang=self.lang, reduct_method=self.reduct_method, distance=self.distance, cluster_count=self.cluster_count)
             labels = res[0]
             points = res[1]
             self.send(text_data=json.dumps({
