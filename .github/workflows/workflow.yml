@@ -27,7 +27,8 @@ jobs:
             pip install -r DjangoRed/requirements.txt
         # Запускаем flake8:
         - name: Test with Django
-          run: cd DjangoRed && python manage.py test
+          working-directory: DjangoRed
+          run: python manage.py test
   build:
     needs: 
       - tests
