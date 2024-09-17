@@ -32,7 +32,7 @@ jobs:
   build:
     needs: 
       - tests
-    runs-on: linux-latest
+    runs-on: Ubuntu-22.04
     steps:
       - name: check out
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
