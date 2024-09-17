@@ -56,7 +56,7 @@ class ClusterConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         received_message = json.loads(text_data)
         self.job_id = get_task_id(Job_types.CLUSTER, text_data)
-        self.receive_transform(received_message, text_data)
+        self.receive_transform(received_message)
         self.receive_answer()
 
     def disconnect(self, close_code):
