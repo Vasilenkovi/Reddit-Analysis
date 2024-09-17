@@ -12,6 +12,7 @@ from io import StringIO
 from DatasetViewApp.db_queries import sub_select_user_dataset_from_ids
 from DatasetViewApp.forms import Dataset_operation_form
 from IdApp.task_id_manager import Job_types
+from .GraphOps import calculate_jaccard_edges
 
 # Create your views here.
 def base_graph_view(request):  
@@ -60,20 +61,7 @@ def base_graph_view(request):
         sub_set.add(sub)
 
     # Iterate over all pairs of subreddits and calculate similarity
-    sub_users_iter = tuple(sub_users.items())
-    for i in range(len(sub_users_iter) - 1):
-        i_sub, i_users = sub_users_iter[i]
-
-        for j in range(i + 1, len(sub_users_iter)):
-            j_sub, j_users = sub_users_iter[j]
-            intersect = len(i_users.intersection(j_users))
-            union = len(i_users.union(j_users))
-            jaccard = round(intersect / union, 5)
-
-            if jaccard > 0:
-                max_jaccard = max(max_jaccard, jaccard)
-                edge_list.append((i_sub, j_sub, jaccard))
-                edge_labels_dict[(i_sub, j_sub)] = jaccard
+    edge_list, edge_labels_dict, max_jaccard = calculate_jaccard_edges(tuple(sub_users.items()))
 
     # Construct graph
     G = nx.Graph()
