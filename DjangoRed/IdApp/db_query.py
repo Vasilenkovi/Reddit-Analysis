@@ -34,6 +34,12 @@ def select_in_limit(database_dict: dict, f_query: str, params: dict, in_params: 
         \t in_params - list of IN expression values. \n
         """
 
+    query = _select_in_limit_query(f_query, params, in_params, limit, offset)
+
+    return execute(database_dict, query, params)
+
+def _select_in_limit_query(f_query: str, params: dict, in_params: list, limit: int = 1000, offset: int = 0) -> list[tuple]:
+
     in_expr = "IN ( "
 
     wrapped = []
@@ -49,7 +55,7 @@ def select_in_limit(database_dict: dict, f_query: str, params: dict, in_params: 
         offset = offset
     )
 
-    return execute(database_dict, query, params)
+    return query
 
 def execute(database_dict: dict, query: str, params: dict) -> list[tuple]:
 
